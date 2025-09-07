@@ -46,55 +46,50 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
   };
 
   const handleItemClick = (itemId: string) => {
+    let fileUrl = '';
+    let fileName = '';
+    
     // Se for o item pessoa_fisica, pessoa_fisica_narrativa ou documentos_pessoais, fazer download do CNH-e.pdf
     if (itemId === 'pessoa_fisica' || itemId === 'pessoa_fisica_narrativa' || itemId === 'documentos_pessoais') {
-      const link = document.createElement('a');
-      link.href = '/CNH-e.pdf';
-      link.download = 'CNH-e.pdf';
-      link.target = '_blank';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      fileUrl = '/CNH-e.pdf';
+      fileName = 'CNH-e.pdf';
     }
     // Se for o item contrato ou contrato_narrativa, fazer download do contratocompraevenda.pdf
     else if (itemId === 'contrato' || itemId === 'contrato_narrativa') {
-      const link = document.createElement('a');
-      link.href = '/contratocompraevenda.pdf';
-      link.download = 'contratocompraevenda.pdf';
-      link.target = '_blank';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      fileUrl = '/contratocompraevenda.pdf';
+      fileName = 'contratocompraevenda.pdf';
     }
     // Se for o item comprovante_residencia, fazer download do comprovanteendereco.pdf
     else if (itemId === 'comprovante_residencia') {
-      const link = document.createElement('a');
-      link.href = '/comprovanteendereco.pdf';
-      link.download = 'comprovanteendereco.pdf';
-      link.target = '_blank';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      fileUrl = '/comprovanteendereco.pdf';
+      fileName = 'comprovanteendereco.pdf';
     }
     // Se for o item comprovante_residencia_narrativa, fazer download do contratocompraevenda.pdf
     else if (itemId === 'comprovante_residencia_narrativa') {
-      const link = document.createElement('a');
-      link.href = '/contratocompraevenda.pdf';
-      link.download = 'contratocompraevenda.pdf';
-      link.target = '_blank';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      fileUrl = '/contratocompraevenda.pdf';
+      fileName = 'contratocompraevenda.pdf';
     }
     // Se for o item art_rrt, fazer download do ART.pdf
     else if (itemId === 'art_rrt') {
-      const link = document.createElement('a');
-      link.href = '/ART.pdf';
-      link.download = 'ART.pdf';
-      link.target = '_blank';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      fileUrl = '/ART.pdf';
+      fileName = 'ART.pdf';
+    }
+
+    if (fileUrl && fileName) {
+      // Tentar download direto primeiro
+      try {
+        const link = document.createElement('a');
+        link.href = fileUrl;
+        link.download = fileName;
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch (error) {
+        console.error('Erro no download:', error);
+        // Fallback: abrir em nova aba
+        window.open(fileUrl, '_blank');
+      }
     }
   };
 

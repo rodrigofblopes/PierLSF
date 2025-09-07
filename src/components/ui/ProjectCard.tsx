@@ -99,13 +99,19 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   };
 
   const handleFileDownload = (file: ProjectFile) => {
-    const link = document.createElement('a');
-    link.href = file.path;
-    link.download = file.name;
-    link.target = '_blank';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    try {
+      const link = document.createElement('a');
+      link.href = file.path;
+      link.download = file.name;
+      link.style.display = 'none';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Erro no download:', error);
+      // Fallback: abrir em nova aba
+      window.open(file.path, '_blank');
+    }
   };
 
   return (
