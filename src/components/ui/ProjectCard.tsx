@@ -100,21 +100,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   };
 
   const handleFileDownload = (file: ProjectFile) => {
-    console.log('handleFileDownload chamado para:', file.name, file.path);
-    
-    // Abordagem simples: criar link direto
-    const link = document.createElement('a');
-    link.href = file.path;
-    link.download = file.name;
-    link.target = '_blank';
-    link.rel = 'noopener noreferrer';
-    
-    // Adicionar ao DOM temporariamente
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    
-    console.log('Download iniciado para:', file.name);
+    console.log('Download clicado:', file.name);
+    // Abrir diretamente em nova aba
+    window.open(file.path, '_blank');
   };
 
   return (
