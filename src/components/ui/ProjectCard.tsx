@@ -97,8 +97,27 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     }
   };
 
-  // Removido handleCardClick - os links internos já funcionam
-
+  // Função para lidar com clique no link do Instagram
+  const handleInstagramClick = (e: React.MouseEvent, url: string) => {
+    e.stopPropagation(); // Impede que o evento suba para elementos pai
+    e.preventDefault(); // Impede comportamento padrão
+    
+    console.log('=== CLIQUE NO INSTAGRAM ===');
+    console.log('URL:', url);
+    console.log('Evento:', e);
+    
+    try {
+      // Método mais simples e direto
+      console.log('Abrindo Instagram em nova aba...');
+      window.open(url, '_blank', 'noopener,noreferrer');
+      console.log('Instagram aberto com sucesso!');
+    } catch (error) {
+      console.error('Erro ao abrir Instagram:', error);
+      // Fallback: redirecionar na mesma aba
+      console.log('Fallback: redirecionando na mesma aba');
+      window.location.href = url;
+    }
+  };
 
   return (
     <div 
@@ -106,6 +125,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         'group relative overflow-hidden rounded-2xl border-0 transition-all duration-500 shadow-lg hover:shadow-xl',
         className
       )}
+      // Removido qualquer onClick no container principal
     >
       {/* Background Gradient */}
       <div className={cn(
@@ -113,9 +133,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         getTypeColor()
       )} />
       
-      {/* Decorative Elements */}
-      <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16" />
-      <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-12 -translate-x-12" />
+      {/* Decorative Elements - CORRIGIDO: pointer-events-none para não bloquear cliques */}
+      <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-12 -translate-x-12 pointer-events-none" />
       
       {/* Content */}
       <div className="relative p-6 sm:p-8">
@@ -176,7 +196,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           </div>
         )}
 
-        {/* Professional Info */}
+        {/* Professional Info - CORRIGIDO */}
         {professional && (
           <div className="mb-6">
             <div className="bg-white/10 rounded-lg p-4 border border-white/20">
@@ -187,16 +207,28 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                 </div>
                 <div className="flex-1">
                   {professional.instagram ? (
-                    <a
-                      href={professional.instagram}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-white font-medium hover:text-white/80 transition-colors group cursor-pointer"
+                    <div
+                      onClick={(e) => {
+                        console.log('Div clicada!');
+                        console.log('Evento:', e);
+                        console.log('URL do Instagram:', professional.instagram);
+                        handleInstagramClick(e, professional.instagram!);
+                      }}
+                      className="flex items-center gap-2 text-white font-medium hover:text-white/80 transition-colors group cursor-pointer select-none"
                       title={`Acessar Instagram de ${professional.name}`}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        console.log('Tecla pressionada:', e.key);
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          handleInstagramClick(e as any, professional.instagram!);
+                        }
+                      }}
                     >
                       <span>{professional.name}</span>
                       <Instagram className="h-4 w-4 text-white/60 group-hover:text-white transition-colors" />
-                    </a>
+                      <span className="text-xs text-white/40">@{professional.instagram?.split('/').pop()?.replace('/', '')}</span>
+                    </div>
                   ) : (
                     <p className="text-white font-medium">{professional.name}</p>
                   )}
@@ -215,28 +247,31 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
               <button
                 key={index}
                 onClick={async (e) => {
-                  console.log(`Botão ${file.name} clicado!`);
-                  console.log(`Caminho do arquivo: ${file.path}`);
+                  console.log(`=== BOTÃO ${file.name} CLICADO ===`);
+                  console.log(`Caminho: ${file.path}`);
+                  console.log(`Nome: ${file.name}`);
+                  
+                  // Parar propagação de eventos
                   e.stopPropagation();
                   e.preventDefault();
                   
-                  // Adicionar feedback visual
+                  // Feedback visual
                   const button = e.currentTarget;
                   const originalText = button.innerHTML;
                   button.innerHTML = '<div class="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div><span class="ml-2">Baixando...</span>';
                   button.disabled = true;
                   
                   try {
-                    console.log(`Iniciando download de ${file.path}...`);
+                    console.log(`Chamando downloadFile...`);
                     const result = await downloadFile(file.path, file.name);
-                    console.log(`Download de ${file.name} resultado:`, result);
+                    console.log(`Resultado do download:`, result);
                     if (result) {
-                      console.log(`Download de ${file.name} iniciado com sucesso`);
+                      console.log(`✅ Download de ${file.name} iniciado com sucesso!`);
                     } else {
-                      console.log(`Download de ${file.name} falhou, arquivo aberto em nova aba`);
+                      console.log(`⚠️ Download de ${file.name} falhou, arquivo aberto em nova aba`);
                     }
                   } catch (error) {
-                    console.error(`Erro ao baixar ${file.name}:`, error);
+                    console.error(`❌ Erro no download:`, error);
                     alert(`Erro ao baixar ${file.name}. Tente novamente.`);
                   } finally {
                     // Restaurar botão
@@ -254,8 +289,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         )}
       </div>
 
-      {/* Hover Effect */}
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      {/* Hover Effect - CORRIGIDO: pointer-events-none para não bloquear cliques */}
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
     </div>
   );
 };

@@ -140,7 +140,7 @@ function App() {
               <div className="bg-white rounded-lg sm:rounded-xl shadow-lg p-6">
                 <h3 className="text-xl font-bold text-gray-800 mb-4">Fotografias da Clínica</h3>
                 <p className="text-gray-600 mb-6">
-                  Visualize as imagens da Clínica UNIQUE - Medicina Especializada. Clique nas imagens para visualização em tela cheia.
+                  Explore o registro fotográfico do estado inicial da Clínica UNIQUE - Medicina Especializada, documentando as condições pré-obra. Esta galeria apresenta o ambiente antes do início das intervenções arquitetônicas e estruturais. Clique nas imagens para visualização em tela cheia.
                 </p>
                 <ImageGallery images={images} />
               </div>

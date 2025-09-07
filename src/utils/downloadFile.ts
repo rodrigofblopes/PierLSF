@@ -1,37 +1,35 @@
-export const downloadFile = async (url: string, filename: string) => {
-  console.log('downloadFile chamado com:', url, filename);
+export const downloadFile = async (filePath: string, fileName: string): Promise<boolean> => {
+  console.log(`=== INICIANDO DOWNLOAD ===`);
+  console.log(`Arquivo: ${filePath}`);
+  console.log(`Nome: ${fileName}`);
   
+  // Método mais simples e direto
   try {
-    // Método mais simples e direto
     console.log('Criando link de download...');
     
     const link = document.createElement('a');
-    link.href = url;
-    link.download = filename;
+    link.href = filePath;
+    link.download = fileName;
     link.style.display = 'none';
     
-    // Adicionar ao DOM
+    console.log('Adicionando ao DOM...');
     document.body.appendChild(link);
     
-    // Simular clique
+    console.log('Clicando no link...');
     link.click();
     
-    // Remover do DOM
-    setTimeout(() => {
-      if (document.body.contains(link)) {
-        document.body.removeChild(link);
-      }
-    }, 100);
+    console.log('Removendo do DOM...');
+    document.body.removeChild(link);
     
-    console.log('Download iniciado com sucesso');
+    console.log(`✅ Download iniciado: ${fileName}`);
     return true;
     
   } catch (error) {
-    console.error('Erro no download:', error);
+    console.error(`❌ Erro no download:`, error);
     
     // Fallback: abrir em nova aba
-    console.log('Abrindo arquivo em nova aba...');
-    window.open(url, '_blank');
+    console.log('Fallback: abrindo em nova aba...');
+    window.open(filePath, '_blank');
     return false;
   }
 };
