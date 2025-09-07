@@ -1,5 +1,5 @@
 import React from 'react';
-import { Building2, RotateCw, Download, Eye } from 'lucide-react';
+import { Building2, Download, Eye } from 'lucide-react';
 import { ModelInfo } from '@/types';
 import { cn } from '@/utils/cn';
 

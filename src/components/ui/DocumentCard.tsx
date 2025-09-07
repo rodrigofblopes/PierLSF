@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FileText, Download, Eye, Calendar, User, CheckCircle, AlertCircle, Clock, ChevronDown, ChevronUp } from 'lucide-react';
+import { Download, CheckCircle, AlertCircle, Clock, ChevronDown, ChevronUp } from 'lucide-react';
 import { cn } from '@/utils/cn';
 
 interface ChecklistItem {
@@ -24,14 +24,11 @@ interface DocumentCardProps {
 
 export const DocumentCard: React.FC<DocumentCardProps> = ({
   title,
-  description,
   type,
   status,
   issueDate,
   expiryDate,
   issuer,
-  fileSize,
-  version,
   checklist,
   className,
 }) => {
@@ -48,7 +45,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
     setCheckedItems(newCheckedItems);
   };
 
-  const handleItemClick = (itemId: string, itemText: string) => {
+  const handleItemClick = (itemId: string) => {
     // Se for o item pessoa_fisica, pessoa_fisica_narrativa ou documentos_pessoais, fazer download do CNH-e.pdf
     if (itemId === 'pessoa_fisica' || itemId === 'pessoa_fisica_narrativa' || itemId === 'documentos_pessoais') {
       const link = document.createElement('a');
@@ -101,50 +98,8 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
     const checkedCount = checklist.filter(item => checkedItems.has(item.id)).length;
     return Math.round((checkedCount / checklist.length) * 100);
   };
-  const getStatusColor = () => {
-    switch (status) {
-      case 'aprovado':
-        return 'bg-green-500';
-      case 'pendente':
-        return 'bg-yellow-500';
-      case 'vencido':
-        return 'bg-red-500';
-      case 'em-analise':
-        return 'bg-blue-500';
-      default:
-        return 'bg-gray-500';
-    }
-  };
 
-  const getStatusText = () => {
-    switch (status) {
-      case 'aprovado':
-        return 'Aprovado';
-      case 'pendente':
-        return 'Pendente';
-      case 'vencido':
-        return 'Vencido';
-      case 'em-analise':
-        return 'Em Análise';
-      default:
-        return 'Desconhecido';
-    }
-  };
 
-  const getStatusIcon = () => {
-    switch (status) {
-      case 'aprovado':
-        return <CheckCircle className="h-4 w-4" />;
-      case 'pendente':
-        return <Clock className="h-4 w-4" />;
-      case 'vencido':
-        return <AlertCircle className="h-4 w-4" />;
-      case 'em-analise':
-        return <Clock className="h-4 w-4" />;
-      default:
-        return <Clock className="h-4 w-4" />;
-    }
-  };
 
   const getTypeColor = () => {
     switch (type) {
@@ -165,24 +120,6 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
     }
   };
 
-  const getTypeText = () => {
-    switch (type) {
-      case 'licenca':
-        return 'Licença';
-      case 'alvara':
-        return 'Alvará';
-      case 'habite-se':
-        return 'Habite-se';
-      case 'projeto':
-        return 'Projeto';
-      case 'laudo':
-        return 'Laudo';
-      case 'certificado':
-        return 'Certificado';
-      default:
-        return 'Documento';
-    }
-  };
 
   return (
     <div className={cn(
@@ -249,7 +186,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                              "flex items-center gap-3 p-2 bg-white/5 rounded-lg",
                              (item.id === 'pessoa_fisica' || item.id === 'pessoa_fisica_narrativa' || item.id === 'documentos_pessoais' || item.id === 'contrato' || item.id === 'contrato_narrativa' || item.id === 'comprovante_residencia' || item.id === 'comprovante_residencia_narrativa' || item.id === 'art_rrt') && "cursor-pointer hover:bg-white/10 transition-colors"
                            )}
-                           onClick={(item.id === 'pessoa_fisica' || item.id === 'pessoa_fisica_narrativa' || item.id === 'documentos_pessoais' || item.id === 'contrato' || item.id === 'contrato_narrativa' || item.id === 'comprovante_residencia' || item.id === 'comprovante_residencia_narrativa' || item.id === 'art_rrt') ? () => handleItemClick(item.id, item.text) : undefined}
+                           onClick={(item.id === 'pessoa_fisica' || item.id === 'pessoa_fisica_narrativa' || item.id === 'documentos_pessoais' || item.id === 'contrato' || item.id === 'contrato_narrativa' || item.id === 'comprovante_residencia' || item.id === 'comprovante_residencia_narrativa' || item.id === 'art_rrt') ? () => handleItemClick(item.id) : undefined}
                          >
                            <input
                              type="checkbox"

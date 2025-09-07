@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, MapPin, Users, Clock, ArrowRight, FileText, Building, Zap, Download, Instagram } from 'lucide-react';
+import { MapPin, Users, FileText, Building, Zap, Download, Instagram } from 'lucide-react';
 import { cn } from '@/utils/cn';
 
 interface ProjectFile {
@@ -31,8 +31,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   title,
   description,
   status,
-  startDate,
-  endDate,
   location,
   type,
   progress = 0,
