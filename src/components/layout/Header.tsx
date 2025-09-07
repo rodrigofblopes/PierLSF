@@ -1,6 +1,7 @@
 import React from 'react';
 import { Building2, Download, Share2 } from 'lucide-react';
 import { cn } from '@/utils/cn';
+import bimtechLogo from '/BIMTECH.jpg';
 
 interface HeaderProps {
   onDownload?: () => void;
@@ -18,14 +19,12 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <img 
-            src="/BIMTECH.jpg" 
+            src={bimtechLogo} 
             alt="BIMTECH Logo" 
             className="h-12 w-auto rounded-lg shadow-lg border border-white/20"
             onError={(e) => {
               console.error('Erro ao carregar logo BIMTECH:', e);
               console.error('URL tentada:', e.currentTarget.src);
-              // Tentar caminho alternativo
-              e.currentTarget.src = './BIMTECH.jpg';
             }}
             onLoad={() => {
               console.log('Logo BIMTECH carregada com sucesso');
