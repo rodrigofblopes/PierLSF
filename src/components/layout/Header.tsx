@@ -17,8 +17,24 @@ export const Header: React.FC<HeaderProps> = ({
     <header className={cn('glass-primary p-4 rounded-xl border border-primary-500/20', className)}>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="h-12 w-12 bg-white/20 rounded-lg shadow-lg border border-white/20 flex items-center justify-center">
-            <span className="text-white font-bold text-xs">BIM</span>
+          <div className="h-12 w-12 rounded-lg shadow-lg border border-white/20 overflow-hidden bg-white/10 flex items-center justify-center">
+            <img 
+              src="/BIMTECH.jpg" 
+              alt="BIMTECH Logo" 
+              className="h-full w-full object-contain"
+              onError={(e) => {
+                console.error('Erro ao carregar logo BIMTECH');
+                e.currentTarget.style.display = 'none';
+                // Mostrar fallback
+                const fallback = document.createElement('span');
+                fallback.textContent = 'BIM';
+                fallback.className = 'text-white font-bold text-xs';
+                e.currentTarget.parentNode?.appendChild(fallback);
+              }}
+              onLoad={() => {
+                console.log('Logo BIMTECH carregada com sucesso');
+              }}
+            />
           </div>
           <div>
             <h1 className="text-xl font-bold gradient-text">Clínica UNIQUE - Medicina Especializada</h1>
