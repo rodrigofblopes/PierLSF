@@ -98,21 +98,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     }
   };
 
-  // Função para fazer download dos arquivos
-  const handleFileDownload = (file: ProjectFile) => {
-    const link = document.createElement('a');
-    link.href = file.path;
-    link.download = file.name;
-    link.target = '_blank';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
-  // Função para abrir Instagram
-  const handleInstagramClick = (url: string) => {
-    window.open(url, '_blank', 'noopener,noreferrer');
-  };
 
   return (
     <div 
@@ -201,14 +186,16 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                 </div>
                 <div className="flex-1">
                   {professional.instagram ? (
-                    <button
-                      onClick={() => handleInstagramClick(professional.instagram!)}
+                    <a
+                      href={professional.instagram}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="flex items-center gap-2 text-white font-medium hover:text-white/80 transition-colors group cursor-pointer"
                       title={`Acessar Instagram de ${professional.name}`}
                     >
                       <span>{professional.name}</span>
                       <Instagram className="h-4 w-4 text-white/60 group-hover:text-white transition-colors" />
-                    </button>
+                    </a>
                   ) : (
                     <p className="text-white font-medium">{professional.name}</p>
                   )}
@@ -224,14 +211,16 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           <div className="space-y-2">
             <h4 className="text-sm font-medium text-white mb-3">Arquivos para Download:</h4>
             {files.map((file, index) => (
-              <button
+              <a
                 key={index}
-                onClick={() => handleFileDownload(file)}
+                href={file.path}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-white/40"
               >
                 <Download className="h-4 w-4" />
                 <span className="flex-1 text-left">{file.name}</span>
-              </button>
+              </a>
             ))}
           </div>
         )}

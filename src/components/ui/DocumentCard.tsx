@@ -46,17 +46,6 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
     setCheckedItems(newCheckedItems);
   };
 
-  // Função para fazer download dos arquivos
-  const handleFileDownload = (fileName: string) => {
-    const filePath = `/${fileName}`;
-    const link = document.createElement('a');
-    link.href = filePath;
-    link.download = fileName;
-    link.target = '_blank';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
 
   const getChecklistProgress = () => {
     if (!checklist) return 0;
@@ -165,64 +154,64 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                     >
                       {item.text}
                       {(item.id === 'pessoa_fisica' || item.id === 'pessoa_fisica_narrativa' || item.id === 'documentos_pessoais') && (
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleFileDownload('CNH-e.pdf');
-                          }}
+                        <a
+                          href="/CNH-e.pdf"
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="p-1 hover:bg-white/20 rounded transition-colors"
                           title="Baixar CNH-e.pdf"
+                          onClick={(e) => e.stopPropagation()}
                         >
                           <Download className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
-                        </button>
+                        </a>
                       )}
                       {(item.id === 'contrato' || item.id === 'contrato_narrativa') && (
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleFileDownload('contratocompraevenda.pdf');
-                          }}
+                        <a
+                          href="/contratocompraevenda.pdf"
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="p-1 hover:bg-white/20 rounded transition-colors"
                           title="Baixar contratocompraevenda.pdf"
+                          onClick={(e) => e.stopPropagation()}
                         >
                           <Download className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
-                        </button>
+                        </a>
                       )}
                       {item.id === 'comprovante_residencia' && (
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleFileDownload('comprovanteendereco.pdf');
-                          }}
+                        <a
+                          href="/comprovanteendereco.pdf"
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="p-1 hover:bg-white/20 rounded transition-colors"
                           title="Baixar comprovanteendereco.pdf"
+                          onClick={(e) => e.stopPropagation()}
                         >
                           <Download className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
-                        </button>
+                        </a>
                       )}
                       {item.id === 'comprovante_residencia_narrativa' && (
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleFileDownload('contratocompraevenda.pdf');
-                          }}
+                        <a
+                          href="/contratocompraevenda.pdf"
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="p-1 hover:bg-white/20 rounded transition-colors"
                           title="Baixar contratocompraevenda.pdf"
+                          onClick={(e) => e.stopPropagation()}
                         >
                           <Download className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
-                        </button>
+                        </a>
                       )}
                       {item.id === 'art_rrt' && (
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleFileDownload('ART.pdf');
-                          }}
+                        <a
+                          href="/ART.pdf"
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="p-1 hover:bg-white/20 rounded transition-colors"
                           title="Baixar ART.pdf"
+                          onClick={(e) => e.stopPropagation()}
                         >
                           <Download className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
-                        </button>
+                        </a>
                       )}
                       {item.required && (
                         <span className="ml-2 px-1.5 py-0.5 bg-red-500 text-white text-xs font-bold rounded">
