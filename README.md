@@ -1,206 +1,82 @@
-# 🏗️ Clínica 3D Viewer
+# 🏗️ Sistema de Gerenciamento de Projetos
 
-Um visualizador 3D moderno e interativo para modelos arquitetônicos, construído com React, Three.js e TypeScript.
+Sistema completo para criação de dashboards de gerenciamento de projetos arquitetônicos, baseado no projeto da Clínica UNIQUE.
 
-## ✨ Características
+## 🎯 O que foi criado
 
-- **Visualização 3D Avançada**: Suporte completo para arquivos GLB/GLTF
-- **Interface Moderna**: Design responsivo com Tailwind CSS
-- **Controles Intuitivos**: Câmera, iluminação e exibição personalizáveis
-- **Performance Otimizada**: Lazy loading e otimizações de renderização
-- **Animações Suaves**: Transições fluidas com GSAP
-- **Responsivo**: Funciona perfeitamente em desktop e mobile
+✅ **Template Base Reutilizável** - Código fonte completo do projeto da Clínica  
+✅ **Sistema de Configuração** - Arquivo JSON para personalização fácil  
+✅ **Script de Criação** - Gerador automático de novos projetos  
+✅ **Documentação Completa** - Guias e exemplos de uso  
+✅ **Estrutura Organizada** - Pastas para template, projetos e configurações  
 
-## 🛠️ Stack Tecnológico
-
-- **Frontend**: React 18 + TypeScript
-- **3D**: Three.js + React Three Fiber + Drei
-- **Styling**: Tailwind CSS
-- **Animações**: GSAP
-- **Build**: Vite
-- **Linting**: ESLint + TypeScript
-
-## 🚀 Instalação
-
-1. **Clone o repositório**:
-   ```bash
-   git clone <repository-url>
-   cd clinica-3d-viewer
-   ```
-
-2. **Instale as dependências**:
-   ```bash
-   npm install
-   ```
-
-3. **Configure os arquivos 3D**:
-   - Coloque seus arquivos `.glb` ou `.gltf` na pasta `public/`
-   - Atualize o array `availableModels` em `src/App.tsx` se necessário
-
-4. **Execute o projeto**:
-   ```bash
-   npm run dev
-   ```
-
-5. **Acesse a aplicação**:
-   - Abra [http://localhost:3000](http://localhost:3000) no seu navegador
-
-## 📁 Estrutura do Projeto
+## 📁 Estrutura Criada
 
 ```
-src/
-├── components/
-│   ├── 3d/              # Componentes 3D
-│   │   └── ModelViewer.tsx
-│   ├── ui/              # Componentes de interface
-│   │   ├── ControlPanel.tsx
-│   │   ├── LoadingSpinner.tsx
-│   │   └── ErrorBoundary.tsx
-│   └── layout/          # Componentes de layout
-│       ├── Header.tsx
-│       └── FileSelector.tsx
-├── hooks/               # Custom hooks
-│   └── useViewerState.ts
-├── types/               # Definições TypeScript
-│   └── index.ts
-├── utils/               # Utilitários
-│   └── cn.ts
-├── styles/              # Estilos customizados
-│   └── animations.css
-├── App.tsx              # Componente principal
-├── main.tsx             # Ponto de entrada
-└── index.css            # Estilos globais
+Gerenciamento de Projetos/
+├── 01-Template-Base/           # Template reutilizável
+│   ├── Template-Projeto/       # Código da Clínica UNIQUE
+│   └── create-new-project.js   # Script gerador
+├── 02-Projetos-Ativos/         # Projetos criados
+│   └── Exemplo-Projeto/        # Exemplo de uso
+├── 03-Documentacao/            # Documentação
+│   ├── README.md               # Guia completo
+│   └── GUIA-RAPIDO.md          # Guia de 5 minutos
+└── 04-Configuracoes/           # Configurações globais
+    └── global-settings.json    # Configurações do sistema
 ```
 
-## 🎮 Como Usar
+## 🚀 Como Usar
 
-### Carregando Modelos
-
-1. **Modelos Pré-carregados**: Selecione um dos modelos disponíveis na sidebar
-2. **Upload de Arquivo**: Arraste e solte um arquivo GLB/GLTF ou clique para selecionar
-3. **Formatos Suportados**: `.glb`, `.gltf`
-
-### Controles 3D
-
-- **Câmera**:
-  - 🖱️ **Rotação**: Clique e arraste
-  - 🔍 **Zoom**: Scroll do mouse
-  - 📱 **Pan**: Clique direito + arraste
-  - 🔄 **Auto-rotação**: Ative no painel de controles
-
-- **Exibição**:
-  - 📐 **Grade**: Mostra/oculta grade de referência
-  - 📏 **Eixos**: Mostra/oculta eixos coordenados
-  - 🔲 **Wireframe**: Alterna entre sólido e wireframe
-
-- **Iluminação**:
-  - ☀️ **Ambiente**: Controla iluminação ambiente
-  - 💡 **Direcional**: Controla intensidade da luz direcional
-  - 🌑 **Sombras**: Ativa/desativa sombras
-
-### Funcionalidades
-
-- **Download**: Baixe o modelo atual
-- **Compartilhamento**: Compartilhe a visualização
-- **Reset**: Restaura configurações padrão
-- **Responsivo**: Interface adaptável para mobile
-
-## 🔧 Configuração Avançada
-
-### Adicionando Novos Modelos
-
-1. Coloque o arquivo `.glb` ou `.gltf` na pasta `public/`
-2. Atualize o array `availableModels` em `src/App.tsx`:
-
-```typescript
-const availableModels: ModelInfo[] = [
-  {
-    name: 'SeuModelo.glb',
-    path: '/SeuModelo.glb',
-    format: 'glb',
-    description: 'Descrição do seu modelo',
-  },
-  // ... outros modelos
-];
-```
-
-### Personalizando Controles
-
-Modifique os controles padrão em `src/hooks/useViewerState.ts`:
-
-```typescript
-const initialControls: ViewerControls = {
-  autoRotate: false,
-  enableZoom: true,
-  enablePan: true,
-  enableRotate: true,
-  showGrid: true,
-  showAxes: true,
-  wireframe: false,
-};
-```
-
-### Otimizações de Performance
-
-- **LOD (Level of Detail)**: Implementado automaticamente
-- **Frustum Culling**: Ativado por padrão
-- **Shadow Mapping**: Configurável via controles
-- **Texture Compression**: Suporte para WebP e Basis
-
-## 🚀 Deploy
-
-### Vercel (Recomendado)
-
-1. Conecte seu repositório ao Vercel
-2. Configure as variáveis de ambiente se necessário
-3. Deploy automático a cada push
-
-### Build Local
-
+### Criar Novo Projeto (5 minutos)
 ```bash
-npm run build
-npm run preview
+cd "01-Template-Base"
+node create-new-project.js
 ```
 
-## 🐛 Solução de Problemas
+### Executar Projeto
+```bash
+cd "../02-Projetos-Ativos/meu-projeto"
+npm install
+npm run dev
+```
 
-### Modelo não carrega
-- Verifique se o arquivo está na pasta `public/`
-- Confirme se o formato é `.glb` ou `.gltf`
-- Verifique o console do navegador para erros
+## 🎨 Personalização
 
-### Performance lenta
-- Reduza a qualidade das texturas
-- Desative sombras se não necessário
-- Use modelos com menos polígonos
+- **Cores da empresa** (preto/amarelo, azul/branco, etc.)
+- **Logo e identidade visual**
+- **Nomes e descrições**
+- **Imagens e documentos**
+- **Estrutura das abas**
 
-### Erro de CORS
-- Certifique-se de que os arquivos estão na pasta `public/`
-- Para desenvolvimento local, use `npm run dev`
+## 📋 Funcionalidades
 
-## 📝 Scripts Disponíveis
+- ✅ **Header personalizado** com logo e cores da empresa
+- ✅ **Galeria de imagens** interativa
+- ✅ **Cards de projetos** com progresso
+- ✅ **Sistema de documentos** com download
+- ✅ **Design responsivo** para mobile/desktop
+- ✅ **Efeitos visuais** animados
+- ✅ **Deploy fácil** no Vercel/Netlify
 
-- `npm run dev` - Servidor de desenvolvimento
-- `npm run build` - Build de produção
-- `npm run preview` - Preview do build
-- `npm run lint` - Verificação de código
+## 🎯 Casos de Uso
 
-## 🤝 Contribuição
+- **Clínicas e Hospitais** - Documentação médica
+- **Edifícios Comerciais** - Projetos arquitetônicos
+- **Residências** - Documentação legal
+- **Obras Públicas** - Licenciamento
+- **Qualquer projeto** que precise de documentação visual
 
-1. Fork o projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
+## 📞 Próximos Passos
 
-## 📄 Licença
+1. **Teste o template** executando o projeto da Clínica
+2. **Crie seu primeiro projeto** usando o script
+3. **Personalize** cores, logo e conteúdo
+4. **Adicione** suas imagens e documentos
+5. **Faça deploy** para produção
 
-Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
+---
 
-## 🙏 Agradecimentos
-
-- [Three.js](https://threejs.org/) - Biblioteca 3D
-- [React Three Fiber](https://docs.pmnd.rs/react-three-fiber) - Integração React + Three.js
-- [Drei](https://github.com/pmndrs/drei) - Helpers para R3F
-- [Tailwind CSS](https://tailwindcss.com/) - Framework CSS
-- [GSAP](https://greensock.com/gsap/) - Animações
+**Criado por**: Bonfim Imobiliária e Engenharia  
+**Baseado em**: Projeto Clínica UNIQUE  
+**Data**: Janeiro 2025

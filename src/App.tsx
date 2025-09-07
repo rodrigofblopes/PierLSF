@@ -98,28 +98,51 @@ function App() {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
-      {/* Header do Dashboard - Colorido */}
-      <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 shadow-lg border-b border-purple-300 p-3 sm:p-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-center gap-2 sm:gap-3 mb-4">
-            {/* Logo BIMTECH */}
-            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg overflow-hidden">
-              <img 
-                src="/BIMTECH.jpg" 
-                alt="BIMTECH Logo" 
-                className="w-full h-full object-cover rounded-xl"
-              />
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-yellow-50 to-gray-100">
+      {/* Header do Dashboard - Cores da Empresa */}
+      <div className="relative bg-gradient-to-r from-black via-yellow-600 to-black shadow-2xl border-b-2 border-yellow-400 p-3 sm:p-6 overflow-hidden z-10">
+        {/* Efeito de brilho animado */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-300/10 to-transparent animate-pulse z-0"></div>
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-400 animate-pulse z-0"></div>
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="flex flex-col gap-4 mb-4">
+            {/* Logo BIMTECH e Nome da Empresa - Canto Esquerdo */}
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-yellow-500/20 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg overflow-hidden border border-yellow-400/30">
+                <img 
+                  src="/BIMTECH.jpg" 
+                  alt="BIMTECH Logo" 
+                  className="w-full h-full object-cover rounded-xl"
+                />
+              </div>
+              <h2 className="text-sm sm:text-lg font-semibold text-white drop-shadow-lg hover:text-yellow-300 transition-colors duration-300">
+                Bonfim Imobiliária e Engenharia
+              </h2>
             </div>
-            <h1 className="text-lg sm:text-2xl font-bold text-white">Clínica UNIQUE - Medicina Especializada</h1>
+            
+            {/* Título do Projeto - Centralizado */}
+            <div className="flex justify-center">
+              <h1 className="text-lg sm:text-2xl font-bold text-center relative group">
+                <span className="bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 bg-clip-text text-transparent drop-shadow-lg filter drop-shadow-yellow-400/50 animate-pulse">
+                  Clínica UNIQUE
+                </span>
+                <span className="text-white ml-2 drop-shadow-lg">- Medicina Especializada</span>
+                {/* Efeito de brilho ao redor do título */}
+                <div className="absolute -inset-2 bg-gradient-to-r from-yellow-400/30 via-yellow-300/40 to-yellow-500/30 rounded-xl blur-md opacity-60 group-hover:opacity-80 transition-opacity duration-300 animate-pulse"></div>
+                {/* Linha de destaque abaixo do título */}
+                <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-16 h-0.5 bg-gradient-to-r from-transparent via-yellow-400 to-transparent"></div>
+              </h1>
+            </div>
           </div>
           
           {/* Sistema de Abas */}
-          <Tabs
-            tabs={tabs}
-            activeTab={activeTab}
-            onTabChange={handleTabChange}
-          />
+          <div className="relative z-20">
+            <Tabs
+              tabs={tabs}
+              activeTab={activeTab}
+              onTabChange={handleTabChange}
+            />
+          </div>
         </div>
       </div>
 
@@ -138,7 +161,7 @@ function App() {
 
               {/* Galeria de Imagens */}
               <div className="bg-white rounded-lg sm:rounded-xl shadow-lg p-6">
-                <h3 className="text-xl font-bold text-gray-800 mb-4">Fotografias da Clínica</h3>
+                <h3 className="text-xl font-bold text-gray-800 mb-4">Fotografias pré-obra</h3>
                 <p className="text-gray-600 mb-6">
                   Explore o registro fotográfico do estado inicial da Clínica UNIQUE - Medicina Especializada, documentando as condições pré-obra. Esta galeria apresenta o ambiente antes do início das intervenções arquitetônicas e estruturais. Clique nas imagens para visualização em tela cheia.
                 </p>

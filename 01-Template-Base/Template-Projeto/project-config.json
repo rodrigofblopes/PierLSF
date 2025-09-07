@@ -1,0 +1,117 @@
+{
+  "project": {
+    "name": "Clínica UNIQUE - Medicina Especializada",
+    "company": "Bonfim Imobiliária e Engenharia",
+    "logo": "/BIMTECH.jpg",
+    "description": "Dashboard de gerenciamento de projetos arquitetônicos e documentação"
+  },
+  "branding": {
+    "primaryColor": "black",
+    "secondaryColor": "yellow",
+    "gradient": "from-black via-yellow-600 to-black",
+    "accentColor": "yellow-400"
+  },
+  "tabs": [
+    {
+      "id": "home",
+      "label": "Início",
+      "icon": "Home",
+      "content": {
+        "title": "Bem-vindo ao Dashboard da Clínica UNIQUE",
+        "description": "Explore os projetos e documentos da Clínica UNIQUE - Medicina Especializada. Navegue pelas abas para acessar diferentes funcionalidades.",
+        "gallery": {
+          "title": "Fotografias pré-obra",
+          "description": "Explore o registro fotográfico do estado inicial da Clínica UNIQUE - Medicina Especializada, documentando as condições pré-obra. Esta galeria apresenta o ambiente antes do início das intervenções arquitetônicas e estruturais. Clique nas imagens para visualização em tela cheia."
+        }
+      }
+    },
+    {
+      "id": "projetos",
+      "label": "Projetos",
+      "icon": "FolderOpen",
+      "content": {
+        "title": "Projetos da Clínica UNIQUE",
+        "description": "Acompanhe o progresso dos projetos em andamento e planejados."
+      }
+    },
+    {
+      "id": "documentos",
+      "label": "Documentos Regularização",
+      "icon": "FileText",
+      "content": {
+        "title": "Documentos de Regularização",
+        "description": "Documentos oficiais, licenças e certificações da Clínica UNIQUE - Medicina Especializada."
+      }
+    }
+  ],
+  "images": [
+    {
+      "src": "/IMG_0008.jpg",
+      "alt": "Imagem 0008",
+      "title": "Fotografia da Clínica"
+    },
+    {
+      "src": "/IMG_0045.jpg",
+      "alt": "Imagem 0045",
+      "title": "Fotografia da Clínica"
+    },
+    {
+      "src": "/IMG_0046.jpg",
+      "alt": "Imagem 0046",
+      "title": "Fotografia da Clínica"
+    },
+    {
+      "src": "/IMG_0047.jpg",
+      "alt": "Imagem 0047",
+      "title": "Fotografia da Clínica"
+    },
+    {
+      "src": "/IMG_0132.jpg",
+      "alt": "Imagem 0132",
+      "title": "Fotografia da Clínica"
+    },
+    {
+      "src": "/ortomosaicooutboundary.jpg",
+      "alt": "Ortomosaico Outboundary",
+      "title": "Ortomosaico da Clínica"
+    }
+  ],
+  "projects": [
+    {
+      "title": "Projeto Arquitetônico",
+      "description": "Desenvolvimento do projeto arquitetônico completo da Clínica UNIQUE",
+      "status": "ativo",
+      "location": "São Paulo, SP",
+      "type": "Arquitetura",
+      "progress": 85,
+      "files": [
+        { "name": "ARQ.glb", "path": "/ARQ.glb" },
+        { "name": "Arquitetura.pdf", "path": "/Arquitetura.pdf" }
+      ],
+      "professional": {
+        "name": "Eng. Rodrigo F. B. Lopes",
+        "role": "Arquiteto Responsável",
+        "instagram": "https://www.instagram.com/engrodrigofblopes/"
+      }
+    },
+    {
+      "title": "Projeto Elétrico",
+      "description": "Sistema elétrico completo da Clínica UNIQUE",
+      "status": "ativo",
+      "location": "São Paulo, SP",
+      "type": "Elétrica",
+      "progress": 70,
+      "files": [
+        { "name": "Eletrico.glb", "path": "/Eletrico.glb" },
+        { "name": "Elétrico1-3.pdf", "path": "/Elétrico1-3.pdf" },
+        { "name": "Elétrico2-3.pdf", "path": "/Elétrico2-3.pdf" },
+        { "name": "Elétrico3-3.pdf", "path": "/Elétrico3-3.pdf" }
+      ],
+      "professional": {
+        "name": "Eng. Rodrigo F. B. Lopes",
+        "role": "Engenheiro Elétrico",
+        "instagram": "https://www.instagram.com/engrodrigofblopes/"
+      }
+    }
+  ]
+}
