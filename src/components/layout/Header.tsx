@@ -17,7 +17,7 @@ export const Header: React.FC<HeaderProps> = ({
     <header className={cn('glass-primary p-4 rounded-xl border border-primary-500/20', className)}>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="h-12 w-12 rounded-lg shadow-lg border border-white/20 overflow-hidden bg-white/10 flex items-center justify-center">
+          <div className="logo-container h-12 w-12 rounded-lg shadow-lg border border-white/20 overflow-hidden bg-white/10 flex items-center justify-center">
             <img 
               src="/BIMTECH.jpg" 
               alt="BIMTECH Logo" 
@@ -47,7 +47,14 @@ export const Header: React.FC<HeaderProps> = ({
             onClick={() => {
               console.log('Teste logo BIMTECH');
               const img = new Image();
-              img.onload = () => console.log('Logo carregada via JS');
+              img.onload = () => {
+                console.log('Logo carregada via JS com sucesso!');
+                // Tentar mostrar a logo no lugar do placeholder
+                const logoContainer = document.querySelector('.logo-container');
+                if (logoContainer) {
+                  logoContainer.innerHTML = `<img src="/BIMTECH.jpg" alt="BIMTECH Logo" class="h-full w-full object-contain" />`;
+                }
+              };
               img.onerror = () => console.log('Erro ao carregar logo via JS');
               img.src = '/BIMTECH.jpg';
             }}
