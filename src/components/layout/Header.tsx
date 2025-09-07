@@ -43,57 +43,35 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
         
         <div className="flex items-center gap-2">
-          <button
-            onClick={() => {
-              console.log('Teste logo BIMTECH');
-              const img = new Image();
-              img.onload = () => {
-                console.log('Logo carregada via JS com sucesso!');
-                // Tentar mostrar a logo no lugar do placeholder
-                const logoContainer = document.querySelector('.logo-container');
-                if (logoContainer) {
-                  logoContainer.innerHTML = `<img src="/BIMTECH.jpg" alt="BIMTECH Logo" class="h-full w-full object-contain" />`;
-                }
-              };
-              img.onerror = () => console.log('Erro ao carregar logo via JS');
-              img.src = '/BIMTECH.jpg';
-            }}
+          <a 
+            href="/BIMTECH.jpg" 
+            target="_blank" 
             className="btn-secondary text-sm flex items-center gap-2"
-            title="Teste Logo"
+            title="Ver Logo"
           >
             <Download className="h-4 w-4" />
-            Teste Logo
-          </button>
+            Ver Logo
+          </a>
           
-          <button
-            onClick={() => {
-              console.log('Teste de download clicado');
-              const link = document.createElement('a');
-              link.href = '/Arquitetura.pdf';
-              link.download = 'Arquitetura.pdf';
-              link.target = '_blank';
-              document.body.appendChild(link);
-              link.click();
-              document.body.removeChild(link);
-            }}
+          <a 
+            href="/Arquitetura.pdf" 
+            target="_blank" 
             className="btn-secondary text-sm flex items-center gap-2"
-            title="Teste Download"
+            title="Baixar PDF"
           >
             <Download className="h-4 w-4" />
-            Teste PDF
-          </button>
+            Baixar PDF
+          </a>
           
-          <button
-            onClick={() => {
-              console.log('Teste Instagram clicado');
-              window.open('https://www.instagram.com/arq_marianacasagrande/', '_blank');
-            }}
+          <a 
+            href="https://www.instagram.com/arq_marianacasagrande/" 
+            target="_blank" 
             className="btn-secondary text-sm flex items-center gap-2"
-            title="Teste Instagram"
+            title="Instagram"
           >
             <Share2 className="h-4 w-4" />
-            Teste IG
-          </button>
+            Instagram
+          </a>
         </div>
       </div>
     </header>
