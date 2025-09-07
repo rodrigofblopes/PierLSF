@@ -17,16 +17,21 @@ export const Header: React.FC<HeaderProps> = ({
     <header className={cn('glass-primary p-4 rounded-xl border border-primary-500/20', className)}>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-3">
-            <img 
-              src="/BIMTECH.jpg" 
-              alt="BIMTECH Logo" 
-              className="h-12 w-auto rounded-lg shadow-lg"
-            />
-            <div>
-              <h1 className="text-xl font-bold gradient-text">Clínica UNIQUE - Medicina Especializada</h1>
-              <p className="text-sm text-primary-200">Visualizador de Arquitetura Interativo</p>
-            </div>
+          <img 
+            src="/BIMTECH.jpg" 
+            alt="BIMTECH Logo" 
+            className="h-12 w-auto rounded-lg shadow-lg border border-white/20"
+            onError={(e) => {
+              console.error('Erro ao carregar logo BIMTECH');
+              e.currentTarget.style.display = 'none';
+            }}
+            onLoad={() => {
+              console.log('Logo BIMTECH carregada com sucesso');
+            }}
+          />
+          <div>
+            <h1 className="text-xl font-bold gradient-text">Clínica UNIQUE - Medicina Especializada</h1>
+            <p className="text-sm text-primary-200">Visualizador de Arquitetura Interativo</p>
           </div>
         </div>
         
