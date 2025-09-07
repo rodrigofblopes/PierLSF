@@ -19,7 +19,7 @@
       ]
     },
     {
-      "source": "/(.*\\.(glb|gltf))",
+      "source": "/(.*\\.(glb|gltf))$",
       "headers": [
         {
           "key": "Access-Control-Allow-Origin",
