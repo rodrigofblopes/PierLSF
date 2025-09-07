@@ -22,12 +22,15 @@ export const Header: React.FC<HeaderProps> = ({
             alt="BIMTECH Logo" 
             className="h-12 w-auto rounded-lg shadow-lg border border-white/20"
             onError={(e) => {
-              console.error('Erro ao carregar logo BIMTECH');
-              e.currentTarget.style.display = 'none';
+              console.error('Erro ao carregar logo BIMTECH:', e);
+              console.error('URL tentada:', e.currentTarget.src);
+              // Tentar caminho alternativo
+              e.currentTarget.src = './BIMTECH.jpg';
             }}
             onLoad={() => {
               console.log('Logo BIMTECH carregada com sucesso');
             }}
+            style={{ display: 'block' }}
           />
           <div>
             <h1 className="text-xl font-bold gradient-text">Clínica UNIQUE - Medicina Especializada</h1>
@@ -36,6 +39,21 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
         
         <div className="flex items-center gap-2">
+          <button
+            onClick={() => {
+              console.log('Teste logo BIMTECH');
+              const img = new Image();
+              img.onload = () => console.log('Logo carregada via JS');
+              img.onerror = () => console.log('Erro ao carregar logo via JS');
+              img.src = '/BIMTECH.jpg';
+            }}
+            className="btn-secondary text-sm flex items-center gap-2"
+            title="Teste Logo"
+          >
+            <Download className="h-4 w-4" />
+            Teste Logo
+          </button>
+          
           <button
             onClick={() => {
               console.log('Teste de download clicado');
