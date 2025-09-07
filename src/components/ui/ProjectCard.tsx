@@ -1,6 +1,7 @@
 import React from 'react';
-import { MapPin, Users, FileText, Building, Zap, Download, Instagram } from 'lucide-react';
+import { MapPin, Users, FileText, Building, Zap, Download, Instagram, Droplets, Wrench } from 'lucide-react';
 import { cn } from '@/utils/cn';
+import { downloadFile } from '@/utils/downloadFile';
 
 interface ProjectFile {
   name: string;
@@ -17,8 +18,6 @@ interface ProjectCardProps {
   title: string;
   description: string;
   status: 'ativo' | 'planejamento' | 'concluido' | 'pausado';
-  startDate?: string;
-  endDate?: string;
   location: string;
   type: 'arquitetura' | 'eletrico' | 'estrutural' | 'hidraulico';
   progress?: number;
@@ -75,9 +74,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
       case 'eletrico':
         return <Zap className="h-5 w-5" />;
       case 'estrutural':
-        return <FileText className="h-5 w-5" />;
+        return <Wrench className="h-5 w-5" />;
       case 'hidraulico':
-        return <FileText className="h-5 w-5" />;
+        return <Droplets className="h-5 w-5" />;
       default:
         return <FileText className="h-5 w-5" />;
     }
@@ -97,6 +96,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         return 'from-gray-500 to-gray-600';
     }
   };
+
+  // Removido handleCardClick - os links internos já funcionam
 
 
   return (
@@ -211,16 +212,43 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           <div className="space-y-2">
             <h4 className="text-sm font-medium text-white mb-3">Arquivos para Download:</h4>
             {files.map((file, index) => (
-              <a
+              <button
                 key={index}
-                href={file.path}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-white/40"
+                onClick={async (e) => {
+                  console.log(`Botão ${file.name} clicado!`);
+                  console.log(`Caminho do arquivo: ${file.path}`);
+                  e.stopPropagation();
+                  e.preventDefault();
+                  
+                  // Adicionar feedback visual
+                  const button = e.currentTarget;
+                  const originalText = button.innerHTML;
+                  button.innerHTML = '<div class="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div><span class="ml-2">Baixando...</span>';
+                  button.disabled = true;
+                  
+                  try {
+                    console.log(`Iniciando download de ${file.path}...`);
+                    const result = await downloadFile(file.path, file.name);
+                    console.log(`Download de ${file.name} resultado:`, result);
+                    if (result) {
+                      console.log(`Download de ${file.name} iniciado com sucesso`);
+                    } else {
+                      console.log(`Download de ${file.name} falhou, arquivo aberto em nova aba`);
+                    }
+                  } catch (error) {
+                    console.error(`Erro ao baixar ${file.name}:`, error);
+                    alert(`Erro ao baixar ${file.name}. Tente novamente.`);
+                  } finally {
+                    // Restaurar botão
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                  }
+                }}
+                className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-white/40 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Download className="h-4 w-4" />
                 <span className="flex-1 text-left">{file.name}</span>
-              </a>
+              </button>
             ))}
           </div>
         )}

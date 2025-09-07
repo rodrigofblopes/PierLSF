@@ -2,8 +2,43 @@ import { useState } from 'react';
 import { ProjectCard } from '@/components/ui/ProjectCard';
 import { DocumentCard } from '@/components/ui/DocumentCard';
 import { Tabs } from '@/components/ui/Tabs';
+import { ImageGallery } from '@/components/ui/ImageGallery';
 import { Home, FolderOpen, FileText } from 'lucide-react';
 
+
+// Sample images data
+const images = [
+  {
+    src: '/IMG_0008.jpg',
+    alt: 'Imagem 0008',
+    title: 'Fotografia da Clínica'
+  },
+  {
+    src: '/IMG_0045.jpg',
+    alt: 'Imagem 0045',
+    title: 'Fotografia da Clínica'
+  },
+  {
+    src: '/IMG_0046.jpg',
+    alt: 'Imagem 0046',
+    title: 'Fotografia da Clínica'
+  },
+  {
+    src: '/IMG_0047.jpg',
+    alt: 'Imagem 0047',
+    title: 'Fotografia da Clínica'
+  },
+  {
+    src: '/IMG_0132.jpg',
+    alt: 'Imagem 0132',
+    title: 'Fotografia da Clínica'
+  },
+  {
+    src: '/ortomosaicooutboundary.jpg',
+    alt: 'Ortomosaico Outboundary',
+    title: 'Ortomosaico da Clínica'
+  }
+];
 
 // Sample projects data
 const projects = [
@@ -68,10 +103,15 @@ function App() {
       <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 shadow-lg border-b border-purple-300 p-3 sm:p-6">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center gap-2 sm:gap-3 mb-4">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg">
-              <Home className="h-4 w-4 sm:h-6 sm:w-6 text-white" />
+            {/* Logo BIMTECH */}
+            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg overflow-hidden">
+              <img 
+                src="/BIMTECH.jpg" 
+                alt="BIMTECH Logo" 
+                className="w-full h-full object-cover rounded-xl"
+              />
             </div>
-            <h1 className="text-lg sm:text-2xl font-bold text-white">Dashboard Clínica UNIQUE</h1>
+            <h1 className="text-lg sm:text-2xl font-bold text-white">Clínica UNIQUE - Medicina Especializada</h1>
           </div>
           
           {/* Sistema de Abas */}
@@ -87,11 +127,23 @@ function App() {
       <div className="p-3 sm:p-6">
         <div className="max-w-6xl mx-auto">
           {activeTab === 'home' && (
-            <div className="bg-white rounded-lg sm:rounded-xl shadow-lg p-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">Bem-vindo ao Dashboard da Clínica UNIQUE</h2>
-              <p className="text-gray-600">
-                Explore os projetos e documentos da Clínica UNIQUE - Medicina Especializada. Navegue pelas abas para acessar diferentes funcionalidades.
-              </p>
+            <div className="space-y-6">
+              {/* Header da aba Início */}
+              <div className="bg-white rounded-lg sm:rounded-xl shadow-lg p-6">
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">Bem-vindo ao Dashboard da Clínica UNIQUE</h2>
+                <p className="text-gray-600">
+                  Explore os projetos e documentos da Clínica UNIQUE - Medicina Especializada. Navegue pelas abas para acessar diferentes funcionalidades.
+                </p>
+              </div>
+
+              {/* Galeria de Imagens */}
+              <div className="bg-white rounded-lg sm:rounded-xl shadow-lg p-6">
+                <h3 className="text-xl font-bold text-gray-800 mb-4">Fotografias da Clínica</h3>
+                <p className="text-gray-600 mb-6">
+                  Visualize as imagens da Clínica UNIQUE - Medicina Especializada. Clique nas imagens para visualização em tela cheia.
+                </p>
+                <ImageGallery images={images} />
+              </div>
             </div>
           )}
 
@@ -141,14 +193,7 @@ function App() {
               <div className="w-full">
                 <DocumentCard
                   title="Certidão Informativa"
-                  description="Documento que descreve detalhadamente as características e conformidades do imóvel."
                   type="certificado"
-                  status="aprovado"
-                  issueDate="2023-11-20"
-                  expiryDate="2025-11-20"
-                  issuer="Cartório de Registro de Imóveis"
-                  fileSize="2.8 MB"
-                  version="1.3"
                   checklist={[
                     {
                       id: "requerimento",
@@ -188,14 +233,7 @@ function App() {
               <div className="w-full">
                 <DocumentCard
                   title="Certidão Narrativa"
-                  description="Documento que descreve detalhadamente as características e conformidades do imóvel."
                   type="certificado"
-                  status="aprovado"
-                  issueDate="2023-11-20"
-                  expiryDate="2025-11-20"
-                  issuer="Cartório de Registro de Imóveis"
-                  fileSize="2.8 MB"
-                  version="1.3"
                   checklist={[
                     {
                       id: "requerimento_narrativa",
@@ -240,13 +278,7 @@ function App() {
                 <div className="w-full">
                   <DocumentCard
                     title="Regularização de Obra Comercial"
-                    description="Documentos necessários para regularização de obras comerciais e adequação às normas."
                     type="projeto"
-                    status="pendente"
-                    issueDate="2024-01-15"
-                    issuer="Prefeitura Municipal"
-                    fileSize="5.2 MB"
-                    version="2.1"
                     checklist={[
                       {
                         id: "requerimento",

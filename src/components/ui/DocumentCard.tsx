@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Download, CheckCircle, AlertCircle, Clock, ChevronDown, ChevronUp } from 'lucide-react';
+import { Download, CheckCircle, ChevronDown, ChevronUp } from 'lucide-react';
 import { cn } from '@/utils/cn';
+import { downloadFile } from '@/utils/downloadFile';
 
 interface ChecklistItem {
   id: string;
@@ -10,14 +11,7 @@ interface ChecklistItem {
 
 interface DocumentCardProps {
   title: string;
-  description: string;
   type: 'licenca' | 'alvara' | 'habite-se' | 'projeto' | 'laudo' | 'certificado';
-  status: 'aprovado' | 'pendente' | 'vencido' | 'em-analise';
-  issueDate: string;
-  expiryDate?: string;
-  issuer: string;
-  fileSize?: string;
-  version?: string;
   checklist?: ChecklistItem[];
   className?: string;
 }
@@ -25,17 +19,22 @@ interface DocumentCardProps {
 export const DocumentCard: React.FC<DocumentCardProps> = ({
   title,
   type,
-  status,
-  issueDate,
-  expiryDate,
-  issuer,
   checklist,
   className,
 }) => {
   const [isChecklistExpanded, setIsChecklistExpanded] = useState(true); // Começar expandido
-  const [checkedItems, setCheckedItems] = useState<Set<string>>(new Set(['pessoa_fisica', 'contrato', 'comprovante_residencia', 'pessoa_fisica_narrativa', 'comprovante_residencia_narrativa', 'contrato_narrativa', 'documentos_pessoais', 'art_rrt']));
+  const [checkedItems, setCheckedItems] = useState<Set<string>>(new Set([
+    'pessoa_fisica',           // CNH-e.pdf ✓
+    'contrato',                // contratocompraevenda.pdf ✓
+    'comprovante_residencia',  // comprovanteendereco.pdf ✓
+    'pessoa_fisica_narrativa', // CNH-e.pdf ✓
+    'comprovante_residencia_narrativa', // contratocompraevenda.pdf ✓
+    'contrato_narrativa',      // contratocompraevenda.pdf ✓
+    'documentos_pessoais',     // CNH-e.pdf ✓
+    'art_rrt'                  // ART.pdf ✓
+  ]));
 
-  const handleCheckboxChange = (itemId: string, event: React.MouseEvent) => {
+  const handleCheckboxChange = (itemId: string, event: React.ChangeEvent<HTMLInputElement>) => {
     event.stopPropagation(); // Prevenir que o clique no checkbox acione o download
     const newCheckedItems = new Set(checkedItems);
     if (newCheckedItems.has(itemId)) {
@@ -45,6 +44,8 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
     }
     setCheckedItems(newCheckedItems);
   };
+
+  // Removido handleCardClick - os links internos já funcionam
 
 
   const getChecklistProgress = () => {
@@ -73,10 +74,12 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
   };
 
   return (
-    <div className={cn(
-      'group relative overflow-hidden rounded-2xl border-0 transition-all duration-500 cursor-pointer transform hover:scale-105 shadow-lg hover:shadow-xl',
-      className
-    )}>
+    <div 
+      className={cn(
+        'group relative overflow-hidden rounded-2xl border-0 transition-all duration-500 shadow-lg hover:shadow-xl',
+        className
+      )}
+    >
       {/* Background Gradient */}
       <div className={cn(
         'absolute inset-0 bg-gradient-to-br opacity-90',
@@ -136,6 +139,41 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                       "flex items-center gap-3 p-2 bg-white/5 rounded-lg",
                       (item.id === 'pessoa_fisica' || item.id === 'pessoa_fisica_narrativa' || item.id === 'documentos_pessoais' || item.id === 'contrato' || item.id === 'contrato_narrativa' || item.id === 'comprovante_residencia' || item.id === 'comprovante_residencia_narrativa' || item.id === 'art_rrt') && "cursor-pointer hover:bg-white/10 transition-colors"
                     )}
+                    onClick={async (e) => {
+                      // Só fazer download se não for o checkbox ou botão de download
+                      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLButtonElement) {
+                        return;
+                      }
+                      
+                      // Determinar qual arquivo baixar baseado no ID
+                      let filePath = '';
+                      let fileName = '';
+                      
+                      if (item.id === 'pessoa_fisica' || item.id === 'pessoa_fisica_narrativa' || item.id === 'documentos_pessoais') {
+                        filePath = '/CNH-e.pdf';
+                        fileName = 'CNH-e.pdf';
+                      } else if (item.id === 'contrato' || item.id === 'contrato_narrativa') {
+                        filePath = '/contratocompraevenda.pdf';
+                        fileName = 'contratocompraevenda.pdf';
+                      } else if (item.id === 'comprovante_residencia' || item.id === 'comprovante_residencia_narrativa') {
+                        filePath = '/comprovanteendereco.pdf';
+                        fileName = 'comprovanteendereco.pdf';
+                      } else if (item.id === 'art_rrt') {
+                        filePath = '/ART.pdf';
+                        fileName = 'ART.pdf';
+                      }
+                      
+                      if (filePath && fileName) {
+                        console.log(`Download da linha: ${fileName}`);
+                        try {
+                          await downloadFile(filePath, fileName);
+                          console.log(`Download de ${fileName} iniciado com sucesso`);
+                        } catch (error) {
+                          console.error(`Erro ao baixar ${fileName}:`, error);
+                          alert(`Erro ao baixar ${fileName}. Tente novamente.`);
+                        }
+                      }
+                    }}
                   >
                     <input
                       type="checkbox"
@@ -154,64 +192,149 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                     >
                       {item.text}
                       {(item.id === 'pessoa_fisica' || item.id === 'pessoa_fisica_narrativa' || item.id === 'documentos_pessoais') && (
-                        <a
-                          href="/CNH-e.pdf"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-1 hover:bg-white/20 rounded transition-colors"
+                        <button
+                          onClick={async (e) => {
+                            console.log('Botão CNH-e.pdf clicado!');
+                            e.stopPropagation();
+                            e.preventDefault();
+                            
+                            const button = e.currentTarget;
+                            const originalContent = button.innerHTML;
+                            button.innerHTML = '<div class="animate-spin h-3 w-3 border border-white border-t-transparent rounded-full"></div>';
+                            button.disabled = true;
+                            
+                            try {
+                              await downloadFile('/CNH-e.pdf', 'CNH-e.pdf');
+                              console.log('Download CNH-e.pdf iniciado com sucesso');
+                            } catch (error) {
+                              console.error('Erro ao baixar CNH-e.pdf:', error);
+                              alert('Erro ao baixar CNH-e.pdf. Tente novamente.');
+                            } finally {
+                              button.innerHTML = originalContent;
+                              button.disabled = false;
+                            }
+                          }}
+                          className="p-1 hover:bg-white/20 rounded transition-colors disabled:opacity-50"
                           title="Baixar CNH-e.pdf"
-                          onClick={(e) => e.stopPropagation()}
                         >
                           <Download className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
-                        </a>
+                        </button>
                       )}
                       {(item.id === 'contrato' || item.id === 'contrato_narrativa') && (
-                        <a
-                          href="/contratocompraevenda.pdf"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-1 hover:bg-white/20 rounded transition-colors"
+                        <button
+                          onClick={async (e) => {
+                            console.log('Botão contrato clicado!');
+                            e.stopPropagation();
+                            e.preventDefault();
+                            
+                            const button = e.currentTarget;
+                            const originalContent = button.innerHTML;
+                            button.innerHTML = '<div class="animate-spin h-3 w-3 border border-white border-t-transparent rounded-full"></div>';
+                            button.disabled = true;
+                            
+                            try {
+                              await downloadFile('/contratocompraevenda.pdf', 'contratocompraevenda.pdf');
+                              console.log('Download contrato iniciado com sucesso');
+                            } catch (error) {
+                              console.error('Erro ao baixar contrato:', error);
+                              alert('Erro ao baixar contrato. Tente novamente.');
+                            } finally {
+                              button.innerHTML = originalContent;
+                              button.disabled = false;
+                            }
+                          }}
+                          className="p-1 hover:bg-white/20 rounded transition-colors disabled:opacity-50"
                           title="Baixar contratocompraevenda.pdf"
-                          onClick={(e) => e.stopPropagation()}
                         >
                           <Download className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
-                        </a>
+                        </button>
                       )}
                       {item.id === 'comprovante_residencia' && (
-                        <a
-                          href="/comprovanteendereco.pdf"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-1 hover:bg-white/20 rounded transition-colors"
+                        <button
+                          onClick={async (e) => {
+                            console.log('Botão comprovante clicado!');
+                            e.stopPropagation();
+                            e.preventDefault();
+                            
+                            const button = e.currentTarget;
+                            const originalContent = button.innerHTML;
+                            button.innerHTML = '<div class="animate-spin h-3 w-3 border border-white border-t-transparent rounded-full"></div>';
+                            button.disabled = true;
+                            
+                            try {
+                              await downloadFile('/comprovanteendereco.pdf', 'comprovanteendereco.pdf');
+                              console.log('Download comprovante iniciado com sucesso');
+                            } catch (error) {
+                              console.error('Erro ao baixar comprovante:', error);
+                              alert('Erro ao baixar comprovante. Tente novamente.');
+                            } finally {
+                              button.innerHTML = originalContent;
+                              button.disabled = false;
+                            }
+                          }}
+                          className="p-1 hover:bg-white/20 rounded transition-colors disabled:opacity-50"
                           title="Baixar comprovanteendereco.pdf"
-                          onClick={(e) => e.stopPropagation()}
                         >
                           <Download className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
-                        </a>
+                        </button>
                       )}
                       {item.id === 'comprovante_residencia_narrativa' && (
-                        <a
-                          href="/contratocompraevenda.pdf"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-1 hover:bg-white/20 rounded transition-colors"
-                          title="Baixar contratocompraevenda.pdf"
-                          onClick={(e) => e.stopPropagation()}
+                        <button
+                          onClick={async (e) => {
+                            console.log('Botão comprovante narrativa clicado!');
+                            e.stopPropagation();
+                            e.preventDefault();
+                            
+                            const button = e.currentTarget;
+                            const originalContent = button.innerHTML;
+                            button.innerHTML = '<div class="animate-spin h-3 w-3 border border-white border-t-transparent rounded-full"></div>';
+                            button.disabled = true;
+                            
+                            try {
+                              await downloadFile('/comprovanteendereco.pdf', 'comprovanteendereco.pdf');
+                              console.log('Download comprovante narrativa iniciado com sucesso');
+                            } catch (error) {
+                              console.error('Erro ao baixar comprovante narrativa:', error);
+                              alert('Erro ao baixar comprovante narrativa. Tente novamente.');
+                            } finally {
+                              button.innerHTML = originalContent;
+                              button.disabled = false;
+                            }
+                          }}
+                          className="p-1 hover:bg-white/20 rounded transition-colors disabled:opacity-50"
+                          title="Baixar comprovanteendereco.pdf"
                         >
                           <Download className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
-                        </a>
+                        </button>
                       )}
                       {item.id === 'art_rrt' && (
-                        <a
-                          href="/ART.pdf"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-1 hover:bg-white/20 rounded transition-colors"
+                        <button
+                          onClick={async (e) => {
+                            console.log('Botão ART clicado!');
+                            e.stopPropagation();
+                            e.preventDefault();
+                            
+                            const button = e.currentTarget;
+                            const originalContent = button.innerHTML;
+                            button.innerHTML = '<div class="animate-spin h-3 w-3 border border-white border-t-transparent rounded-full"></div>';
+                            button.disabled = true;
+                            
+                            try {
+                              await downloadFile('/ART.pdf', 'ART.pdf');
+                              console.log('Download ART iniciado com sucesso');
+                            } catch (error) {
+                              console.error('Erro ao baixar ART:', error);
+                              alert('Erro ao baixar ART. Tente novamente.');
+                            } finally {
+                              button.innerHTML = originalContent;
+                              button.disabled = false;
+                            }
+                          }}
+                          className="p-1 hover:bg-white/20 rounded transition-colors disabled:opacity-50"
                           title="Baixar ART.pdf"
-                          onClick={(e) => e.stopPropagation()}
                         >
                           <Download className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
-                        </a>
+                        </button>
                       )}
                       {item.required && (
                         <span className="ml-2 px-1.5 py-0.5 bg-red-500 text-white text-xs font-bold rounded">

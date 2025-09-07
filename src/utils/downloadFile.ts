@@ -1,43 +1,37 @@
 export const downloadFile = async (url: string, filename: string) => {
   console.log('downloadFile chamado com:', url, filename);
+  
   try {
-    // Primeiro, tentar download direto
+    // Método mais simples e direto
+    console.log('Criando link de download...');
+    
     const link = document.createElement('a');
     link.href = url;
     link.download = filename;
     link.style.display = 'none';
-    document.body.appendChild(link);
-    console.log('Link criado, tentando clicar...');
-    link.click();
-    document.body.removeChild(link);
-    console.log('Download direto executado');
-  } catch (error) {
-    console.error('Erro no download direto:', error);
     
-    try {
-      // Fallback: usar fetch para baixar o arquivo
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+    // Adicionar ao DOM
+    document.body.appendChild(link);
+    
+    // Simular clique
+    link.click();
+    
+    // Remover do DOM
+    setTimeout(() => {
+      if (document.body.contains(link)) {
+        document.body.removeChild(link);
       }
-      
-      const blob = await response.blob();
-      const downloadUrl = window.URL.createObjectURL(blob);
-      
-      const link = document.createElement('a');
-      link.href = downloadUrl;
-      link.download = filename;
-      link.style.display = 'none';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      
-      // Limpar o URL do objeto
-      window.URL.revokeObjectURL(downloadUrl);
-    } catch (fetchError) {
-      console.error('Erro no download com fetch:', fetchError);
-      // Último fallback: abrir em nova aba
-      window.open(url, '_blank');
-    }
+    }, 100);
+    
+    console.log('Download iniciado com sucesso');
+    return true;
+    
+  } catch (error) {
+    console.error('Erro no download:', error);
+    
+    // Fallback: abrir em nova aba
+    console.log('Abrindo arquivo em nova aba...');
+    window.open(url, '_blank');
+    return false;
   }
 };
