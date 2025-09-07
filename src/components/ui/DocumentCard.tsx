@@ -196,7 +196,17 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                            >
                              {item.text}
                              {(item.id === 'pessoa_fisica' || item.id === 'pessoa_fisica_narrativa' || item.id === 'documentos_pessoais' || item.id === 'contrato' || item.id === 'contrato_narrativa' || item.id === 'comprovante_residencia' || item.id === 'comprovante_residencia_narrativa' || item.id === 'art_rrt') && (
-                               <Download className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
+                               <button
+                                 onClick={(e) => {
+                                   e.stopPropagation();
+                                   console.log('Download button clicado para:', item.id);
+                                   handleItemClick(item.id);
+                                 }}
+                                 className="p-1 hover:bg-white/20 rounded transition-colors"
+                                 title="Baixar arquivo"
+                               >
+                                 <Download className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
+                               </button>
                              )}
                              {item.required && (
                                <span className="ml-2 px-1.5 py-0.5 bg-red-500 text-white text-xs font-bold rounded">
