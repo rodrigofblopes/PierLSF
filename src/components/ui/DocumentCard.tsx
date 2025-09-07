@@ -36,7 +36,8 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
   const [isChecklistExpanded, setIsChecklistExpanded] = useState(true); // Começar expandido
   const [checkedItems, setCheckedItems] = useState<Set<string>>(new Set(['pessoa_fisica', 'contrato', 'comprovante_residencia', 'pessoa_fisica_narrativa', 'comprovante_residencia_narrativa', 'contrato_narrativa', 'documentos_pessoais', 'art_rrt']));
 
-  const handleCheckboxChange = (itemId: string) => {
+  const handleCheckboxChange = (itemId: string, event: React.MouseEvent) => {
+    event.stopPropagation(); // Prevenir que o clique no checkbox acione o download
     const newCheckedItems = new Set(checkedItems);
     if (newCheckedItems.has(itemId)) {
       newCheckedItems.delete(itemId);
@@ -47,6 +48,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
   };
 
   const handleItemClick = async (itemId: string) => {
+    console.log('handleItemClick chamado para:', itemId);
     let fileUrl = '';
     let fileName = '';
     
@@ -76,6 +78,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
       fileName = 'ART.pdf';
     }
 
+    console.log('Tentando fazer download:', fileUrl, fileName);
     if (fileUrl && fileName) {
       await downloadFile(fileUrl, fileName);
     }
@@ -180,7 +183,8 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                              type="checkbox"
                              id={item.id}
                              checked={checkedItems.has(item.id)}
-                             onChange={() => handleCheckboxChange(item.id)}
+                             onChange={(e) => handleCheckboxChange(item.id, e)}
+                             onClick={(e) => e.stopPropagation()}
                              className="w-4 h-4 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
                            />
                            <label

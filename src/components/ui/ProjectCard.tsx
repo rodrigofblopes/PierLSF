@@ -100,6 +100,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   };
 
   const handleFileDownload = async (file: ProjectFile) => {
+    console.log('handleFileDownload chamado para:', file.name, file.path);
     await downloadFile(file.path, file.name);
   };
 
@@ -191,7 +192,10 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                 <div className="flex-1">
                   {professional.instagram ? (
                     <button
-                      onClick={() => window.open(professional.instagram, '_blank')}
+                      onClick={() => {
+                        console.log('Instagram link clicado:', professional.instagram);
+                        window.open(professional.instagram, '_blank');
+                      }}
                       className="flex items-center gap-2 text-white font-medium hover:text-white/80 transition-colors group"
                     >
                       <span>{professional.name}</span>
