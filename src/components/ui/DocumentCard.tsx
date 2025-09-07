@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Download, CheckCircle, AlertCircle, Clock, ChevronDown, ChevronUp } from 'lucide-react';
 import { cn } from '@/utils/cn';
-import { downloadFile } from '@/utils/downloadFile';
 
 interface ChecklistItem {
   id: string;
@@ -47,42 +46,6 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
     setCheckedItems(newCheckedItems);
   };
 
-  const handleItemClick = async (itemId: string) => {
-    console.log('handleItemClick chamado para:', itemId);
-    let fileUrl = '';
-    let fileName = '';
-    
-    // Se for o item pessoa_fisica, pessoa_fisica_narrativa ou documentos_pessoais, fazer download do CNH-e.pdf
-    if (itemId === 'pessoa_fisica' || itemId === 'pessoa_fisica_narrativa' || itemId === 'documentos_pessoais') {
-      fileUrl = '/CNH-e.pdf';
-      fileName = 'CNH-e.pdf';
-    }
-    // Se for o item contrato ou contrato_narrativa, fazer download do contratocompraevenda.pdf
-    else if (itemId === 'contrato' || itemId === 'contrato_narrativa') {
-      fileUrl = '/contratocompraevenda.pdf';
-      fileName = 'contratocompraevenda.pdf';
-    }
-    // Se for o item comprovante_residencia, fazer download do comprovanteendereco.pdf
-    else if (itemId === 'comprovante_residencia') {
-      fileUrl = '/comprovanteendereco.pdf';
-      fileName = 'comprovanteendereco.pdf';
-    }
-    // Se for o item comprovante_residencia_narrativa, fazer download do contratocompraevenda.pdf
-    else if (itemId === 'comprovante_residencia_narrativa') {
-      fileUrl = '/contratocompraevenda.pdf';
-      fileName = 'contratocompraevenda.pdf';
-    }
-    // Se for o item art_rrt, fazer download do ART.pdf
-    else if (itemId === 'art_rrt') {
-      fileUrl = '/ART.pdf';
-      fileName = 'ART.pdf';
-    }
-
-    console.log('Tentando fazer download:', fileUrl, fileName);
-    if (fileUrl && fileName) {
-      await downloadFile(fileUrl, fileName);
-    }
-  };
 
   const getChecklistProgress = () => {
     if (!checklist) return 0;
@@ -177,7 +140,6 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                              "flex items-center gap-3 p-2 bg-white/5 rounded-lg",
                              (item.id === 'pessoa_fisica' || item.id === 'pessoa_fisica_narrativa' || item.id === 'documentos_pessoais' || item.id === 'contrato' || item.id === 'contrato_narrativa' || item.id === 'comprovante_residencia' || item.id === 'comprovante_residencia_narrativa' || item.id === 'art_rrt') && "cursor-pointer hover:bg-white/10 transition-colors"
                            )}
-                           onClick={(item.id === 'pessoa_fisica' || item.id === 'pessoa_fisica_narrativa' || item.id === 'documentos_pessoais' || item.id === 'contrato' || item.id === 'contrato_narrativa' || item.id === 'comprovante_residencia' || item.id === 'comprovante_residencia_narrativa' || item.id === 'art_rrt') ? () => handleItemClick(item.id) : undefined}
                          >
                            <input
                              type="checkbox"
@@ -195,18 +157,65 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                              )}
                            >
                              {item.text}
-                             {(item.id === 'pessoa_fisica' || item.id === 'pessoa_fisica_narrativa' || item.id === 'documentos_pessoais' || item.id === 'contrato' || item.id === 'contrato_narrativa' || item.id === 'comprovante_residencia' || item.id === 'comprovante_residencia_narrativa' || item.id === 'art_rrt') && (
-                               <button
-                                 onClick={(e) => {
-                                   e.stopPropagation();
-                                   console.log('Download button clicado para:', item.id);
-                                   handleItemClick(item.id);
-                                 }}
+                             {(item.id === 'pessoa_fisica' || item.id === 'pessoa_fisica_narrativa' || item.id === 'documentos_pessoais') && (
+                               <a
+                                 href="/CNH-e.pdf"
+                                 target="_blank"
+                                 rel="noopener noreferrer"
                                  className="p-1 hover:bg-white/20 rounded transition-colors"
-                                 title="Baixar arquivo"
+                                 title="Baixar CNH-e.pdf"
+                                 onClick={(e) => e.stopPropagation()}
                                >
                                  <Download className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
-                               </button>
+                               </a>
+                             )}
+                             {(item.id === 'contrato' || item.id === 'contrato_narrativa') && (
+                               <a
+                                 href="/contratocompraevenda.pdf"
+                                 target="_blank"
+                                 rel="noopener noreferrer"
+                                 className="p-1 hover:bg-white/20 rounded transition-colors"
+                                 title="Baixar contratocompraevenda.pdf"
+                                 onClick={(e) => e.stopPropagation()}
+                               >
+                                 <Download className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
+                               </a>
+                             )}
+                             {item.id === 'comprovante_residencia' && (
+                               <a
+                                 href="/comprovanteendereco.pdf"
+                                 target="_blank"
+                                 rel="noopener noreferrer"
+                                 className="p-1 hover:bg-white/20 rounded transition-colors"
+                                 title="Baixar comprovanteendereco.pdf"
+                                 onClick={(e) => e.stopPropagation()}
+                               >
+                                 <Download className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
+                               </a>
+                             )}
+                             {item.id === 'comprovante_residencia_narrativa' && (
+                               <a
+                                 href="/contratocompraevenda.pdf"
+                                 target="_blank"
+                                 rel="noopener noreferrer"
+                                 className="p-1 hover:bg-white/20 rounded transition-colors"
+                                 title="Baixar contratocompraevenda.pdf"
+                                 onClick={(e) => e.stopPropagation()}
+                               >
+                                 <Download className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
+                               </a>
+                             )}
+                             {item.id === 'art_rrt' && (
+                               <a
+                                 href="/ART.pdf"
+                                 target="_blank"
+                                 rel="noopener noreferrer"
+                                 className="p-1 hover:bg-white/20 rounded transition-colors"
+                                 title="Baixar ART.pdf"
+                                 onClick={(e) => e.stopPropagation()}
+                               >
+                                 <Download className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
+                               </a>
                              )}
                              {item.required && (
                                <span className="ml-2 px-1.5 py-0.5 bg-red-500 text-white text-xs font-bold rounded">
