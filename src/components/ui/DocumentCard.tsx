@@ -49,8 +49,9 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
     // Se for o item pessoa_fisica, pessoa_fisica_narrativa ou documentos_pessoais, fazer download do CNH-e.pdf
     if (itemId === 'pessoa_fisica' || itemId === 'pessoa_fisica_narrativa' || itemId === 'documentos_pessoais') {
       const link = document.createElement('a');
-      link.href = '/CNH-e.pdf'; // Assumindo que o arquivo está na pasta public
+      link.href = '/CNH-e.pdf';
       link.download = 'CNH-e.pdf';
+      link.target = '_blank';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -58,8 +59,9 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
     // Se for o item contrato ou contrato_narrativa, fazer download do contratocompraevenda.pdf
     else if (itemId === 'contrato' || itemId === 'contrato_narrativa') {
       const link = document.createElement('a');
-      link.href = '/contratocompraevenda.pdf'; // Assumindo que o arquivo está na pasta public
+      link.href = '/contratocompraevenda.pdf';
       link.download = 'contratocompraevenda.pdf';
+      link.target = '_blank';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -67,8 +69,9 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
     // Se for o item comprovante_residencia, fazer download do comprovanteendereco.pdf
     else if (itemId === 'comprovante_residencia') {
       const link = document.createElement('a');
-      link.href = '/comprovanteendereco.pdf'; // Assumindo que o arquivo está na pasta public
+      link.href = '/comprovanteendereco.pdf';
       link.download = 'comprovanteendereco.pdf';
+      link.target = '_blank';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -76,8 +79,9 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
     // Se for o item comprovante_residencia_narrativa, fazer download do contratocompraevenda.pdf
     else if (itemId === 'comprovante_residencia_narrativa') {
       const link = document.createElement('a');
-      link.href = '/contratocompraevenda.pdf'; // Assumindo que o arquivo está na pasta public
+      link.href = '/contratocompraevenda.pdf';
       link.download = 'contratocompraevenda.pdf';
+      link.target = '_blank';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -85,8 +89,9 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
     // Se for o item art_rrt, fazer download do ART.pdf
     else if (itemId === 'art_rrt') {
       const link = document.createElement('a');
-      link.href = '/ART.pdf'; // Assumindo que o arquivo está na pasta public
+      link.href = '/ART.pdf';
       link.download = 'ART.pdf';
+      link.target = '_blank';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
