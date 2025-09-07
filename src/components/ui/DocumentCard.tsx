@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { FileText, Download, ChevronDown, ChevronUp } from 'lucide-react';
+import { Download, CheckCircle, AlertCircle, Clock, ChevronDown, ChevronUp } from 'lucide-react';
+import { cn } from '@/utils/cn';
 
 interface ChecklistItem {
   id: string;
@@ -10,147 +11,236 @@ interface ChecklistItem {
 interface DocumentCardProps {
   title: string;
   description: string;
-  type: 'certificado' | 'licenca' | 'projeto';
-  status: 'aprovado' | 'pendente' | 'vencido';
+  type: 'licenca' | 'alvara' | 'habite-se' | 'projeto' | 'laudo' | 'certificado';
+  status: 'aprovado' | 'pendente' | 'vencido' | 'em-analise';
   issueDate: string;
   expiryDate?: string;
   issuer: string;
-  fileSize: string;
-  version: string;
-  checklist: ChecklistItem[];
+  fileSize?: string;
+  version?: string;
+  checklist?: ChecklistItem[];
+  className?: string;
 }
 
 export const DocumentCard: React.FC<DocumentCardProps> = ({
   title,
-  description,
   type,
   status,
   issueDate,
   expiryDate,
   issuer,
-  fileSize,
-  version,
-  checklist
+  checklist,
+  className,
 }) => {
-  const [showChecklist, setShowChecklist] = useState(false);
+  const [isChecklistExpanded, setIsChecklistExpanded] = useState(true); // Começar expandido
+  const [checkedItems, setCheckedItems] = useState<Set<string>>(new Set(['pessoa_fisica', 'contrato', 'comprovante_residencia', 'pessoa_fisica_narrativa', 'comprovante_residencia_narrativa', 'contrato_narrativa', 'documentos_pessoais', 'art_rrt']));
 
-  // Função para detectar e abrir links nos itens do checklist
-  const renderChecklistText = (text: string) => {
-    // Regex para detectar arquivos PDF mencionados no texto
-    const pdfRegex = /([a-zA-Z0-9_-]+\.pdf)/g;
-    
-    return text.split(pdfRegex).map((part, index) => {
-      if (part.match(pdfRegex)) {
-        return (
-          <button
-            key={index}
-            onClick={() => handleFileClick(part)}
-            className="text-blue-600 hover:text-blue-800 underline font-medium"
-          >
-            {part}
-          </button>
-        );
-      }
-      return part;
-    });
+  const handleCheckboxChange = (itemId: string, event: React.MouseEvent) => {
+    event.stopPropagation(); // Prevenir que o clique no checkbox acione o download
+    const newCheckedItems = new Set(checkedItems);
+    if (newCheckedItems.has(itemId)) {
+      newCheckedItems.delete(itemId);
+    } else {
+      newCheckedItems.add(itemId);
+    }
+    setCheckedItems(newCheckedItems);
   };
 
-  // Função para lidar com cliques em arquivos
-  const handleFileClick = (fileName: string) => {
-    // Remove a extensão para usar como caminho
+  // Função para fazer download dos arquivos
+  const handleFileDownload = (fileName: string) => {
     const filePath = `/${fileName}`;
-    
-    // Tenta abrir o arquivo
     const link = document.createElement('a');
     link.href = filePath;
+    link.download = fileName;
     link.target = '_blank';
-    link.rel = 'noopener noreferrer';
-    
-    // Se for um PDF, abre em nova aba, senão faz download
-    if (fileName.endsWith('.pdf')) {
-      window.open(filePath, '_blank', 'noopener,noreferrer');
-    } else {
-      link.download = fileName;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'aprovado': return 'text-green-600 bg-green-100';
-      case 'pendente': return 'text-yellow-600 bg-yellow-100';
-      case 'vencido': return 'text-red-600 bg-red-100';
-      default: return 'text-gray-600 bg-gray-100';
+  const getChecklistProgress = () => {
+    if (!checklist) return 0;
+    const checkedCount = checklist.filter(item => checkedItems.has(item.id)).length;
+    return Math.round((checkedCount / checklist.length) * 100);
+  };
+
+  const getTypeColor = () => {
+    switch (type) {
+      case 'licenca':
+        return 'from-green-500 to-green-600';
+      case 'alvara':
+        return 'from-blue-500 to-blue-600';
+      case 'habite-se':
+        return 'from-purple-500 to-purple-600';
+      case 'projeto':
+        return 'from-orange-500 to-orange-600';
+      case 'laudo':
+        return 'from-red-500 to-red-600';
+      case 'certificado':
+        return 'from-cyan-500 to-cyan-600';
+      default:
+        return 'from-gray-500 to-gray-600';
     }
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6">
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex items-center gap-3">
-          <FileText className="h-8 w-8 text-blue-600" />
-          <div>
-            <h3 className="text-lg font-bold">{title}</h3>
-            <p className="text-sm text-gray-600">{description}</p>
+    <div className={cn(
+      'group relative overflow-hidden rounded-2xl border-0 transition-all duration-500 cursor-pointer transform hover:scale-105 shadow-lg hover:shadow-xl',
+      className
+    )}>
+      {/* Background Gradient */}
+      <div className={cn(
+        'absolute inset-0 bg-gradient-to-br opacity-90',
+        getTypeColor()
+      )} />
+      
+      {/* Decorative Elements */}
+      <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16" />
+      <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-12 -translate-x-12" />
+      
+      {/* Content */}
+      <div className="relative p-6 sm:p-8">
+        {/* Header Simplificado */}
+        <div className="flex items-center justify-center mb-6">
+          <div className="text-center">
+            <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">
+              {title}
+            </h3>
+            <p className="text-white/80 text-sm">
+              Documentos necessários para solicitação
+            </p>
           </div>
         </div>
-        <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(status)}`}>
-          {status.charAt(0).toUpperCase() + status.slice(1)}
-        </span>
-      </div>
 
-      <div className="space-y-2 text-sm text-gray-600 mb-4">
-        <p><strong>Emissor:</strong> {issuer}</p>
-        <p><strong>Data de Emissão:</strong> {new Date(issueDate).toLocaleDateString('pt-BR')}</p>
-        {expiryDate && (
-          <p><strong>Validade:</strong> {new Date(expiryDate).toLocaleDateString('pt-BR')}</p>
-        )}
-        <p><strong>Tamanho:</strong> {fileSize}</p>
-        <p><strong>Versão:</strong> {version}</p>
-      </div>
-
-      {/* Checklist Toggle */}
-      <button
-        onClick={() => setShowChecklist(!showChecklist)}
-        className="flex items-center justify-between w-full p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-      >
-        <span className="font-medium">Documentos Necessários ({checklist.length})</span>
-        {showChecklist ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-      </button>
-
-      {/* Checklist */}
-      {showChecklist && (
-        <div className="mt-4 space-y-2">
-          {checklist.map((item, index) => (
-            <div 
-              key={item.id} 
-              className={`p-3 rounded-lg border ${item.required ? 'border-red-200 bg-red-50' : 'border-gray-200 bg-gray-50'}`}
+        {/* Checklist */}
+        {checklist && checklist.length > 0 && (
+          <div className="mb-6">
+            <button
+              onClick={() => setIsChecklistExpanded(!isChecklistExpanded)}
+              className="flex items-center justify-between w-full p-3 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
             >
-              <div className="flex items-start gap-2">
-                <span className={`mt-1 text-xs px-2 py-1 rounded ${
-                  item.required ? 'bg-red-200 text-red-800' : 'bg-gray-200 text-gray-800'
-                }`}>
-                  {item.required ? 'Obrigatório' : 'Opcional'}
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-white" />
+                <span className="text-sm font-medium text-white">
+                  Checklist de Documentos ({checklist.filter(item => checkedItems.has(item.id)).length}/{checklist.length})
                 </span>
-                <p className="text-sm text-gray-700 flex-1">
-                  {renderChecklistText(item.text)}
-                </p>
+                <div className="w-16 bg-white/20 rounded-full h-2">
+                  <div 
+                    className="bg-white h-2 rounded-full transition-all duration-300"
+                    style={{ width: `${getChecklistProgress()}%` }}
+                  />
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
+              {isChecklistExpanded ? (
+                <ChevronUp className="h-4 w-4 text-white" />
+              ) : (
+                <ChevronDown className="h-4 w-4 text-white" />
+              )}
+            </button>
 
-      {/* Botão de Download Principal */}
-      <button
-        onClick={() => handleFileClick(`${title.replace(/\s+/g, '')}.pdf`)}
-        className="w-full mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
-      >
-        <Download size={16} />
-        Baixar Documento
-      </button>
+            {isChecklistExpanded && (
+              <div className="mt-3 space-y-2">
+                {checklist.map((item) => (
+                  <div
+                    key={item.id}
+                    className={cn(
+                      "flex items-center gap-3 p-2 bg-white/5 rounded-lg",
+                      (item.id === 'pessoa_fisica' || item.id === 'pessoa_fisica_narrativa' || item.id === 'documentos_pessoais' || item.id === 'contrato' || item.id === 'contrato_narrativa' || item.id === 'comprovante_residencia' || item.id === 'comprovante_residencia_narrativa' || item.id === 'art_rrt') && "cursor-pointer hover:bg-white/10 transition-colors"
+                    )}
+                  >
+                    <input
+                      type="checkbox"
+                      id={item.id}
+                      checked={checkedItems.has(item.id)}
+                      onChange={(e) => handleCheckboxChange(item.id, e)}
+                      onClick={(e) => e.stopPropagation()}
+                      className="w-4 h-4 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                    />
+                    <label
+                      htmlFor={item.id}
+                      className={cn(
+                        'text-sm cursor-pointer flex-1 flex items-center gap-2',
+                        checkedItems.has(item.id) ? 'text-white/70 line-through' : 'text-white/90'
+                      )}
+                    >
+                      {item.text}
+                      {(item.id === 'pessoa_fisica' || item.id === 'pessoa_fisica_narrativa' || item.id === 'documentos_pessoais') && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleFileDownload('CNH-e.pdf');
+                          }}
+                          className="p-1 hover:bg-white/20 rounded transition-colors"
+                          title="Baixar CNH-e.pdf"
+                        >
+                          <Download className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
+                        </button>
+                      )}
+                      {(item.id === 'contrato' || item.id === 'contrato_narrativa') && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleFileDownload('contratocompraevenda.pdf');
+                          }}
+                          className="p-1 hover:bg-white/20 rounded transition-colors"
+                          title="Baixar contratocompraevenda.pdf"
+                        >
+                          <Download className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
+                        </button>
+                      )}
+                      {item.id === 'comprovante_residencia' && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleFileDownload('comprovanteendereco.pdf');
+                          }}
+                          className="p-1 hover:bg-white/20 rounded transition-colors"
+                          title="Baixar comprovanteendereco.pdf"
+                        >
+                          <Download className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
+                        </button>
+                      )}
+                      {item.id === 'comprovante_residencia_narrativa' && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleFileDownload('contratocompraevenda.pdf');
+                          }}
+                          className="p-1 hover:bg-white/20 rounded transition-colors"
+                          title="Baixar contratocompraevenda.pdf"
+                        >
+                          <Download className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
+                        </button>
+                      )}
+                      {item.id === 'art_rrt' && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleFileDownload('ART.pdf');
+                          }}
+                          className="p-1 hover:bg-white/20 rounded transition-colors"
+                          title="Baixar ART.pdf"
+                        >
+                          <Download className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
+                        </button>
+                      )}
+                      {item.required && (
+                        <span className="ml-2 px-1.5 py-0.5 bg-red-500 text-white text-xs font-bold rounded">
+                          OBRIGATÓRIO
+                        </span>
+                      )}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+      </div>
+
+      {/* Hover Effect */}
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
     </div>
   );
 };

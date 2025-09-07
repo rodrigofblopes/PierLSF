@@ -1,19 +1,30 @@
 import React from 'react';
-import { ExternalLink, Download } from 'lucide-react';
+import { MapPin, Users, FileText, Building, Zap, Download, Instagram } from 'lucide-react';
+import { cn } from '@/utils/cn';
+
+interface ProjectFile {
+  name: string;
+  path: string;
+}
+
+interface Professional {
+  name: string;
+  role: string;
+  instagram?: string;
+}
 
 interface ProjectCardProps {
   title: string;
   description: string;
-  status: 'concluido' | 'em-andamento' | 'planejado';
+  status: 'ativo' | 'planejamento' | 'concluido' | 'pausado';
+  startDate?: string;
+  endDate?: string;
   location: string;
-  type: 'arquitetura' | 'eletrico';
-  progress: number;
-  files: Array<{ name: string; path: string }>;
-  professional: {
-    name: string;
-    role: string;
-    instagram: string;
-  };
+  type: 'arquitetura' | 'eletrico' | 'estrutural' | 'hidraulico';
+  progress?: number;
+  className?: string;
+  files?: ProjectFile[];
+  professional?: Professional;
 }
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({
@@ -22,78 +33,212 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   status,
   location,
   type,
-  progress,
-  files,
-  professional
+  progress = 0,
+  className,
+  files = [],
+  professional,
 }) => {
-  // Função para abrir link do Instagram
-  const handleInstagramClick = (url: string) => {
-    window.open(url, '_blank', 'noopener,noreferrer');
+  const getStatusColor = () => {
+    switch (status) {
+      case 'ativo':
+        return 'bg-green-500';
+      case 'planejamento':
+        return 'bg-blue-500';
+      case 'concluido':
+        return 'bg-gray-500';
+      case 'pausado':
+        return 'bg-yellow-500';
+      default:
+        return 'bg-gray-500';
+    }
+  };
+
+  const getStatusText = () => {
+    switch (status) {
+      case 'ativo':
+        return 'Ativo';
+      case 'planejamento':
+        return 'Planejamento';
+      case 'concluido':
+        return 'Concluído';
+      case 'pausado':
+        return 'Pausado';
+      default:
+        return 'Desconhecido';
+    }
+  };
+
+  const getTypeIcon = () => {
+    switch (type) {
+      case 'arquitetura':
+        return <Building className="h-5 w-5" />;
+      case 'eletrico':
+        return <Zap className="h-5 w-5" />;
+      case 'estrutural':
+        return <FileText className="h-5 w-5" />;
+      case 'hidraulico':
+        return <FileText className="h-5 w-5" />;
+      default:
+        return <FileText className="h-5 w-5" />;
+    }
+  };
+
+  const getTypeColor = () => {
+    switch (type) {
+      case 'arquitetura':
+        return 'from-blue-500 to-blue-600';
+      case 'eletrico':
+        return 'from-yellow-500 to-orange-500';
+      case 'estrutural':
+        return 'from-gray-500 to-gray-600';
+      case 'hidraulico':
+        return 'from-cyan-500 to-blue-500';
+      default:
+        return 'from-gray-500 to-gray-600';
+    }
   };
 
   // Função para fazer download dos arquivos
-  const handleFileDownload = (filePath: string, fileName: string) => {
-    // Cria um link temporário para download
+  const handleFileDownload = (file: ProjectFile) => {
     const link = document.createElement('a');
-    link.href = filePath;
-    link.download = fileName;
+    link.href = file.path;
+    link.download = file.name;
     link.target = '_blank';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
 
+  // Função para abrir Instagram
+  const handleInstagramClick = (url: string) => {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6">
-      <h3 className="text-xl font-bold mb-2">{title}</h3>
-      <p className="text-gray-600 mb-4">{description}</p>
+    <div 
+      className={cn(
+        'group relative overflow-hidden rounded-2xl border-0 transition-all duration-500 shadow-lg hover:shadow-xl',
+        className
+      )}
+    >
+      {/* Background Gradient */}
+      <div className={cn(
+        'absolute inset-0 bg-gradient-to-br opacity-90',
+        getTypeColor()
+      )} />
       
-      {/* Status e Progresso */}
-      <div className="mb-4">
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-sm font-medium">Progresso</span>
-          <span className="text-sm text-gray-500">{progress}%</span>
-        </div>
-        <div className="w-full bg-gray-200 rounded-full h-2">
-          <div 
-            className="bg-blue-600 h-2 rounded-full" 
-            style={{ width: `${progress}%` }}
-          ></div>
-        </div>
-      </div>
-
-      {/* Arquivos */}
-      <div className="mb-4">
-        <h4 className="font-medium mb-2">Arquivos:</h4>
-        {files.map((file, index) => (
-          <button
-            key={index}
-            onClick={() => handleFileDownload(file.path, file.name)}
-            className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-1 text-sm hover:underline"
-          >
-            <Download size={16} />
-            {file.name}
-          </button>
-        ))}
-      </div>
-
-      {/* Profissional Responsável */}
-      <div className="border-t pt-4">
-        <h4 className="font-medium mb-2">Profissional Responsável:</h4>
-        <div className="flex justify-between items-center">
-          <div>
-            <p className="font-medium">{professional.name}</p>
-            <p className="text-sm text-gray-600">{professional.role}</p>
+      {/* Decorative Elements */}
+      <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16" />
+      <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-12 -translate-x-12" />
+      
+      {/* Content */}
+      <div className="relative p-6 sm:p-8">
+        {/* Header */}
+        <div className="flex items-start justify-between mb-6">
+          <div className="flex items-center gap-4">
+            <div className={cn(
+              'p-4 rounded-2xl transition-all duration-500 shadow-xl bg-white/20 backdrop-blur-sm'
+            )}>
+              {getTypeIcon()}
+            </div>
+            <div>
+              <h3 className="text-lg sm:text-xl font-bold text-white mb-1">
+                {title}
+              </h3>
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium px-2 py-1 rounded-full bg-white/20 text-white">
+                  {type.toUpperCase()}
+                </span>
+                <div className={cn(
+                  'flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold text-white',
+                  getStatusColor()
+                )}>
+                  <div className="w-2 h-2 bg-white rounded-full" />
+                  {getStatusText()}
+                </div>
+              </div>
+            </div>
           </div>
-          <button
-            onClick={() => handleInstagramClick(professional.instagram)}
-            className="flex items-center gap-1 text-pink-600 hover:text-pink-800 text-sm hover:underline"
-          >
-            <ExternalLink size={16} />
-            Instagram
-          </button>
         </div>
+
+        {/* Description */}
+        <p className="text-sm text-white/90 mb-6 line-clamp-2 leading-relaxed">
+          {description}
+        </p>
+
+        {/* Project Info */}
+        <div className="space-y-3 mb-6">
+          <div className="flex items-center gap-3 text-white/80">
+            <MapPin className="h-4 w-4" />
+            <span className="text-sm">{location}</span>
+          </div>
+        </div>
+
+        {/* Progress Bar */}
+        {status === 'ativo' && (
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-white">Progresso</span>
+              <span className="text-sm font-bold text-white">{progress}%</span>
+            </div>
+            <div className="w-full bg-white/20 rounded-full h-2">
+              <div 
+                className="bg-white h-2 rounded-full transition-all duration-500"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Professional Info */}
+        {professional && (
+          <div className="mb-6">
+            <div className="bg-white/10 rounded-lg p-4 border border-white/20">
+              <h4 className="text-sm font-medium text-white mb-2">Profissional Responsável:</h4>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                  <Users className="h-5 w-5 text-white" />
+                </div>
+                <div className="flex-1">
+                  {professional.instagram ? (
+                    <button
+                      onClick={() => handleInstagramClick(professional.instagram!)}
+                      className="flex items-center gap-2 text-white font-medium hover:text-white/80 transition-colors group cursor-pointer"
+                      title={`Acessar Instagram de ${professional.name}`}
+                    >
+                      <span>{professional.name}</span>
+                      <Instagram className="h-4 w-4 text-white/60 group-hover:text-white transition-colors" />
+                    </button>
+                  ) : (
+                    <p className="text-white font-medium">{professional.name}</p>
+                  )}
+                  <p className="text-white/70 text-sm">{professional.role}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Files Download */}
+        {files.length > 0 && (
+          <div className="space-y-2">
+            <h4 className="text-sm font-medium text-white mb-3">Arquivos para Download:</h4>
+            {files.map((file, index) => (
+              <button
+                key={index}
+                onClick={() => handleFileDownload(file)}
+                className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-white/40"
+              >
+                <Download className="h-4 w-4" />
+                <span className="flex-1 text-left">{file.name}</span>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
+
+      {/* Hover Effect */}
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
     </div>
   );
 };
