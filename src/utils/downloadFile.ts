@@ -1,4 +1,5 @@
 export const downloadFile = async (url: string, filename: string) => {
+  console.log('downloadFile chamado com:', url, filename);
   try {
     // Primeiro, tentar download direto
     const link = document.createElement('a');
@@ -6,8 +7,10 @@ export const downloadFile = async (url: string, filename: string) => {
     link.download = filename;
     link.style.display = 'none';
     document.body.appendChild(link);
+    console.log('Link criado, tentando clicar...');
     link.click();
     document.body.removeChild(link);
+    console.log('Download direto executado');
   } catch (error) {
     console.error('Erro no download direto:', error);
     

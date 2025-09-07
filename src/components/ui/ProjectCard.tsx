@@ -101,7 +101,13 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
   const handleFileDownload = async (file: ProjectFile) => {
     console.log('handleFileDownload chamado para:', file.name, file.path);
-    await downloadFile(file.path, file.name);
+    try {
+      await downloadFile(file.path, file.name);
+    } catch (error) {
+      console.error('Erro no download:', error);
+      // Fallback: tentar abrir diretamente
+      window.open(file.path, '_blank');
+    }
   };
 
   return (
@@ -194,9 +200,18 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                     <button
                       onClick={() => {
                         console.log('Instagram link clicado:', professional.instagram);
-                        window.open(professional.instagram, '_blank');
+                        try {
+                          if (professional.instagram) {
+                            window.open(professional.instagram, '_blank', 'noopener,noreferrer');
+                          }
+                        } catch (error) {
+                          console.error('Erro ao abrir Instagram:', error);
+                          // Fallback: tentar abrir diretamente
+                          window.location.href = professional.instagram;
+                        }
                       }}
-                      className="flex items-center gap-2 text-white font-medium hover:text-white/80 transition-colors group"
+                      className="flex items-center gap-2 text-white font-medium hover:text-white/80 transition-colors group cursor-pointer"
+                      title={`Acessar Instagram de ${professional.name}`}
                     >
                       <span>{professional.name}</span>
                       <Instagram className="h-4 w-4 text-white/60 group-hover:text-white transition-colors" />
