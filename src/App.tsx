@@ -1,0 +1,410 @@
+import React, { useState, useCallback, useEffect } from 'react';
+import { ProjectCard } from '@/components/ui/ProjectCard';
+import { DocumentCard } from '@/components/ui/DocumentCard';
+import { Tabs } from '@/components/ui/Tabs';
+import { Home, FolderOpen, FileText } from 'lucide-react';
+
+
+// Sample projects data
+const projects = [
+  {
+    title: 'Projeto Arquitetônico',
+    description: 'Projeto de arquitetura da Clínica UNIQUE - Medicina Especializada.',
+    status: 'concluido' as const,
+    location: 'Porto Velho, RO',
+    type: 'arquitetura' as const,
+    progress: 100,
+    files: [
+      { name: 'Arquitetura.pdf', path: '/Arquitetura.pdf' }
+    ],
+    professional: {
+      name: 'Mariana Casagrande',
+      role: 'Arquiteta',
+      instagram: 'https://www.instagram.com/arq_marianacasagrande/'
+    }
+  },
+  {
+    title: 'Projeto Elétrico',
+    description: 'Projeto elétrico da Clínica UNIQUE - Medicina Especializada.',
+    status: 'concluido' as const,
+    location: 'Porto Velho, RO',
+    type: 'eletrico' as const,
+    progress: 100,
+    files: [
+      { name: 'Elétrico1-3.pdf', path: '/Elétrico1-3.pdf' },
+      { name: 'Elétrico2-3.pdf', path: '/Elétrico2-3.pdf' },
+      { name: 'Elétrico3-3.pdf', path: '/Elétrico3-3.pdf' }
+    ],
+    professional: {
+      name: 'Rodrigo Bonfim Lopes',
+      role: 'Engenheiro',
+      instagram: 'https://www.instagram.com/engrodrigofblopes/'
+    }
+  },
+];
+
+// Sample documents data
+const documents = [
+  {
+    title: 'Alvará de Funcionamento',
+    description: 'Documento oficial que autoriza o funcionamento da Clínica UNIQUE - Medicina Especializada.',
+    type: 'alvara' as const,
+    status: 'aprovado' as const,
+    issueDate: '2023-01-15',
+    expiryDate: '2025-01-15',
+    issuer: 'Prefeitura de São Paulo',
+    fileSize: '2.3 MB',
+    version: '1.0',
+  },
+  {
+    title: 'Licença Sanitária',
+    description: 'Licença emitida pela Vigilância Sanitária para operação da Clínica UNIQUE - Medicina Especializada.',
+    type: 'licenca' as const,
+    status: 'aprovado' as const,
+    issueDate: '2023-02-01',
+    expiryDate: '2024-02-01',
+    issuer: 'Vigilância Sanitária',
+    fileSize: '1.8 MB',
+    version: '2.1',
+  },
+  {
+    title: 'Habite-se',
+    description: 'Certificado de conclusão e habitação do prédio da Clínica UNIQUE - Medicina Especializada.',
+    type: 'habite-se' as const,
+    status: 'aprovado' as const,
+    issueDate: '2022-12-10',
+    issuer: 'Prefeitura de São Paulo',
+    fileSize: '3.1 MB',
+    version: '1.0',
+  },
+  {
+    title: 'Projeto Arquitetônico',
+    description: 'Projeto completo de arquitetura da Clínica UNIQUE - Medicina Especializada aprovado.',
+    type: 'projeto' as const,
+    status: 'aprovado' as const,
+    issueDate: '2022-08-15',
+    issuer: 'Arquiteto Responsável',
+    fileSize: '15.2 MB',
+    version: '3.0',
+  },
+  {
+    title: 'Laudo de Inspeção Elétrica',
+    description: 'Laudo técnico de inspeção do sistema elétrico da Clínica UNIQUE - Medicina Especializada.',
+    type: 'laudo' as const,
+    status: 'em-analise' as const,
+    issueDate: '2024-01-20',
+    issuer: 'Engenheiro Eletricista',
+    fileSize: '4.7 MB',
+    version: '1.2',
+  },
+  {
+    title: 'Certificado de Conformidade',
+    description: 'Certificado de conformidade com normas técnicas vigentes.',
+    type: 'certificado' as const,
+    status: 'pendente' as const,
+    issueDate: '2024-02-10',
+    issuer: 'Órgão Certificador',
+    fileSize: '1.2 MB',
+    version: '1.0',
+  },
+  {
+    title: 'Certidão Narrativa',
+    description: 'Documento que descreve detalhadamente as características e conformidades do imóvel.',
+    type: 'certificado' as const,
+    status: 'aprovado' as const,
+    issueDate: '2023-11-20',
+    expiryDate: '2025-11-20',
+    issuer: 'Cartório de Registro de Imóveis',
+    fileSize: '2.8 MB',
+    version: '1.3',
+  },
+];
+
+function App() {
+  const [activeTab, setActiveTab] = useState('home');
+
+
+
+
+  // Definir as abas
+  const tabs = [
+    { id: 'home', label: 'Início', icon: <Home /> },
+    { id: 'projetos', label: 'Projetos', icon: <FolderOpen /> },
+    { id: 'documentos', label: 'Documentos Regularização', icon: <FileText /> },
+  ];
+
+  const handleTabChange = (tabId: string) => {
+    setActiveTab(tabId);
+  };
+
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+      {/* Header do Dashboard - Colorido */}
+      <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 shadow-lg border-b border-purple-300 p-3 sm:p-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center gap-2 sm:gap-3 mb-4">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg">
+              <Home className="h-4 w-4 sm:h-6 sm:w-6 text-white" />
+            </div>
+            <h1 className="text-lg sm:text-2xl font-bold text-white">Dashboard Clínica UNIQUE</h1>
+          </div>
+          
+          {/* Sistema de Abas */}
+          <Tabs
+            tabs={tabs}
+            activeTab={activeTab}
+            onTabChange={handleTabChange}
+          />
+        </div>
+      </div>
+
+      {/* Conteúdo das Abas */}
+      <div className="p-3 sm:p-6">
+        <div className="max-w-6xl mx-auto">
+          {activeTab === 'home' && (
+            <div className="bg-white rounded-lg sm:rounded-xl shadow-lg p-6">
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">Bem-vindo ao Dashboard da Clínica UNIQUE</h2>
+              <p className="text-gray-600">
+                Explore os projetos e documentos da Clínica UNIQUE - Medicina Especializada. Navegue pelas abas para acessar diferentes funcionalidades.
+              </p>
+            </div>
+          )}
+
+
+          {activeTab === 'projetos' && (
+            <div className="space-y-6">
+              {/* Header da aba Projetos */}
+              <div className="bg-white rounded-lg sm:rounded-xl shadow-lg p-6">
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">Projetos da Clínica UNIQUE</h2>
+                <p className="text-gray-600">
+                  Acompanhe o progresso dos projetos em andamento e planejados.
+                </p>
+              </div>
+
+              {/* Grid de Cards dos Projetos */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                {projects.map((project, index) => (
+                  <ProjectCard
+                    key={index}
+                    title={project.title}
+                    description={project.description}
+                    status={project.status}
+                    location={project.location}
+                    type={project.type}
+                    progress={project.progress}
+                    files={project.files}
+                    professional={project.professional}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'documentos' && (
+            <div className="space-y-6">
+              {/* Header da aba Documentos */}
+              <div className="bg-white rounded-lg sm:rounded-xl shadow-lg p-6">
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">Documentos de Regularização</h2>
+                <p className="text-gray-600">
+                  Documentos oficiais, licenças e certificações da Clínica UNIQUE - Medicina Especializada.
+                </p>
+              </div>
+
+            {/* Cards dos Documentos */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+              {/* Card da Certidão Informativa */}
+              <div className="w-full">
+                <DocumentCard
+                  title="Certidão Informativa"
+                  description="Documento que descreve detalhadamente as características e conformidades do imóvel."
+                  type="certificado"
+                  status="aprovado"
+                  issueDate="2023-11-20"
+                  expiryDate="2025-11-20"
+                  issuer="Cartório de Registro de Imóveis"
+                  fileSize="2.8 MB"
+                  version="1.3"
+                  checklist={[
+                    {
+                      id: "requerimento",
+                      text: "Requerimento Padrão devidamente preenchido",
+                      required: true
+                    },
+                    {
+                      id: "taxa",
+                      text: "Taxa de Abertura de Processo com comprovante de pagamento",
+                      required: true
+                    },
+                    {
+                      id: "pessoa_fisica",
+                      text: "Pessoa Física: CNH-e.pdf (arquivo da pasta)",
+                      required: true
+                    },
+                    {
+                      id: "contrato",
+                      text: "Contrato de Compra e Venda: contratocompraevenda.pdf (arquivo da pasta)",
+                      required: false
+                    },
+                    {
+                      id: "croqui",
+                      text: "Croqui da área identificando a localização do lote em relação à quadra, constando nome das ruas no entorno da quadra e número predial, se houver (ANEXO VIII)",
+                      required: false
+                    },
+                    {
+                      id: "comprovante_residencia",
+                      text: "Cópia do comprovante de residência: comprovanteendereco.pdf (arquivo da pasta)",
+                      required: true
+                    }
+                  ]}
+                />
+              </div>
+
+              {/* Card da Certidão Narrativa */}
+              <div className="w-full">
+                <DocumentCard
+                  title="Certidão Narrativa"
+                  description="Documento que descreve detalhadamente as características e conformidades do imóvel."
+                  type="certificado"
+                  status="aprovado"
+                  issueDate="2023-11-20"
+                  expiryDate="2025-11-20"
+                  issuer="Cartório de Registro de Imóveis"
+                  fileSize="2.8 MB"
+                  version="1.3"
+                  checklist={[
+                    {
+                      id: "requerimento_narrativa",
+                      text: "Requerimento Padrão devidamente preenchido",
+                      required: true
+                    },
+                    {
+                      id: "taxa_narrativa",
+                      text: "Taxa de Abertura de Processo (original) com comprovante de pagamento",
+                      required: true
+                    },
+                    {
+                      id: "pessoa_fisica_narrativa",
+                      text: "Pessoa Física: CNH-e.pdf (arquivo da pasta)",
+                      required: true
+                    },
+                    {
+                      id: "comprovante_residencia_narrativa",
+                      text: "Cópia do comprovante de residência: contratocompraevenda.pdf (arquivo da pasta)",
+                      required: true
+                    },
+                    {
+                      id: "certidao_registro",
+                      text: "Certidão de Registro de Imóveis - Inteiro Teor atualizada. (Somente para área escriturada)",
+                      required: false
+                    },
+                    {
+                      id: "certidao_fiscal",
+                      text: "Certidão de Regularidade Fiscal do Imóvel Atualizada (Negativa de Tributos Municipais)",
+                      required: true
+                    },
+                    {
+                      id: "contrato_narrativa",
+                      text: "Contrato de Compra e Venda: contratocompraevenda.pdf (arquivo da pasta)",
+                      required: false
+                    }
+                  ]}
+                />
+              </div>
+
+                {/* Card da Regularização de Obra Comercial */}
+                <div className="w-full">
+                  <DocumentCard
+                    title="Regularização de Obra Comercial"
+                    description="Documentos necessários para regularização de obras comerciais e adequação às normas."
+                    type="projeto"
+                    status="pendente"
+                    issueDate="2024-01-15"
+                    issuer="Prefeitura Municipal"
+                    fileSize="5.2 MB"
+                    version="2.1"
+                    checklist={[
+                      {
+                        id: "requerimento",
+                        text: "Requerimento padrão com Declaração, totalmente preenchido e assinado",
+                        required: true
+                      },
+                      {
+                        id: "certidao_negativa",
+                        text: "Certidão Negativa de Débitos do Imóvel atualizada - IPTU (exceto para imóveis em zona rural)",
+                        required: true
+                      },
+                      {
+                        id: "comprovacao_propriedade",
+                        text: "Documentos de comprovação de propriedade do terreno (Certidão de Inteiro Teor ou Certidão Narrativa)",
+                        required: true
+                      },
+                      {
+                        id: "documentos_pessoais",
+                        text: "Documentos pessoais do Interessado e Procurador: CNH-e.pdf (arquivo da pasta)",
+                        required: true
+                      },
+                      {
+                        id: "arquivo_cad",
+                        text: "01 arquivo eletrônico em plataforma CAD (extensão DWG) dos projetos (versão 2010 ou anterior)",
+                        required: true
+                      },
+                      {
+                        id: "art_rrt",
+                        text: "Cópia das ART (autenticada pelo CREA) ou RRT (autenticada pelo CAU) dos profissionais responsáveis: ART.pdf (arquivo da pasta)",
+                        required: true
+                      },
+                      {
+                        id: "projeto_arquitetonico",
+                        text: "03 jogos de Projeto Arquitetônico completo com título de REGULARIZAÇÃO (plantas, cortes, fachadas)",
+                        required: true
+                      },
+                      {
+                        id: "projeto_acessibilidade",
+                        text: "03 jogos de Projeto de Acessibilidade (Decreto Federal 5.296/2004 e NBR-9050)",
+                        required: true
+                      },
+                      {
+                        id: "laudo_tecnico",
+                        text: "Laudo Técnico com Relatório Fotográfico NÍTIDO da edificação, atestando condições de habitabilidade",
+                        required: true
+                      },
+                      {
+                        id: "certificado_bombeiros",
+                        text: "Certificado de Vistoria Final da Obra expedido pelo CORPO DE BOMBEIROS Militar de Rondônia",
+                        required: true
+                      },
+                      {
+                        id: "licenca_ambiental",
+                        text: "Licença Ambiental de Operação emitida pelo Órgão Ambiental Municipal, Estadual ou Federal",
+                        required: true
+                      },
+                      {
+                        id: "certidao_calcadas",
+                        text: "Certidão de Conclusão de Calçadas com Relatório Fotográfico ou Notificação de Dispensa Temporária",
+                        required: true
+                      },
+                      {
+                        id: "trd_trad",
+                        text: "Termo de Recebimento Definitivo (TRD) ou TRAD emitido pela SEMTRAN com PARECER FAVORÁVEL",
+                        required: true
+                      },
+                      {
+                        id: "autorizacao_iphan",
+                        text: "Autorização do IPHAN para execução de obras em área de bem tombado e seu entorno",
+                        required: false
+                      }
+                    ]}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default App;
