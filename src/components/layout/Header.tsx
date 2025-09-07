@@ -1,7 +1,6 @@
 import React from 'react';
 import { Building2, Download, Share2 } from 'lucide-react';
 import { cn } from '@/utils/cn';
-import bimtechLogo from '/BIMTECH.jpg';
 
 interface HeaderProps {
   onDownload?: () => void;
@@ -18,19 +17,9 @@ export const Header: React.FC<HeaderProps> = ({
     <header className={cn('glass-primary p-4 rounded-xl border border-primary-500/20', className)}>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <img 
-            src={bimtechLogo} 
-            alt="BIMTECH Logo" 
-            className="h-12 w-auto rounded-lg shadow-lg border border-white/20"
-            onError={(e) => {
-              console.error('Erro ao carregar logo BIMTECH:', e);
-              console.error('URL tentada:', e.currentTarget.src);
-            }}
-            onLoad={() => {
-              console.log('Logo BIMTECH carregada com sucesso');
-            }}
-            style={{ display: 'block' }}
-          />
+          <div className="h-12 w-12 bg-white/20 rounded-lg shadow-lg border border-white/20 flex items-center justify-center">
+            <span className="text-white font-bold text-xs">BIM</span>
+          </div>
           <div>
             <h1 className="text-xl font-bold gradient-text">Clínica UNIQUE - Medicina Especializada</h1>
             <p className="text-sm text-primary-200">Visualizador de Arquitetura Interativo</p>
