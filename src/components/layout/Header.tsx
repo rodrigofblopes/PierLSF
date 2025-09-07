@@ -32,21 +32,33 @@ export const Header: React.FC<HeaderProps> = ({
         
         <div className="flex items-center gap-2">
           <button
-            onClick={onDownload}
+            onClick={() => {
+              console.log('Teste de download clicado');
+              const link = document.createElement('a');
+              link.href = '/Arquitetura.pdf';
+              link.download = 'Arquitetura.pdf';
+              link.target = '_blank';
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+            }}
             className="btn-secondary text-sm flex items-center gap-2"
-            title="Baixar modelo"
+            title="Teste Download"
           >
             <Download className="h-4 w-4" />
-            Baixar
+            Teste PDF
           </button>
           
           <button
-            onClick={onShare}
+            onClick={() => {
+              console.log('Teste Instagram clicado');
+              window.open('https://www.instagram.com/arq_marianacasagrande/', '_blank');
+            }}
             className="btn-secondary text-sm flex items-center gap-2"
-            title="Compartilhar"
+            title="Teste Instagram"
           >
             <Share2 className="h-4 w-4" />
-            Compartilhar
+            Teste IG
           </button>
         </div>
       </div>
