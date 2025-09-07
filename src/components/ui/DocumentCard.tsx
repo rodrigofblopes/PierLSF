@@ -342,7 +342,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
               Senha
             </label>
             <input
-              type="text"
+              type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               onKeyDown={(e) => {
@@ -350,9 +350,10 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                   handleAuthenticatedDownload();
                 }
               }}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
               placeholder="Digite a senha"
               autoFocus
+              style={{ color: '#111827', backgroundColor: '#ffffff' }}
             />
             {passwordError && (
               <p className="text-red-500 text-sm mt-1">{passwordError}</p>
