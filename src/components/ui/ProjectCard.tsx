@@ -1,6 +1,7 @@
 import React from 'react';
 import { MapPin, Users, FileText, Building, Zap, Download, Instagram } from 'lucide-react';
 import { cn } from '@/utils/cn';
+import { downloadFile } from '@/utils/downloadFile';
 
 interface ProjectFile {
   name: string;
@@ -98,20 +99,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     }
   };
 
-  const handleFileDownload = (file: ProjectFile) => {
-    try {
-      const link = document.createElement('a');
-      link.href = file.path;
-      link.download = file.name;
-      link.style.display = 'none';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (error) {
-      console.error('Erro no download:', error);
-      // Fallback: abrir em nova aba
-      window.open(file.path, '_blank');
-    }
+  const handleFileDownload = async (file: ProjectFile) => {
+    await downloadFile(file.path, file.name);
   };
 
   return (

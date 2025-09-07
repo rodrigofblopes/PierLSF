@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Download, CheckCircle, AlertCircle, Clock, ChevronDown, ChevronUp } from 'lucide-react';
 import { cn } from '@/utils/cn';
+import { downloadFile } from '@/utils/downloadFile';
 
 interface ChecklistItem {
   id: string;
@@ -45,7 +46,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
     setCheckedItems(newCheckedItems);
   };
 
-  const handleItemClick = (itemId: string) => {
+  const handleItemClick = async (itemId: string) => {
     let fileUrl = '';
     let fileName = '';
     
@@ -76,20 +77,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
     }
 
     if (fileUrl && fileName) {
-      // Tentar download direto primeiro
-      try {
-        const link = document.createElement('a');
-        link.href = fileUrl;
-        link.download = fileName;
-        link.style.display = 'none';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      } catch (error) {
-        console.error('Erro no download:', error);
-        // Fallback: abrir em nova aba
-        window.open(fileUrl, '_blank');
-      }
+      await downloadFile(fileUrl, fileName);
     }
   };
 
