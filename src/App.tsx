@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import { useState } from 'react';
 import { ProjectCard } from '@/components/ui/ProjectCard';
 import { DocumentCard } from '@/components/ui/DocumentCard';
 import { Tabs } from '@/components/ui/Tabs';
@@ -43,82 +43,6 @@ const projects = [
   },
 ];
 
-// Sample documents data
-const documents = [
-  {
-    title: 'Alvará de Funcionamento',
-    description: 'Documento oficial que autoriza o funcionamento da Clínica UNIQUE - Medicina Especializada.',
-    type: 'alvara' as const,
-    status: 'aprovado' as const,
-    issueDate: '2023-01-15',
-    expiryDate: '2025-01-15',
-    issuer: 'Prefeitura de São Paulo',
-    fileSize: '2.3 MB',
-    version: '1.0',
-  },
-  {
-    title: 'Licença Sanitária',
-    description: 'Licença emitida pela Vigilância Sanitária para operação da Clínica UNIQUE - Medicina Especializada.',
-    type: 'licenca' as const,
-    status: 'aprovado' as const,
-    issueDate: '2023-02-01',
-    expiryDate: '2024-02-01',
-    issuer: 'Vigilância Sanitária',
-    fileSize: '1.8 MB',
-    version: '2.1',
-  },
-  {
-    title: 'Habite-se',
-    description: 'Certificado de conclusão e habitação do prédio da Clínica UNIQUE - Medicina Especializada.',
-    type: 'habite-se' as const,
-    status: 'aprovado' as const,
-    issueDate: '2022-12-10',
-    issuer: 'Prefeitura de São Paulo',
-    fileSize: '3.1 MB',
-    version: '1.0',
-  },
-  {
-    title: 'Projeto Arquitetônico',
-    description: 'Projeto completo de arquitetura da Clínica UNIQUE - Medicina Especializada aprovado.',
-    type: 'projeto' as const,
-    status: 'aprovado' as const,
-    issueDate: '2022-08-15',
-    issuer: 'Arquiteto Responsável',
-    fileSize: '15.2 MB',
-    version: '3.0',
-  },
-  {
-    title: 'Laudo de Inspeção Elétrica',
-    description: 'Laudo técnico de inspeção do sistema elétrico da Clínica UNIQUE - Medicina Especializada.',
-    type: 'laudo' as const,
-    status: 'em-analise' as const,
-    issueDate: '2024-01-20',
-    issuer: 'Engenheiro Eletricista',
-    fileSize: '4.7 MB',
-    version: '1.2',
-  },
-  {
-    title: 'Certificado de Conformidade',
-    description: 'Certificado de conformidade com normas técnicas vigentes.',
-    type: 'certificado' as const,
-    status: 'pendente' as const,
-    issueDate: '2024-02-10',
-    issuer: 'Órgão Certificador',
-    fileSize: '1.2 MB',
-    version: '1.0',
-  },
-  {
-    title: 'Certidão Narrativa',
-    description: 'Documento que descreve detalhadamente as características e conformidades do imóvel.',
-    type: 'certificado' as const,
-    status: 'aprovado' as const,
-    issueDate: '2023-11-20',
-    expiryDate: '2025-11-20',
-    issuer: 'Cartório de Registro de Imóveis',
-    fileSize: '2.8 MB',
-    version: '1.3',
-  },
-];
 
 function App() {
   const [activeTab, setActiveTab] = useState('home');
