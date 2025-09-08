@@ -36,7 +36,9 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
     'documentos_pessoais',     // CNH-e.pdf ✓
     'art_rrt',                 // ART.pdf ✓
     'certidao_negativa',       // certidão negativa de debitos .PDF ✓
-    'autorizacao_iphan'        // ipham.pdf ✓
+    'autorizacao_iphan',       // IPHAM.pdf ✓
+    'projeto_arquitetonico',   // Arquitetura.pdf ✓
+    'arquivo_cad'              // ANTEPROJETO CLINICA.dwg ✓
   ]));
   
   // Estado para modal de senha
@@ -218,8 +220,17 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                         filePath = '/certidão negativa de debitos .PDF';
                         fileName = 'certidão negativa de debitos .PDF';
                       } else if (item.id === 'autorizacao_iphan') {
-                        filePath = '/ipham.pdf';
-                        fileName = 'ipham.pdf';
+                        filePath = '/IPHAM.pdf';
+                        fileName = 'IPHAM.pdf';
+                      } else if (item.id === 'requerimento') {
+                        filePath = '/requerimentocertidaoinformativa.PDF';
+                        fileName = 'requerimentocertidaoinformativa.PDF';
+                      } else if (item.id === 'projeto_arquitetonico') {
+                        filePath = '/Arquitetura.pdf';
+                        fileName = 'Arquitetura.pdf';
+                      } else if (item.id === 'arquivo_cad') {
+                        filePath = '/ANTEPROJETO CLINICA.dwg';
+                        fileName = 'ANTEPROJETO CLINICA.dwg';
                       }
                       
                       if (filePath && fileName) {
@@ -334,10 +345,52 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                             console.log('Botão IPHAN clicado!');
                             e.stopPropagation();
                             e.preventDefault();
-                            requestDownload('/ipham.pdf', 'ipham.pdf');
+                            requestDownload('/IPHAM.pdf', 'IPHAM.pdf');
                           }}
                           className="p-1 hover:bg-white/20 rounded transition-colors"
-                          title="Baixar ipham.pdf (Requer senha)"
+                          title="Baixar IPHAM.pdf (Requer senha)"
+                        >
+                          <Lock className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
+                        </button>
+                      )}
+                      {item.id === 'requerimento' && (
+                        <button
+                          onClick={(e) => {
+                            console.log('Botão requerimento clicado!');
+                            e.stopPropagation();
+                            e.preventDefault();
+                            requestDownload('/requerimentocertidaoinformativa.PDF', 'requerimentocertidaoinformativa.PDF');
+                          }}
+                          className="p-1 hover:bg-white/20 rounded transition-colors"
+                          title="Baixar requerimentocertidaoinformativa.PDF (Requer senha)"
+                        >
+                          <Lock className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
+                        </button>
+                      )}
+                      {item.id === 'projeto_arquitetonico' && (
+                        <button
+                          onClick={(e) => {
+                            console.log('Botão projeto arquitetônico clicado!');
+                            e.stopPropagation();
+                            e.preventDefault();
+                            requestDownload('/Arquitetura.pdf', 'Arquitetura.pdf');
+                          }}
+                          className="p-1 hover:bg-white/20 rounded transition-colors"
+                          title="Baixar Arquitetura.pdf (Requer senha)"
+                        >
+                          <Lock className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
+                        </button>
+                      )}
+                      {item.id === 'arquivo_cad' && (
+                        <button
+                          onClick={(e) => {
+                            console.log('Botão arquivo CAD clicado!');
+                            e.stopPropagation();
+                            e.preventDefault();
+                            requestDownload('/ANTEPROJETO CLINICA.dwg', 'ANTEPROJETO CLINICA.dwg');
+                          }}
+                          className="p-1 hover:bg-white/20 rounded transition-colors"
+                          title="Baixar ANTEPROJETO CLINICA.dwg (Requer senha)"
                         >
                           <Lock className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
                         </button>
