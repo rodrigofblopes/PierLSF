@@ -24,14 +24,15 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
 }) => {
   const [isChecklistExpanded, setIsChecklistExpanded] = useState(true); // Começar expandido
   const [checkedItems] = useState<Set<string>>(new Set([
-    'pessoa_fisica',           // CNH-e.pdf ✓
-    'contrato',                // contratocompraevenda.pdf ✓
-    'comprovante_residencia',  // comprovanteendereco.pdf ✓
-    'pessoa_fisica_narrativa', // CNH-e.pdf ✓
-    'comprovante_residencia_narrativa', // comprovanteendereco.pdf ✓
-    'contrato_narrativa',      // contratocompraevenda.pdf ✓
-    'documentos_pessoais',     // CNH-e.pdf ✓
-    'art_rrt'                  // ART.pdf ✓
+    // Comentado para projeto novo - sem documentos marcados como ok
+    // 'pessoa_fisica',           // CNH-e.pdf ✓
+    // 'contrato',                // contratocompraevenda.pdf ✓
+    // 'comprovante_residencia',  // comprovanteendereco.pdf ✓
+    // 'pessoa_fisica_narrativa', // CNH-e.pdf ✓
+    // 'comprovante_residencia_narrativa', // comprovanteendereco.pdf ✓
+    // 'contrato_narrativa',      // contratocompraevenda.pdf ✓
+    // 'documentos_pessoais',     // CNH-e.pdf ✓
+    // 'art_rrt'                  // ART.pdf ✓
   ]));
   
   // Estado para modal de senha

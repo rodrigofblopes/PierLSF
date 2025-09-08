@@ -6,69 +6,67 @@ import { ImageGallery } from '@/components/ui/ImageGallery';
 import { Home, FolderOpen, FileText } from 'lucide-react';
 
 
-// Sample images data
-const images = [
-  {
-    src: '/IMG_0008.jpg',
-    alt: 'Imagem 0008',
-    title: 'Fotografia da Clínica'
-  },
-  {
-    src: '/IMG_0045.jpg',
-    alt: 'Imagem 0045',
-    title: 'Fotografia da Clínica'
-  },
-  {
-    src: '/IMG_0046.jpg',
-    alt: 'Imagem 0046',
-    title: 'Fotografia da Clínica'
-  },
-  {
-    src: '/IMG_0047.jpg',
-    alt: 'Imagem 0047',
-    title: 'Fotografia da Clínica'
-  },
-  {
-    src: '/IMG_0132.jpg',
-    alt: 'Imagem 0132',
-    title: 'Fotografia da Clínica'
-  },
-  {
-    src: '/ortomosaicooutboundary.jpg',
-    alt: 'Ortomosaico Outboundary',
-    title: 'Ortomosaico da Clínica'
-  }
-];
+// Sample images data - Comentado para projeto novo
+// const images = [
+//   {
+//     src: '/IMG_0008.jpg',
+//     alt: 'Imagem 0008',
+//     title: 'Fotografia da Clínica'
+//   },
+//   {
+//     src: '/IMG_0045.jpg',
+//     alt: 'Imagem 0045',
+//     title: 'Fotografia da Clínica'
+//   },
+//   {
+//     src: '/IMG_0046.jpg',
+//     alt: 'Imagem 0046',
+//     title: 'Fotografia da Clínica'
+//   },
+//   {
+//     src: '/IMG_0047.jpg',
+//     alt: 'Imagem 0047',
+//     title: 'Fotografia da Clínica'
+//   },
+//   {
+//     src: '/IMG_0132.jpg',
+//     alt: 'Imagem 0132',
+//     title: 'Fotografia da Clínica'
+//   },
+//   {
+//     src: '/ortomosaicooutboundary.jpg',
+//     alt: 'Ortomosaico Outboundary',
+//     title: 'Ortomosaico da Clínica'
+//   }
+// ];
 
 // Sample projects data
 const projects = [
   {
     title: 'Projeto Arquitetônico',
-    description: 'Projeto de arquitetura da Clínica UNIQUE - Medicina Especializada.',
+    description: 'Projeto de arquitetura do Lote 10x30 - 10 Apartamentos.',
     status: 'concluido' as const,
     location: 'Porto Velho, RO',
     type: 'arquitetura' as const,
     progress: 100,
     files: [
-      { name: 'Arquitetura.pdf', path: '/Arquitetura.pdf' }
+      // Arquivos removidos - serão adicionados posteriormente
     ],
     professional: {
-      name: 'Mariana Casagrande',
-      role: 'Arquiteta',
-      instagram: 'https://www.instagram.com/arq_marianacasagrande/'
+      name: 'Rodrigo Bonfim Lopes',
+      role: 'Engenheiro',
+      instagram: 'https://www.instagram.com/engrodrigofblopes/'
     }
   },
   {
-    title: 'Projeto Elétrico',
-    description: 'Projeto elétrico da Clínica UNIQUE - Medicina Especializada.',
+    title: 'Projeto Estrutural',
+    description: 'Projeto estrutural do Lote 10x30 - 10 Apartamentos.',
     status: 'concluido' as const,
     location: 'Porto Velho, RO',
-    type: 'eletrico' as const,
+    type: 'estrutural' as const,
     progress: 100,
     files: [
-      { name: 'Elétrico1-3.pdf', path: '/Elétrico1-3.pdf' },
-      { name: 'Elétrico2-3.pdf', path: '/Elétrico2-3.pdf' },
-      { name: 'Elétrico3-3.pdf', path: '/Elétrico3-3.pdf' }
+      // Arquivos removidos - serão adicionados posteriormente
     ],
     professional: {
       name: 'Rodrigo Bonfim Lopes',
@@ -124,9 +122,9 @@ function App() {
             <div className="flex justify-center">
               <h1 className="text-lg sm:text-2xl font-bold text-center relative group">
                 <span className="bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 bg-clip-text text-transparent drop-shadow-lg filter drop-shadow-yellow-400/50 animate-pulse">
-                  Clínica UNIQUE
+                  Lote 10x30
                 </span>
-                <span className="text-white ml-2 drop-shadow-lg">- Medicina Especializada</span>
+                <span className="text-white ml-2 drop-shadow-lg">- 10 Apartamentos</span>
                 {/* Efeito de brilho ao redor do título */}
                 <div className="absolute -inset-2 bg-gradient-to-r from-yellow-400/30 via-yellow-300/40 to-yellow-500/30 rounded-xl blur-md opacity-60 group-hover:opacity-80 transition-opacity duration-300 animate-pulse"></div>
                 {/* Linha de destaque abaixo do título */}
@@ -153,9 +151,9 @@ function App() {
             <div className="space-y-6">
               {/* Header da aba Início */}
               <div className="bg-white rounded-lg sm:rounded-xl shadow-lg p-6">
-                <h2 className="text-2xl font-bold text-gray-800 mb-2">Bem-vindo ao Dashboard da Clínica UNIQUE</h2>
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">Bem-vindo ao Dashboard do Lote 10x30 - 10 Apartamentos</h2>
                 <p className="text-gray-600">
-                  Explore os projetos e documentos da Clínica UNIQUE - Medicina Especializada. Navegue pelas abas para acessar diferentes funcionalidades.
+                  Explore os projetos e documentos do Lote 10x30 - 10 Apartamentos. Navegue pelas abas para acessar diferentes funcionalidades.
                 </p>
               </div>
 
@@ -163,9 +161,9 @@ function App() {
               <div className="bg-white rounded-lg sm:rounded-xl shadow-lg p-6">
                 <h3 className="text-xl font-bold text-gray-800 mb-4">Fotografias pré-obra</h3>
                 <p className="text-gray-600 mb-6">
-                  Explore o registro fotográfico do estado inicial da Clínica UNIQUE - Medicina Especializada, documentando as condições pré-obra. Esta galeria apresenta o ambiente antes do início das intervenções arquitetônicas e estruturais. Clique nas imagens para visualização em tela cheia.
+                  Explore o registro fotográfico do estado inicial do Lote 10x30 - 10 Apartamentos, documentando as condições pré-obra. Esta galeria apresenta o ambiente antes do início das intervenções arquitetônicas e estruturais. Clique nas imagens para visualização em tela cheia.
                 </p>
-                <ImageGallery images={images} />
+                {/* <ImageGallery images={images} /> */}
               </div>
             </div>
           )}
@@ -175,7 +173,7 @@ function App() {
             <div className="space-y-6">
               {/* Header da aba Projetos */}
               <div className="bg-white rounded-lg sm:rounded-xl shadow-lg p-6">
-                <h2 className="text-2xl font-bold text-gray-800 mb-2">Projetos da Clínica UNIQUE</h2>
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">Projetos do Lote 10x30 - 10 Apartamentos</h2>
                 <p className="text-gray-600">
                   Acompanhe o progresso dos projetos em andamento e planejados.
                 </p>
@@ -206,7 +204,7 @@ function App() {
               <div className="bg-white rounded-lg sm:rounded-xl shadow-lg p-6">
                 <h2 className="text-2xl font-bold text-gray-800 mb-2">Documentos de Regularização</h2>
                 <p className="text-gray-600">
-                  Documentos oficiais, licenças e certificações da Clínica UNIQUE - Medicina Especializada.
+                  Documentos oficiais, licenças e certificações do Lote 10x30 - 10 Apartamentos.
                 </p>
               </div>
 
@@ -297,10 +295,95 @@ function App() {
                 />
               </div>
 
-                {/* Card da Regularização de Obra Comercial */}
+                {/* Card do Licenciamento de Obra Multifamiliar */}
                 <div className="w-full">
                   <DocumentCard
-                    title="Regularização de Obra Comercial"
+                    title="Licenciamento de Obra Multifamiliar"
+                    type="projeto"
+                    checklist={[
+                      {
+                        id: "requerimento_padrao",
+                        text: "Requerimento padrão com Declaração, totalmente preenchido e assinado",
+                        required: true
+                      },
+                      {
+                        id: "certidao_negativa_iptu",
+                        text: "Certidão Negativa de Débitos do Imóvel atualizada - IPTU, conforme Art. 265 LC 199/2004 (exceto para imóveis em zona rural)",
+                        required: true
+                      },
+                      {
+                        id: "comprovacao_propriedade_terreno",
+                        text: "Documentos de comprovação de propriedade do terreno: Certidão de Inteiro Teor atualizada do lote para áreas escrituradas individualmente; ou Certidão Narrativa do lote, emitida pela SEMUR, para casos em que não há escritura (exceto para casos de condomínio)",
+                        required: true
+                      },
+                      {
+                        id: "documentos_pessoais_interessado",
+                        text: "Documentos pessoais do Interessado e Procurador (caso tenha): Pessoa Física: cópia do RG e CPF ou carteira de habilitação/profissional; Pessoa Jurídica: cópia do Contrato Social da última alteração e CNPJ",
+                        required: true
+                      },
+                      {
+                        id: "arquivo_cad_dwg",
+                        text: "01 (um) arquivo eletrônico em plataforma CAD (com extensão DWG) dos projetos (salvo em versão 2010 ou anterior), conforme art. 19, incisos III, IV da LC 560/14",
+                        required: true
+                      },
+                      {
+                        id: "art_rrt_profissionais",
+                        text: "Cópia das Anotações de Responsabilidades Técnicas – ART (autenticada pelo CREA) ou Registro de Responsabilidade Técnicas - RRT (autenticada pelo CAU) dos profissionais responsáveis pela elaboração dos projetos: Regularização de Obras; e Laudo Técnico",
+                        required: true
+                      },
+                      {
+                        id: "projeto_arquitetonico_regularizacao",
+                        text: "Apresentar 03 jogos de Projeto Arquitetônico completo com titulo de REGULARIZAÇÃO (plantas baixas, cortes e fachadas, inclusive com plantas de situação e locação, contendo quadro de esquadrias e quadro de áreas), conforme art. 18 da LC 560/14, devidamente assinados",
+                        required: true
+                      },
+                      {
+                        id: "projeto_acessibilidade_nbr",
+                        text: "Apresentar 03 jogos de Projeto de Acessibilidade, de acordo com Decreto Federal 5.296 de 2 Dez. de 2004, inclusive NBR-9050",
+                        required: true
+                      },
+                      {
+                        id: "laudo_tecnico_fotografico",
+                        text: "Laudo Técnico com Relatório Fotográfico (NÍTIDO) da edificação na data da apresentação do projeto de regularização, atestando as condições técnicas de habitabilidade do espaço construído e a data que a obra foi concluída; Devidamente assinado pelo proprietário e profissional, conforme modelo no Anexo IV desta Instrução Normativa",
+                        required: true
+                      },
+                      {
+                        id: "certificado_bombeiros_ro",
+                        text: "Apresentar Certificado de Vistoria Final da Obra expedido pelo CORPO DE BOMBEIROS Militar de Rondônia",
+                        required: true
+                      },
+                      {
+                        id: "licenca_ambiental_operacao",
+                        text: "Licença Ambiental de Operação emitida pelo Órgão Ambiental Municipal (Subsecretaria Municipal de Meio Ambiente e Desenvolvimento Sustentável - SEMA) ou Estadual, ou Federal",
+                        required: true
+                      },
+                      {
+                        id: "certidao_calcadas_fotografico",
+                        text: "Apresentar Certidão de Conclusão de Calçadas com Relatório Fotográfico assinado por Técnico da Comissão Específica de Padronização de Calçadas ou Notificação de Dispensa Temporária de padronização de Calçadas",
+                        required: true
+                      },
+                      {
+                        id: "trd_trad_semtrans",
+                        text: "Apresentar Termo de Recebimento Definitivo (TRD) ou Termo de Recebimento e Aceitação Definitivo (TRAD) emitido pela Secretaria Municipal de Trânsito, Mobilidade e Transportes - SEMTRAN, acompanhado de PARECER FAVORÁVEL",
+                        required: true
+                      },
+                      {
+                        id: "autorizacao_iphan_tombado",
+                        text: "Autorização do IPHAN para execução de obras em área de bem tombado e seu entorno no Município de Porto Velho, seguindo as normativas contidas nas Portarias do IPHAN nº 231/2007 e a nº 420/2010",
+                        required: false
+                      },
+                      {
+                        id: "declaracao_conformidade_sanitaria",
+                        text: "Declaração de Conformidade Sanitária de Projeto Arquitetônico emitida pela Vigilância Sanitária, para estabelecimentos de assistência a saúde. (Art. 31 do Código Sanitário do Município – Lei n° 1562/2003 e Resoluções e Normas Técnicas específicas da ANVISA e Ministério da Saúde). SEMUSA",
+                        required: false
+                      }
+                    ]}
+                  />
+                </div>
+
+                {/* Card da Regularização de Obra Multifamiliar */}
+                <div className="w-full">
+                  <DocumentCard
+                    title="Regularização de Obra Multifamiliar"
                     type="projeto"
                     checklist={[
                       {
@@ -371,6 +454,11 @@ function App() {
                       {
                         id: "autorizacao_iphan",
                         text: "Autorização do IPHAN para execução de obras em área de bem tombado e seu entorno",
+                        required: false
+                      },
+                      {
+                        id: "declaracao_conformidade_sanitaria",
+                        text: "Declaração de Conformidade Sanitária de Projeto Arquitetônico emitida pela Vigilância Sanitária (SEMUSA)",
                         required: false
                       }
                     ]}
