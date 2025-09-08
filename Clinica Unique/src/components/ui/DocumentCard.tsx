@@ -24,15 +24,19 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
 }) => {
   const [isChecklistExpanded, setIsChecklistExpanded] = useState(true); // Começar expandido
   const [checkedItems] = useState<Set<string>>(new Set([
-    // Comentado para projeto novo - sem documentos marcados como ok
-    // 'pessoa_fisica',           // CNH-e.pdf ✓
-    // 'contrato',                // contratocompraevenda.pdf ✓
-    // 'comprovante_residencia',  // comprovanteendereco.pdf ✓
-    // 'pessoa_fisica_narrativa', // CNH-e.pdf ✓
-    // 'comprovante_residencia_narrativa', // comprovanteendereco.pdf ✓
-    // 'contrato_narrativa',      // contratocompraevenda.pdf ✓
-    // 'documentos_pessoais',     // CNH-e.pdf ✓
-    // 'art_rrt'                  // ART.pdf ✓
+    // Itens com arquivos correspondentes na pasta public
+    'requerimento',            // requerimentocertidaoinformativa.PDF ✓
+    'pessoa_fisica',           // CNH-e.pdf ✓
+    'contrato',                // contratocompraevenda.pdf ✓
+    'comprovante_residencia',  // comprovanteendereco.pdf ✓
+    'pessoa_fisica_narrativa', // CNH-e.pdf ✓
+    'comprovante_residencia_narrativa', // comprovanteendereco.pdf ✓
+    'certidao_fiscal',         // certidão negativa de debitos .PDF ✓
+    'contrato_narrativa',      // contratocompraevenda.pdf ✓
+    'documentos_pessoais',     // CNH-e.pdf ✓
+    'art_rrt',                 // ART.pdf ✓
+    'certidao_negativa',       // certidão negativa de debitos .PDF ✓
+    'autorizacao_iphan'        // ipham.pdf ✓
   ]));
   
   // Estado para modal de senha
@@ -210,6 +214,12 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                       } else if (item.id === 'art_rrt') {
                         filePath = '/ART.pdf';
                         fileName = 'ART.pdf';
+                      } else if (item.id === 'certidao_negativa' || item.id === 'certidao_fiscal') {
+                        filePath = '/certidão negativa de debitos .PDF';
+                        fileName = 'certidão negativa de debitos .PDF';
+                      } else if (item.id === 'autorizacao_iphan') {
+                        filePath = '/ipham.pdf';
+                        fileName = 'ipham.pdf';
                       }
                       
                       if (filePath && fileName) {
@@ -300,6 +310,34 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                           }}
                           className="p-1 hover:bg-white/20 rounded transition-colors"
                           title="Baixar ART.pdf (Requer senha)"
+                        >
+                          <Lock className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
+                        </button>
+                      )}
+                      {(item.id === 'certidao_negativa' || item.id === 'certidao_fiscal') && (
+                        <button
+                          onClick={(e) => {
+                            console.log('Botão certidão negativa clicado!');
+                            e.stopPropagation();
+                            e.preventDefault();
+                            requestDownload('/certidão negativa de debitos .PDF', 'certidão negativa de debitos .PDF');
+                          }}
+                          className="p-1 hover:bg-white/20 rounded transition-colors"
+                          title="Baixar certidão negativa de debitos .PDF (Requer senha)"
+                        >
+                          <Lock className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
+                        </button>
+                      )}
+                      {item.id === 'autorizacao_iphan' && (
+                        <button
+                          onClick={(e) => {
+                            console.log('Botão IPHAN clicado!');
+                            e.stopPropagation();
+                            e.preventDefault();
+                            requestDownload('/ipham.pdf', 'ipham.pdf');
+                          }}
+                          className="p-1 hover:bg-white/20 rounded transition-colors"
+                          title="Baixar ipham.pdf (Requer senha)"
                         >
                           <Lock className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
                         </button>

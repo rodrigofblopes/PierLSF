@@ -20,7 +20,6 @@ interface ProjectCardProps {
   status: 'ativo' | 'planejamento' | 'concluido' | 'pausado';
   location: string;
   type: 'arquitetura' | 'eletrico' | 'estrutural' | 'hidraulico';
-  progress?: number;
   className?: string;
   files?: ProjectFile[];
   professional?: Professional;
@@ -32,7 +31,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   status,
   location,
   type,
-  progress = 0,
   className,
   files = [],
   professional,
@@ -180,21 +178,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           </div>
         </div>
 
-        {/* Progress Bar */}
-        {status === 'ativo' && (
-          <div className="mb-6">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-white">Progresso</span>
-              <span className="text-sm font-bold text-white">{progress}%</span>
-            </div>
-            <div className="w-full bg-white/20 rounded-full h-2">
-              <div 
-                className="bg-white h-2 rounded-full transition-all duration-500"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-          </div>
-        )}
 
         {/* Professional Info - CORRIGIDO */}
         {professional && (
