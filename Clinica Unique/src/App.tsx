@@ -99,65 +99,70 @@ function App() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-yellow-50 to-gray-100">
       {/* Header do Dashboard - Design Moderno */}
       <div className="relative bg-gradient-to-br from-gray-900 via-black to-gray-800 shadow-2xl overflow-hidden z-10">
-        {/* Efeitos de fundo sofisticados */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,193,7,0.1),transparent_50%)]"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(255,193,7,0.05),transparent_50%)]"></div>
+        {/* Efeitos de fundo sofisticados - Responsivos */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,193,7,0.05),transparent_40%)] sm:bg-[radial-gradient(circle_at_30%_20%,rgba(255,193,7,0.1),transparent_50%)]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(255,193,7,0.03),transparent_40%)] sm:bg-[radial-gradient(circle_at_70%_80%,rgba(255,193,7,0.05),transparent_50%)]"></div>
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-yellow-400 to-transparent"></div>
         <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-yellow-500 to-transparent"></div>
         
-        {/* Padrão geométrico sutil */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-10 left-10 w-32 h-32 border border-yellow-400 rounded-full"></div>
-          <div className="absolute bottom-10 right-10 w-24 h-24 border border-yellow-300 rounded-full"></div>
-          <div className="absolute top-1/2 left-1/4 w-16 h-16 border border-yellow-500 rounded-full"></div>
+        {/* Padrão geométrico sutil - Responsivo */}
+        <div className="absolute inset-0 opacity-3 sm:opacity-5">
+          <div className="absolute top-6 left-6 sm:top-10 sm:left-10 w-16 h-16 sm:w-24 sm:h-24 lg:w-32 lg:h-32 border border-yellow-400 rounded-full"></div>
+          <div className="absolute bottom-6 right-6 sm:bottom-10 sm:right-10 w-12 h-12 sm:w-18 sm:h-18 lg:w-24 lg:h-24 border border-yellow-300 rounded-full"></div>
+          <div className="absolute top-1/2 left-1/6 sm:left-1/4 w-8 h-8 sm:w-12 sm:h-12 lg:w-16 lg:h-16 border border-yellow-500 rounded-full"></div>
         </div>
         
-        <div className="max-w-7xl mx-auto relative z-10 px-4 sm:px-6 lg:px-8">
-          <div className="relative py-8">
-            {/* Logo BIMTECH e Nome da Empresa - Canto Esquerdo */}
-            <div className="absolute left-0 top-8 flex items-center gap-3 sm:gap-4 group">
-              <div className="relative">
-                <div className="w-16 h-16 sm:w-18 sm:h-18 bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600 rounded-2xl flex items-center justify-center shadow-2xl overflow-hidden border-2 border-yellow-300 transform group-hover:scale-105 transition-all duration-300">
-                  <img 
-                    src="/BIMTECH.jpg" 
-                    alt="BIMTECH Logo" 
-                    className="w-full h-full object-cover rounded-xl"
-                  />
+        <div className="max-w-7xl mx-auto relative z-10 px-3 sm:px-4 lg:px-8">
+          <div className="relative py-4 sm:py-6 lg:py-8">
+            {/* Layout responsivo para mobile */}
+            <div className="flex flex-col lg:block">
+              {/* Logo BIMTECH e Nome da Empresa - Mobile: Topo, Desktop: Canto Esquerdo */}
+              <div className="flex justify-center lg:absolute lg:left-0 lg:top-6 lg:justify-start mb-4 lg:mb-0">
+                <div className="flex items-center gap-2 sm:gap-3 lg:gap-4 group">
+                  <div className="relative">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600 rounded-xl lg:rounded-2xl flex items-center justify-center shadow-2xl overflow-hidden border-2 border-yellow-300 transform group-hover:scale-105 transition-all duration-300">
+                      <img 
+                        src="/BIMTECH.jpg" 
+                        alt="BIMTECH Logo" 
+                        className="w-full h-full object-cover rounded-lg lg:rounded-xl"
+                      />
+                    </div>
+                    {/* Efeito de brilho na logo */}
+                    <div className="absolute -inset-1 bg-gradient-to-r from-yellow-400/30 to-yellow-500/30 rounded-xl lg:rounded-2xl blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  </div>
+                  <div className="space-y-0.5 lg:space-y-1">
+                    <h2 className="text-xs sm:text-sm lg:text-base font-bold text-yellow-400 drop-shadow-lg tracking-wide">
+                      Bonfim Imobiliária
+                    </h2>
+                    <p className="text-xs sm:text-sm text-yellow-300/80 font-medium">
+                      e Engenharia
+                    </p>
+                  </div>
                 </div>
-                {/* Efeito de brilho na logo */}
-                <div className="absolute -inset-1 bg-gradient-to-r from-yellow-400/30 to-yellow-500/30 rounded-2xl blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
-              <div className="space-y-1">
-                <h2 className="text-sm sm:text-base font-bold text-yellow-400 drop-shadow-lg tracking-wide">
-                  Bonfim Imobiliária
-                </h2>
-                <p className="text-xs sm:text-sm text-yellow-300/80 font-medium">
-                  e Engenharia
-                </p>
-              </div>
-            </div>
-            
-            {/* Título do Projeto - Perfeitamente Centralizado */}
-            <div className="flex justify-center items-center min-h-[120px]">
-              <div className="text-center relative group">
-                <div className="relative">
-                  <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-center relative leading-tight">
-                    <span className="bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 bg-clip-text text-transparent drop-shadow-2xl filter drop-shadow-yellow-400/70 animate-pulse">
-                      Clínica UNIQUE
-                    </span>
-                    <br />
-                    <span className="text-xl sm:text-2xl lg:text-3xl text-yellow-300 font-bold mt-3 block tracking-wide">
-                      Medicina Especializada
-                    </span>
-                  </h1>
-                  
-                  {/* Efeitos de brilho sofisticados */}
-                  <div className="absolute -inset-8 bg-gradient-to-r from-yellow-400/10 via-yellow-300/20 to-yellow-500/10 rounded-3xl blur-2xl opacity-60 group-hover:opacity-80 transition-opacity duration-500 animate-pulse"></div>
-                  <div className="absolute -inset-4 bg-gradient-to-r from-yellow-400/5 via-yellow-300/10 to-yellow-500/5 rounded-2xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity duration-300"></div>
-                  
-                  {/* Linha de destaque moderna */}
-                  <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-48 h-2 bg-gradient-to-r from-transparent via-yellow-400 to-transparent rounded-full shadow-lg shadow-yellow-400/30"></div>
-                  <div className="absolute -bottom-5 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-transparent via-yellow-300 to-transparent rounded-full"></div>
+              
+              {/* Título do Projeto - Responsivo */}
+              <div className="flex justify-center items-center min-h-[80px] sm:min-h-[100px] lg:min-h-[120px]">
+                <div className="text-center relative group px-2 sm:px-4">
+                  <div className="relative">
+                    <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-center relative leading-tight">
+                      <span className="bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 bg-clip-text text-transparent drop-shadow-2xl filter drop-shadow-yellow-400/70 animate-pulse">
+                        Clínica UNIQUE
+                      </span>
+                      <br />
+                      <span className="text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-3xl text-yellow-300 font-bold mt-1 sm:mt-2 lg:mt-3 block tracking-wide">
+                        Medicina Especializada
+                      </span>
+                    </h1>
+                    
+                    {/* Efeitos de brilho responsivos */}
+                    <div className="absolute -inset-4 sm:-inset-6 lg:-inset-8 bg-gradient-to-r from-yellow-400/10 via-yellow-300/20 to-yellow-500/10 rounded-2xl sm:rounded-3xl blur-xl sm:blur-2xl opacity-60 group-hover:opacity-80 transition-opacity duration-500 animate-pulse"></div>
+                    <div className="absolute -inset-2 sm:-inset-3 lg:-inset-4 bg-gradient-to-r from-yellow-400/5 via-yellow-300/10 to-yellow-500/5 rounded-xl sm:rounded-2xl blur-lg sm:blur-xl opacity-40 group-hover:opacity-60 transition-opacity duration-300"></div>
+                    
+                    {/* Linha de destaque responsiva */}
+                    <div className="absolute -bottom-3 sm:-bottom-4 lg:-bottom-6 left-1/2 transform -translate-x-1/2 w-24 sm:w-32 md:w-40 lg:w-48 h-1 sm:h-1.5 lg:h-2 bg-gradient-to-r from-transparent via-yellow-400 to-transparent rounded-full shadow-lg shadow-yellow-400/30"></div>
+                    <div className="absolute -bottom-2 sm:-bottom-3 lg:-bottom-5 left-1/2 transform -translate-x-1/2 w-16 sm:w-20 md:w-24 lg:w-32 h-0.5 sm:h-1 bg-gradient-to-r from-transparent via-yellow-300 to-transparent rounded-full"></div>
+                  </div>
                 </div>
               </div>
             </div>
