@@ -176,9 +176,6 @@ function App() {
               {/* Header da aba Projetos */}
               <div className="bg-white rounded-lg sm:rounded-xl shadow-lg p-6">
                 <h2 className="text-2xl font-bold text-gray-800 mb-2">Projetos da Clínica UNIQUE</h2>
-                <p className="text-gray-600">
-                  Acompanhe o progresso dos projetos em andamento e planejados.
-                </p>
               </div>
 
               {/* Grid de Cards dos Projetos */}
@@ -205,8 +202,11 @@ function App() {
               {/* Header da aba Documentos */}
               <div className="bg-white rounded-lg sm:rounded-xl shadow-lg p-6">
                 <h2 className="text-2xl font-bold text-gray-800 mb-2">Documentos de Regularização</h2>
-                <p className="text-gray-600">
-                  Documentos oficiais, licenças e certificações da Clínica UNIQUE - Medicina Especializada.
+                <p className="text-gray-600 text-sm">
+                  <strong>Inscrição do Imóvel:</strong> 03010170062001
+                </p>
+                <p className="text-gray-600 text-sm">
+                  <strong>Endereço:</strong> Rua Duque de Caxias N 604 - Caiari - Porto Velho -RO
                 </p>
               </div>
 

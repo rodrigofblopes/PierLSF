@@ -134,8 +134,8 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
       {/* Content */}
       <div className="relative p-6 sm:p-8">
         {/* Header Simplificado */}
-        <div className="flex items-center justify-center mb-6">
-          <div className="text-center">
+        <div className="flex items-center justify-between mb-6">
+          <div className="text-center flex-1">
             <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">
               {title}
             </h3>
@@ -143,6 +143,13 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
               Documentos necessários para solicitação
             </p>
           </div>
+          {(title.includes('Certidão Informativa') || title.includes('Certidão Narrativa')) && (
+            <div className="text-right">
+              <span className="text-xs text-red-300 bg-red-500/20 px-2 py-1 rounded border border-red-400/30">
+                Prazo: 15 dias
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Checklist */}

@@ -1,7 +1,7 @@
 {
-  "name": "Clínica Odontológica Dr Andriw",
-  "short_name": "Clínica Dr Andriw",
-  "description": "Sistema de gerenciamento de projetos da Clínica Odontológica Dr Andriw",
+  "name": "Clínica UNIQUE - Medicina Especializada",
+  "short_name": "Clínica UNIQUE",
+  "description": "Sistema de gerenciamento de projetos da Clínica UNIQUE - Medicina Especializada",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",
