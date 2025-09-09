@@ -252,6 +252,7 @@ function App() {
                 <DocumentCard
                   title="Certidão Informativa"
                   type="certificado"
+                  description="📑 Certidão Informativa - Informa os dados do imóvel na Prefeitura quando não há registro em cartório. Obs.: Não substitui a matrícula."
                   checklist={[
                     {
                       id: "requerimento",
@@ -292,6 +293,7 @@ function App() {
                 <DocumentCard
                   title="Certidão Narrativa"
                   type="certificado"
+                  description="📜 Certidão Narrativa - Apresenta as características físicas, fundiárias e cadastrais do lote — emitida pela Prefeitura."
                   checklist={[
                     {
                       id: "requerimento_narrativa",
@@ -338,6 +340,7 @@ function App() {
                   <DocumentCard
                     title="Regularização de Obra Comercial"
                     type="projeto"
+                    description="Certidão de Regularização de Obra - Documento que regulariza construções realizadas sem autorização municipal, permitindo a obtenção do Habite-se e a legalização do imóvel."
                     checklist={[
                       {
                         id: "requerimento",
@@ -413,6 +416,67 @@ function App() {
                         id: "declaracao_conformidade_sanitaria",
                         text: "Declaração de Conformidade Sanitária de Projeto Arquitetônico emitida pela Vigilância Sanitária (SEMUSA)",
                         required: false
+                      }
+                    ]}
+                  />
+                </div>
+
+                {/* Card do HABITE-SE */}
+                <div className="w-full">
+                  <DocumentCard
+                    title="HABITE-SE"
+                    type="projeto"
+                    description="Laudo técnico expedido pelo município atestando a conclusão de obra devidamente licenciada, e que autoriza a sua utilização."
+                    checklist={[
+                      {
+                        id: "requerimento_habite",
+                        text: "Requerimento padrão com Declaração, totalmente preenchido e assinado",
+                        required: true
+                      },
+                      {
+                        id: "certidao_negativa_habite",
+                        text: "Certidão Negativa de Débitos do Imóvel atualizada - IPTU, conforme Art. 265 LC 199/2004 (exceto para imóveis em zona rural)",
+                        required: true
+                      },
+                      {
+                        id: "comprovacao_propriedade_habite",
+                        text: "Apresentar um dos documentos de comprovação de propriedade do terreno: Certidão de Inteiro Teor atualizada do lote para áreas escrituradas individualmente; Certidão Narrativa do lote, emitida pela SEMUR, para casos em que não há escritura (exceto para casos de condomínio)",
+                        required: true
+                      },
+                      {
+                        id: "documentos_pessoais_habite",
+                        text: "Documentos pessoais do Interessado e Procurador (caso tenha): Pessoa Física: cópia do RG e CPF ou carteira de habilitação/profissional; Pessoa Jurídica: cópia do Contrato Social da última alteração e CNPJ",
+                        required: true
+                      },
+                      {
+                        id: "licenca_ambiental_habite",
+                        text: "Licença Ambiental de Operação emitida pelo Órgão Ambiental Municipal (Subsecretaria Municipal de Meio Ambiente e Desenvolvimento Sustentável - SEMA) ou Estadual, ou Federal, conforme disposto em Lei, exceto para residências unifamiliares",
+                        required: true
+                      },
+                      {
+                        id: "laudo_tecnico_habite",
+                        text: "Laudo Técnico de edificação emitido pelo profissional responsável técnico da obra atestando a conclusão das instalações prediais, registrado no Conselho Profissional, com RRT/ART, conforme art. 40, inciso IV da Lei 560/2014",
+                        required: true
+                      },
+                      {
+                        id: "certificado_bombeiros_habite",
+                        text: "Apresentar Certificado de Vistoria Final da Obra expedido pelo Corpo de Bombeiros Militar de Rondônia, exceto para residências unifamiliares",
+                        required: true
+                      },
+                      {
+                        id: "certidao_calcadas_habite",
+                        text: "Apresentar Certidão de Conclusão de Calçadas com Relatório Fotográfico assinado por Técnico da Comissão Específica de Padronização de Calçadas ou Notificação de Dispensa Temporária de padronização de Calçadas. SEMTRAN",
+                        required: true
+                      },
+                      {
+                        id: "trd_trad_habite",
+                        text: "Apresentar Termo de Recebimento Definitivo (TRD) ou Termo de Recebimento e Aceitação Definitivo (TRAD) emitido pela Secretaria Municipal de Trânsito, Mobilidade e Transportes - SEMTRAN, exceto para residências unifamiliares. SEMTRAN",
+                        required: true
+                      },
+                      {
+                        id: "licenca_obra_habite",
+                        text: "01 Cópia da última Licença de Obra expedida",
+                        required: true
                       }
                     ]}
                   />
