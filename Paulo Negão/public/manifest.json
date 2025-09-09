@@ -1,0 +1,26 @@
+{
+  "name": "Clínica UNIQUE - Medicina Especializada",
+  "short_name": "Clínica UNIQUE",
+  "description": "Sistema de gerenciamento de projetos da Clínica UNIQUE - Medicina Especializada",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/BIMTECH.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/BIMTECH.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["medical", "business", "productivity"],
+  "lang": "pt-BR"
+}

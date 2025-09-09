@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: clinica-unique
+    env: static
+    buildCommand: cd "Clinica Unique" && npm install && npm run build
+    staticPublishPath: Clinica Unique/dist
+    envVars:
+      - key: NODE_VERSION
+        value: 18

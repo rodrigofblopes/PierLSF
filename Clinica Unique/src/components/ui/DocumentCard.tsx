@@ -13,6 +13,7 @@ interface DocumentCardProps {
   title: string;
   type: 'licenca' | 'alvara' | 'habite-se' | 'projeto' | 'laudo' | 'certificado';
   description?: string;
+  deadline?: string;
   checklist?: ChecklistItem[];
   className?: string;
 }
@@ -21,14 +22,31 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
   title,
   type,
   description,
+  deadline,
   checklist,
   className,
 }) => {
   const [isChecklistExpanded, setIsChecklistExpanded] = useState(true); // Começar expandido
   const [checkedItems] = useState<Set<string>>(new Set([
-    'comprovacao_propriedade',
-    'comprovacao_propriedade_habite',
-    'certidao_registro'
+    // Itens com arquivos correspondentes na pasta public
+    'requerimento',            // requerimentocertidaoinformativa.PDF ✓
+    'pessoa_fisica',           // CNH-e.pdf ✓
+    'contrato',                // contratocompraevenda.pdf ✓
+    'comprovante_residencia',  // comprovanteendereco.pdf ✓
+    'pessoa_fisica_narrativa', // CNH-e.pdf ✓
+    'comprovante_residencia_narrativa', // comprovanteendereco.pdf ✓
+    'certidao_fiscal',         // certidão negativa de debitos .PDF ✓
+    'contrato_narrativa',      // contratocompraevenda.pdf ✓
+    'documentos_pessoais',     // CNH-e.pdf ✓
+    'art_rrt',                 // ART.pdf ✓
+    'certidao_negativa',       // certidão negativa de debitos .PDF ✓
+    'autorizacao_iphan',       // IPHAM.pdf ✓
+    // 'projeto_arquitetonico',   // Arquitetura.pdf ✓ (desmarcado)
+    // 'arquivo_cad'              // ANTEPROJETO CLINICA.dwg ✓ (desmarcado)
+    
+    // Itens do HABITE-SE
+    'certidao_negativa_habite', // certidão negativa de debitos .PDF ✓
+    'documentos_pessoais_habite' // CNH-e.pdf ✓
   ]));
   
   // Estado para modal de senha
@@ -40,7 +58,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
   // Função para verificar senha
   const verifyPassword = (inputPassword: string): boolean => {
     // Senha padrão - em produção, isso deveria vir de uma API ou variável de ambiente
-    const correctPassword = "andriw";
+    const correctPassword = "eduardoferreira";
     return inputPassword === correctPassword;
   };
 
@@ -128,19 +146,8 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
       <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16 pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-12 -translate-x-12 pointer-events-none" />
       
-      {/* Content */}
-      <div className="relative p-6 sm:p-8">
-        {/* Aviso Importante - Não exibir para Certidão Informativa */}
-        {title !== "Certidão Informativa" && (
-          <div className="mb-4 p-3 bg-yellow-500/20 border border-yellow-400/30 rounded-lg">
-            <div className="flex items-start gap-2">
-              <div className="text-yellow-300 text-sm font-bold mt-0.5">⚠️</div>
-              <div className="text-white/90 text-xs leading-relaxed">
-                <strong className="text-yellow-300">Atenção:</strong> Para emitir a Certidão Negativa de Débitos do Imóvel é necessário quitar ou parcelar os débitos de IPTU referentes aos últimos 5 anos (com pagamento da primeira parcela). Débitos anteriores podem ser objeto de pedido de prescrição, cujo prazo de análise varia entre 6 e 12 meses.
-              </div>
-            </div>
-          </div>
-        )}
+        {/* Content */}
+        <div className="relative p-6 sm:p-8">
 
         {/* Header Simplificado */}
         <div className="flex items-center justify-center mb-6">
@@ -156,6 +163,13 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                 <p className="text-white/90 text-xs leading-relaxed">
                   {description}
                 </p>
+              </div>
+            )}
+            {deadline && (
+              <div className="mt-3 flex justify-center">
+                <span className="px-3 py-1 bg-yellow-500/20 text-yellow-300 text-xs font-semibold rounded-full border border-yellow-400/30">
+                  Prazo: {deadline}
+                </span>
               </div>
             )}
           </div>
@@ -194,7 +208,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                     key={item.id}
                     className={cn(
                       "flex items-center gap-3 p-2 bg-white/5 rounded-lg",
-                      (item.id === 'comprovacao_propriedade' || item.id === 'comprovacao_propriedade_habite' || item.id === 'certidao_registro') && "cursor-pointer hover:bg-white/10 transition-colors"
+                      checkedItems.has(item.id) && "cursor-pointer hover:bg-white/10 transition-colors"
                     )}
                     onClick={async (e) => {
                       // Só fazer download se não for o checkbox ou botão de download
@@ -206,9 +220,39 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                       let filePath = '';
                       let fileName = '';
                       
-                      if (item.id === 'comprovacao_propriedade' || item.id === 'comprovacao_propriedade_habite' || item.id === 'certidao_registro') {
-                        filePath = '/Certidão Consultorio.pdf';
-                        fileName = 'Certidão Consultorio.pdf';
+                      if (item.id === 'requerimento') {
+                        filePath = '/requerimentocertidaoinformativa.PDF';
+                        fileName = 'requerimentocertidaoinformativa.PDF';
+                      } else if (item.id === 'pessoa_fisica' || item.id === 'pessoa_fisica_narrativa' || item.id === 'documentos_pessoais') {
+                        filePath = '/CNH-e.pdf';
+                        fileName = 'CNH-e.pdf';
+                      } else if (item.id === 'contrato' || item.id === 'contrato_narrativa') {
+                        filePath = '/contratocompraevenda.pdf';
+                        fileName = 'contratocompraevenda.pdf';
+                      } else if (item.id === 'comprovante_residencia' || item.id === 'comprovante_residencia_narrativa') {
+                        filePath = '/comprovanteendereco.pdf';
+                        fileName = 'comprovanteendereco.pdf';
+                      } else if (item.id === 'certidao_fiscal' || item.id === 'certidao_negativa') {
+                        filePath = '/certidão negativa de debitos .PDF';
+                        fileName = 'certidão negativa de debitos .PDF';
+                      } else if (item.id === 'art_rrt') {
+                        filePath = '/ART.pdf';
+                        fileName = 'ART.pdf';
+                      } else if (item.id === 'autorizacao_iphan') {
+                        filePath = '/IPHAM.pdf';
+                        fileName = 'IPHAM.pdf';
+                      } else if (item.id === 'projeto_arquitetonico') {
+                        filePath = '/Arquitetura.pdf';
+                        fileName = 'Arquitetura.pdf';
+                      } else if (item.id === 'arquivo_cad') {
+                        filePath = '/ANTEPROJETO CLINICA.dwg';
+                        fileName = 'ANTEPROJETO CLINICA.dwg';
+                      } else if (item.id === 'certidao_negativa_habite') {
+                        filePath = '/certidão negativa de debitos .PDF';
+                        fileName = 'certidão negativa de debitos .PDF';
+                      } else if (item.id === 'documentos_pessoais_habite') {
+                        filePath = '/CNH-e.pdf';
+                        fileName = 'CNH-e.pdf';
                       }
                       
                       if (filePath && fileName) {
@@ -233,16 +277,57 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                       )}
                     >
                       {item.text}
-                      {(item.id === 'comprovacao_propriedade' || item.id === 'comprovacao_propriedade_habite' || item.id === 'certidao_registro') && (
+                      {checkedItems.has(item.id) && (
                         <button
                           onClick={(e) => {
-                            console.log('Botão Certidão Consultorio clicado!');
                             e.stopPropagation();
                             e.preventDefault();
-                            requestDownload('/Certidão Consultorio.pdf', 'Certidão Consultorio.pdf');
+                            
+                            // Determinar qual arquivo baixar baseado no ID
+                            let filePath = '';
+                            let fileName = '';
+                            
+                            if (item.id === 'requerimento') {
+                              filePath = '/requerimentocertidaoinformativa.PDF';
+                              fileName = 'requerimentocertidaoinformativa.PDF';
+                            } else if (item.id === 'pessoa_fisica' || item.id === 'pessoa_fisica_narrativa' || item.id === 'documentos_pessoais') {
+                              filePath = '/CNH-e.pdf';
+                              fileName = 'CNH-e.pdf';
+                            } else if (item.id === 'contrato' || item.id === 'contrato_narrativa') {
+                              filePath = '/contratocompraevenda.pdf';
+                              fileName = 'contratocompraevenda.pdf';
+                            } else if (item.id === 'comprovante_residencia' || item.id === 'comprovante_residencia_narrativa') {
+                              filePath = '/comprovanteendereco.pdf';
+                              fileName = 'comprovanteendereco.pdf';
+                            } else if (item.id === 'certidao_fiscal' || item.id === 'certidao_negativa') {
+                              filePath = '/certidão negativa de debitos .PDF';
+                              fileName = 'certidão negativa de debitos .PDF';
+                            } else if (item.id === 'art_rrt') {
+                              filePath = '/ART.pdf';
+                              fileName = 'ART.pdf';
+                            } else if (item.id === 'autorizacao_iphan') {
+                              filePath = '/IPHAM.pdf';
+                              fileName = 'IPHAM.pdf';
+                            } else if (item.id === 'projeto_arquitetonico') {
+                              filePath = '/Arquitetura.pdf';
+                              fileName = 'Arquitetura.pdf';
+                            } else if (item.id === 'arquivo_cad') {
+                              filePath = '/ANTEPROJETO CLINICA.dwg';
+                              fileName = 'ANTEPROJETO CLINICA.dwg';
+                            } else if (item.id === 'certidao_negativa_habite') {
+                              filePath = '/certidão negativa de debitos .PDF';
+                              fileName = 'certidão negativa de debitos .PDF';
+                            } else if (item.id === 'documentos_pessoais_habite') {
+                              filePath = '/CNH-e.pdf';
+                              fileName = 'CNH-e.pdf';
+                            }
+                            
+                            if (filePath && fileName) {
+                              requestDownload(filePath, fileName);
+                            }
                           }}
                           className="p-1 hover:bg-white/20 rounded transition-colors"
-                          title="Baixar Certidão Consultorio.pdf (Requer senha)"
+                          title="Baixar arquivo (Requer senha)"
                         >
                           <Lock className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
                         </button>
