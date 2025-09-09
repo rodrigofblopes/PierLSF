@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { CheckCircle, ChevronDown, ChevronUp, Lock, X } from 'lucide-react';
 import { cn } from '@/utils/cn';
@@ -12,6 +13,8 @@ interface ChecklistItem {
 interface DocumentCardProps {
   title: string;
   type: 'licenca' | 'alvara' | 'habite-se' | 'projeto' | 'laudo' | 'certificado';
+  description?: string;
+  deadline?: string;
   checklist?: ChecklistItem[];
   className?: string;
 }
@@ -19,11 +22,17 @@ interface DocumentCardProps {
 export const DocumentCard: React.FC<DocumentCardProps> = ({
   title,
   type,
+  description,
+  deadline,
   checklist,
   className,
 }) => {
   const [isChecklistExpanded, setIsChecklistExpanded] = useState(true); // Começar expandido
-  const [checkedItems] = useState<Set<string>>(new Set([]));
+  const [checkedItems] = useState<Set<string>>(new Set([
+    'comprovacao_propriedade',
+    'comprovacao_propriedade_habite',
+    'certidao_registro'
+  ]));
   
   // Estado para modal de senha
   const [showPasswordModal, setShowPasswordModal] = useState(false);
@@ -34,7 +43,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
   // Função para verificar senha
   const verifyPassword = (inputPassword: string): boolean => {
     // Senha padrão - em produção, isso deveria vir de uma API ou variável de ambiente
-    const correctPassword = "eduardoferreira";
+    const correctPassword = "andriw";
     return inputPassword === correctPassword;
   };
 
@@ -124,6 +133,18 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
       
       {/* Content */}
       <div className="relative p-6 sm:p-8">
+        {/* Aviso Importante - Não exibir para Certidão Informativa */}
+        {title !== "Certidão Informativa" && (
+          <div className="mb-4 p-3 bg-yellow-500/20 border border-yellow-400/30 rounded-lg">
+            <div className="flex items-start gap-2">
+              <div className="text-yellow-300 text-sm font-bold mt-0.5">⚠️</div>
+              <div className="text-white/90 text-xs leading-relaxed">
+                <strong className="text-yellow-300">Atenção:</strong> Para emitir a Certidão Negativa de Débitos do Imóvel é necessário quitar ou parcelar os débitos de IPTU referentes aos últimos 5 anos (com pagamento da primeira parcela). Débitos anteriores podem ser objeto de pedido de prescrição, cujo prazo de análise varia entre 6 e 12 meses.
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Header Simplificado */}
         <div className="flex items-center justify-center mb-6">
           <div className="text-center">
@@ -133,6 +154,20 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
             <p className="text-white/80 text-sm">
               Documentos necessários para solicitação
             </p>
+            {description && (
+              <div className="mt-3 p-2 bg-white/10 rounded-lg border border-white/20">
+                <p className="text-white/90 text-xs leading-relaxed">
+                  {description}
+                </p>
+              </div>
+            )}
+            {deadline && (
+              <div className="mt-3 flex justify-center">
+                <span className="px-3 py-1 bg-yellow-500/20 text-yellow-300 text-xs font-semibold rounded-full border border-yellow-400/30">
+                  Prazo: {deadline}
+                </span>
+              </div>
+            )}
           </div>
         </div>
 
@@ -169,7 +204,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                     key={item.id}
                     className={cn(
                       "flex items-center gap-3 p-2 bg-white/5 rounded-lg",
-                      (item.id === 'pessoa_fisica' || item.id === 'pessoa_fisica_narrativa' || item.id === 'documentos_pessoais' || item.id === 'contrato' || item.id === 'contrato_narrativa' || item.id === 'comprovante_residencia' || item.id === 'comprovante_residencia_narrativa' || item.id === 'art_rrt') && "cursor-pointer hover:bg-white/10 transition-colors"
+                      (item.id === 'comprovacao_propriedade' || item.id === 'comprovacao_propriedade_habite' || item.id === 'certidao_registro') && "cursor-pointer hover:bg-white/10 transition-colors"
                     )}
                     onClick={async (e) => {
                       // Só fazer download se não for o checkbox ou botão de download
@@ -181,18 +216,9 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                       let filePath = '';
                       let fileName = '';
                       
-                      if (item.id === 'pessoa_fisica' || item.id === 'pessoa_fisica_narrativa' || item.id === 'documentos_pessoais') {
-                        filePath = '/CNH-e.pdf';
-                        fileName = 'CNH-e.pdf';
-                      } else if (item.id === 'contrato' || item.id === 'contrato_narrativa') {
-                        filePath = '/contratocompraevenda.pdf';
-                        fileName = 'contratocompraevenda.pdf';
-                      } else if (item.id === 'comprovante_residencia' || item.id === 'comprovante_residencia_narrativa') {
-                        filePath = '/comprovanteendereco.pdf';
-                        fileName = 'comprovanteendereco.pdf';
-                      } else if (item.id === 'art_rrt') {
-                        filePath = '/ART.pdf';
-                        fileName = 'ART.pdf';
+                      if (item.id === 'comprovacao_propriedade' || item.id === 'comprovacao_propriedade_habite' || item.id === 'certidao_registro') {
+                        filePath = '/Certidão Consultorio.pdf';
+                        fileName = 'Certidão Consultorio.pdf';
                       }
                       
                       if (filePath && fileName) {
@@ -217,72 +243,16 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                       )}
                     >
                       {item.text}
-                      {(item.id === 'pessoa_fisica' || item.id === 'pessoa_fisica_narrativa' || item.id === 'documentos_pessoais') && (
+                      {(item.id === 'comprovacao_propriedade' || item.id === 'comprovacao_propriedade_habite' || item.id === 'certidao_registro') && (
                         <button
                           onClick={(e) => {
-                            console.log('Botão CNH-e.pdf clicado!');
+                            console.log('Botão Certidão Consultorio clicado!');
                             e.stopPropagation();
                             e.preventDefault();
-                            requestDownload('/CNH-e.pdf', 'CNH-e.pdf');
+                            requestDownload('/Certidão Consultorio.pdf', 'Certidão Consultorio.pdf');
                           }}
                           className="p-1 hover:bg-white/20 rounded transition-colors"
-                          title="Baixar CNH-e.pdf (Requer senha)"
-                        >
-                          <Lock className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
-                        </button>
-                      )}
-                      {(item.id === 'contrato' || item.id === 'contrato_narrativa') && (
-                        <button
-                          onClick={(e) => {
-                            console.log('Botão contrato clicado!');
-                            e.stopPropagation();
-                            e.preventDefault();
-                            requestDownload('/contratocompraevenda.pdf', 'contratocompraevenda.pdf');
-                          }}
-                          className="p-1 hover:bg-white/20 rounded transition-colors"
-                          title="Baixar contratocompraevenda.pdf (Requer senha)"
-                        >
-                          <Lock className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
-                        </button>
-                      )}
-                      {item.id === 'comprovante_residencia' && (
-                        <button
-                          onClick={(e) => {
-                            console.log('Botão comprovante clicado!');
-                            e.stopPropagation();
-                            e.preventDefault();
-                            requestDownload('/comprovanteendereco.pdf', 'comprovanteendereco.pdf');
-                          }}
-                          className="p-1 hover:bg-white/20 rounded transition-colors"
-                          title="Baixar comprovanteendereco.pdf (Requer senha)"
-                        >
-                          <Lock className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
-                        </button>
-                      )}
-                      {item.id === 'comprovante_residencia_narrativa' && (
-                        <button
-                          onClick={(e) => {
-                            console.log('Botão comprovante narrativa clicado!');
-                            e.stopPropagation();
-                            e.preventDefault();
-                            requestDownload('/comprovanteendereco.pdf', 'comprovanteendereco.pdf');
-                          }}
-                          className="p-1 hover:bg-white/20 rounded transition-colors"
-                          title="Baixar comprovanteendereco.pdf (Requer senha)"
-                        >
-                          <Lock className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
-                        </button>
-                      )}
-                      {item.id === 'art_rrt' && (
-                        <button
-                          onClick={(e) => {
-                            console.log('Botão ART clicado!');
-                            e.stopPropagation();
-                            e.preventDefault();
-                            requestDownload('/ART.pdf', 'ART.pdf');
-                          }}
-                          className="p-1 hover:bg-white/20 rounded transition-colors"
-                          title="Baixar ART.pdf (Requer senha)"
+                          title="Baixar Certidão Consultorio.pdf (Requer senha)"
                         >
                           <Lock className="h-3 w-3 text-white/60 hover:text-white transition-colors" />
                         </button>
