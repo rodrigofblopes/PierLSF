@@ -250,6 +250,13 @@ function Model({ modelPath, selectedService, hiddenServices }: {
 // Componente principal do visualizador
 export const Model3DViewer: React.FC<Model3DViewerProps> = ({ modelPath, className = '', selectedService, hiddenServices }) => {
   const [isLoading, setIsLoading] = useState(true);
+  
+  // DEBUG: Log do Model3DViewer
+  console.log('🐛 DEBUG Model3DViewer component rendered');
+  console.log('🐛 DEBUG modelPath:', modelPath);
+  console.log('🐛 DEBUG className:', className);
+  console.log('🐛 DEBUG selectedService:', selectedService);
+  console.log('🐛 DEBUG hiddenServices:', hiddenServices);
   const [error, setError] = useState<string | null>(null);
 
   const handleLoad = () => {
