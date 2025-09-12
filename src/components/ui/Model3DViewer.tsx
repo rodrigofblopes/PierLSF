@@ -7,6 +7,119 @@ import { LoadingSpinner } from './LoadingSpinner';
 import { ServiceMapping, getObjectCollection } from '@/utils/serviceMapping';
 import { getTextureConfig } from '@/utils/textureConfig';
 
+// Hook para detectar dispositivo móvel
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                   window.innerWidth < 768;
+      setIsMobile(mobile);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+  
+  return isMobile;
+}
+
+// Componente de iluminação adaptativo
+function MobileLighting() {
+  const isMobile = useIsMobile();
+  
+  if (isMobile) {
+    // Iluminação simplificada para mobile
+    return (
+      <>
+        <ambientLight intensity={0.6} color="#ffffff" />
+        <directionalLight
+          position={[10, 10, 5]}
+          intensity={1.5}
+          color="#ffffff"
+        />
+        <hemisphereLight
+          skyColor="#ffffff"
+          groundColor="#888888"
+          intensity={0.4}
+        />
+      </>
+    );
+  }
+  
+  // Iluminação completa para desktop
+  return (
+    <>
+      <ambientLight intensity={0.3} color="#f0f8ff" />
+      
+      <directionalLight
+        position={[40, 60, 30]}
+        intensity={3.0}
+        color="#fff5e6"
+        castShadow
+        shadow-mapSize-width={8192}
+        shadow-mapSize-height={8192}
+        shadow-camera-far={200}
+        shadow-camera-left={-80}
+        shadow-camera-right={80}
+        shadow-camera-top={80}
+        shadow-camera-bottom={-80}
+        shadow-bias={-0.0001}
+        shadow-normalBias={0.02}
+      />
+      
+      <directionalLight
+        position={[-25, 35, 20]}
+        intensity={1.2}
+        color="#e8f4fd"
+      />
+      
+      <hemisphereLight
+        skyColor="#87CEEB"
+        groundColor="#a0896b"
+        intensity={0.8}
+      />
+      
+      <pointLight 
+        position={[30, 25, 25]} 
+        intensity={2.0} 
+        color="#ffffff"
+        castShadow
+        shadow-mapSize-width={2048}
+        shadow-mapSize-height={2048}
+      />
+      <pointLight 
+        position={[-25, 25, 25]} 
+        intensity={1.5} 
+        color="#fff8e7"
+        castShadow
+        shadow-mapSize-width={2048}
+        shadow-mapSize-height={2048}
+      />
+      <pointLight 
+        position={[0, 40, 0]} 
+        intensity={1.0} 
+        color="#f0f8ff"
+      />
+      
+      <directionalLight
+        position={[-20, -10, -30]}
+        intensity={0.5}
+        color="#ffeaa7"
+      />
+
+      <Environment 
+        preset="city" 
+        background={false}
+        environmentIntensity={2.0}
+        resolution={512}
+      />
+    </>
+  );
+}
+
 interface Model3DViewerProps {
   modelPath: string;
   className?: string;
@@ -29,7 +142,16 @@ function Model({ modelPath, selectedService, hiddenServices }: {
   selectedService?: ServiceMapping | null;
   hiddenServices?: string[];
 }) {
-  const { scene } = useGLTF(modelPath);
+  let scene;
+  
+  try {
+    const gltf = useGLTF(modelPath);
+    scene = gltf.scene;
+    console.log('✅ Modelo GLTF carregado com sucesso');
+  } catch (error) {
+    console.error('❌ Erro ao carregar modelo GLTF:', error);
+    throw new Error('Falha ao carregar modelo 3D');
+  }
   const modelRef = useRef<Group>(null);
   const { camera } = useThree();
   const [originalMaterials, setOriginalMaterials] = useState<Map<Mesh, THREE.Material>>(new Map());
@@ -179,71 +301,87 @@ function Model({ modelPath, selectedService, hiddenServices }: {
           console.log(`🎨 Textura encontrada: ${textureType}`);
           console.log(`🎨 Configuração:`, textureConfig);
           
-          // Material PBR de alta qualidade com configurações avançadas
-          const material = new THREE.MeshPhysicalMaterial({
-            color: new THREE.Color(textureConfig.color),
-            metalness: textureConfig.metalness,
-            roughness: textureConfig.roughness,
-            
-            // Clearcoat baseado no tipo de material
-            clearcoat: (() => {
-              switch(textureType) {
-                case 'Pintura': case 'Porcelanato': case 'Cerâmica': return 0.8;
-                case 'Madeira': return 0.3;
-                case 'Metal': case 'Alumínio': case 'Aço': return 0.1;
-                default: return 0.0;
-              }
-            })(),
-            clearcoatRoughness: textureType === 'Pintura' ? 0.05 : 0.15,
-            
-            // Environment mapping otimizado
-            envMapIntensity: textureConfig.metalness > 0.5 ? 3.0 : 
-                           textureType === 'Vidro' ? 2.5 : 1.5,
-            reflectivity: textureConfig.metalness > 0.5 ? 0.95 : 
-                         textureType === 'Vidro' ? 0.9 : 0.5,
-            
-            // Sistema de transparência avançado
-            transparent: textureType.includes('Vidro'),
-            opacity: textureType === 'Vidro' ? 0.15 : 
-                    textureType === 'Vidro_Transparente' ? 0.05 : 1.0,
-            transmission: textureType.includes('Vidro') ? 0.95 : 0,
-            thickness: textureType.includes('Vidro') ? 0.1 : 0,
-            ior: textureType.includes('Vidro') ? 1.52 : 1.0,
-            
-            // Sheen para materiais orgânicos
-            sheen: textureType === 'Madeira' ? 0.5 : 
-                  textureType === 'Cerâmica' ? 0.2 : 0,
-            sheenRoughness: textureType === 'Madeira' ? 0.8 : 0.9,
-            sheenColor: textureType === 'Madeira' ? 
-                       new THREE.Color(textureConfig.color).multiplyScalar(0.7) : 
-                       new THREE.Color(0x000000),
-            
-            // Iridescence para metais especiais
-            iridescence: textureType === 'Aço' ? 0.3 : 
-                        textureType === 'Cobre' ? 0.4 : 0,
-            iridescenceIOR: 1.3,
-            iridescenceThicknessRange: [100, 400],
-            
-            // Sistema de emissão
-            emissive: textureConfig.emissive ? new THREE.Color(textureConfig.emissive) : new THREE.Color(0x000000),
-            emissiveIntensity: textureConfig.emissiveIntensity || 0.0,
-            
-            // Configurações de qualidade máxima
-            side: THREE.FrontSide,
-            flatShading: false,
-            wireframe: false,
-            vertexColors: false,
-            fog: true,
-            alphaTest: 0.01,
-            
-            // Sombras e normais
-            castShadow: true,
-            receiveShadow: true,
-            normalScale: new THREE.Vector2(1.0, 1.0),
-          });
+          // Detectar dispositivo móvel
+          const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                                window.innerWidth < 768;
 
-          // Aplicar filtro anisótrópico se disponível
-          if (child.material && child.material.map) {
+          // Material adaptativo baseado no dispositivo
+          const material = isMobileDevice 
+            ? new THREE.MeshStandardMaterial({
+                // Material simplificado para mobile
+                color: new THREE.Color(textureConfig.color),
+                metalness: textureConfig.metalness * 0.7, // Reduzir metalness
+                roughness: Math.max(textureConfig.roughness, 0.3), // Aumentar roughness mínimo
+                envMapIntensity: 0.5, // Reduzir reflexões
+                side: THREE.FrontSide,
+                flatShading: false,
+                fog: true,
+              })
+            : new THREE.MeshPhysicalMaterial({
+                // Material completo para desktop
+                color: new THREE.Color(textureConfig.color),
+                metalness: textureConfig.metalness,
+                roughness: textureConfig.roughness,
+                
+                // Clearcoat baseado no tipo de material
+                clearcoat: (() => {
+                  switch(textureType) {
+                    case 'Pintura': case 'Porcelanato': case 'Cerâmica': return 0.8;
+                    case 'Madeira': return 0.3;
+                    case 'Metal': case 'Alumínio': case 'Aço': return 0.1;
+                    default: return 0.0;
+                  }
+                })(),
+                clearcoatRoughness: textureType === 'Pintura' ? 0.05 : 0.15,
+                
+                // Environment mapping otimizado
+                envMapIntensity: textureConfig.metalness > 0.5 ? 3.0 : 
+                               textureType === 'Vidro' ? 2.5 : 1.5,
+                reflectivity: textureConfig.metalness > 0.5 ? 0.95 : 
+                             textureType === 'Vidro' ? 0.9 : 0.5,
+                
+                // Sistema de transparência avançado
+                transparent: textureType.includes('Vidro'),
+                opacity: textureType === 'Vidro' ? 0.15 : 
+                        textureType === 'Vidro_Transparente' ? 0.05 : 1.0,
+                transmission: textureType.includes('Vidro') ? 0.95 : 0,
+                thickness: textureType.includes('Vidro') ? 0.1 : 0,
+                ior: textureType.includes('Vidro') ? 1.52 : 1.0,
+                
+                // Sheen para materiais orgânicos
+                sheen: textureType === 'Madeira' ? 0.5 : 
+                      textureType === 'Cerâmica' ? 0.2 : 0,
+                sheenRoughness: textureType === 'Madeira' ? 0.8 : 0.9,
+                sheenColor: textureType === 'Madeira' ? 
+                           new THREE.Color(textureConfig.color).multiplyScalar(0.7) : 
+                           new THREE.Color(0x000000),
+                
+                // Iridescence para metais especiais
+                iridescence: textureType === 'Aço' ? 0.3 : 
+                            textureType === 'Cobre' ? 0.4 : 0,
+                iridescenceIOR: 1.3,
+                iridescenceThicknessRange: [100, 400],
+                
+                // Sistema de emissão
+                emissive: textureConfig.emissive ? new THREE.Color(textureConfig.emissive) : new THREE.Color(0x000000),
+                emissiveIntensity: textureConfig.emissiveIntensity || 0.0,
+                
+                // Configurações de qualidade máxima
+                side: THREE.FrontSide,
+                flatShading: false,
+                wireframe: false,
+                vertexColors: false,
+                fog: true,
+                alphaTest: 0.01,
+                
+                // Sombras e normais
+                castShadow: true,
+                receiveShadow: true,
+                normalScale: new THREE.Vector2(1.0, 1.0),
+              });
+
+          // Aplicar filtro anisótrópico apenas no desktop
+          if (!isMobileDevice && child.material && child.material.map) {
             const renderer = document.querySelector('canvas')?.getContext('webgl2') || 
                            document.querySelector('canvas')?.getContext('webgl');
             if (renderer) {
@@ -252,8 +390,10 @@ function Model({ modelPath, selectedService, hiddenServices }: {
             }
           }
 
-          // Aplicar textura procedural para alguns materiais
-          applyProceduralTexture(material, textureType, child);
+          // Aplicar textura procedural apenas no desktop para economizar recursos
+          if (!isMobileDevice) {
+            applyProceduralTexture(material, textureType, child);
+          }
           
           child.material = material;
           child.castShadow = true;
@@ -410,118 +550,79 @@ export const Model3DViewer: React.FC<Model3DViewerProps> = ({ modelPath, classNa
       <Canvas
         camera={{ position: [5, 5, 5], fov: 50 }}
         onCreated={(state) => {
-          // Configurações avançadas de renderização
-          state.gl.outputColorSpace = 'srgb';
-          state.gl.toneMapping = THREE.ACESFilmicToneMapping;
-          state.gl.toneMappingExposure = 0.9;
-          
-          // Sombras de alta qualidade
-          state.gl.shadowMap.enabled = true;
-          state.gl.shadowMap.type = THREE.PCFSoftShadowMap;
-          state.gl.shadowMap.autoUpdate = true;
-          
-          // Anti-aliasing e pixel ratio otimizados
-          state.gl.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-          state.gl.antialias = true;
-          
-          // Extensões para melhor qualidade de textura
-          const gl = state.gl.getContext();
-          const extensions = gl.getSupportedExtensions();
-          
-          // Filtro anisótrópico para texturas mais nítidas
-          if (extensions?.includes('EXT_texture_filter_anisotropic')) {
-            const ext = gl.getExtension('EXT_texture_filter_anisotropic');
-            state.gl.capabilities.maxAnisotropy = gl.getParameter(ext.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
+          try {
+            // Configurações básicas de renderização
+            state.gl.outputColorSpace = 'srgb';
+            state.gl.toneMapping = THREE.ACESFilmicToneMapping;
+            state.gl.toneMappingExposure = 0.8;
+            
+            // Detectar dispositivo móvel
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                            window.innerWidth < 768;
+            
+            console.log('📱 Dispositivo móvel detectado:', isMobile);
+            console.log('🔍 User Agent:', navigator.userAgent);
+            console.log('📐 Largura da tela:', window.innerWidth);
+            
+            // Configurações otimizadas para mobile
+            if (isMobile) {
+              // Configurações de performance para mobile
+              state.gl.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+              state.gl.shadowMap.enabled = false; // Desabilitar sombras em mobile
+              state.gl.antialias = false; // Desabilitar anti-aliasing em mobile
+              state.gl.toneMappingExposure = 0.7; // Exposição menor para mobile
+              console.log('⚡ Configurações de mobile aplicadas');
+            } else {
+              // Configurações de alta qualidade para desktop
+              state.gl.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+              state.gl.shadowMap.enabled = true;
+              state.gl.shadowMap.type = THREE.PCFSoftShadowMap;
+              state.gl.shadowMap.autoUpdate = true;
+              state.gl.antialias = true;
+              
+              // Extensões avançadas apenas no desktop
+              const gl = state.gl.getContext();
+              const extensions = gl.getSupportedExtensions();
+              
+              if (extensions?.includes('EXT_texture_filter_anisotropic')) {
+                const ext = gl.getExtension('EXT_texture_filter_anisotropic');
+                state.gl.capabilities.maxAnisotropy = gl.getParameter(ext.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
+              }
+              
+              if (extensions?.includes('OES_texture_float')) {
+                gl.getExtension('OES_texture_float');
+              }
+              
+              state.gl.physicallyCorrectLights = true;
+              state.gl.gammaFactor = 2.2;
+              console.log('🖥️ Configurações de desktop aplicadas');
+            }
+            
+            handleLoad();
+          } catch (error) {
+            console.error('❌ Erro na inicialização do 3D:', error);
+            handleError();
           }
-          
-          // Floating point textures para HDR
-          if (extensions?.includes('OES_texture_float')) {
-            gl.getExtension('OES_texture_float');
-          }
-          
-          // Configurações de performance
-          state.gl.physicallyCorrectLights = true;
-          state.gl.gammaFactor = 2.2;
-          
-          handleLoad();
         }}
-        onError={handleError}
+        onError={(error) => {
+          console.error('❌ Erro no Canvas:', error);
+          handleError();
+        }}
         className="w-full h-full"
-        shadows
-        dpr={[1, 2]}
-        performance={{ min: 0.5 }}
+        shadows={!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) && window.innerWidth >= 768}
+        dpr={[0.5, 2]}
+        performance={{ min: 0.3, max: 1.0 }}
+        gl={{ 
+          alpha: false,
+          antialias: false,
+          stencil: false,
+          depth: true,
+          logarithmicDepthBuffer: false,
+          powerPreference: "default"
+        }}
       >
-        {/* Sistema de iluminação profissional para texturas realistas */}
-        <ambientLight intensity={0.3} color="#f0f8ff" />
-        
-        {/* Luz principal do sol com sombras suaves */}
-        <directionalLight
-          position={[40, 60, 30]}
-          intensity={3.0}
-          color="#fff5e6"
-          castShadow
-          shadow-mapSize-width={8192}
-          shadow-mapSize-height={8192}
-          shadow-camera-far={200}
-          shadow-camera-left={-80}
-          shadow-camera-right={80}
-          shadow-camera-top={80}
-          shadow-camera-bottom={-80}
-          shadow-bias={-0.0001}
-          shadow-normalBias={0.02}
-        />
-        
-        {/* Luz de preenchimento lateral */}
-        <directionalLight
-          position={[-25, 35, 20]}
-          intensity={1.2}
-          color="#e8f4fd"
-        />
-        
-        {/* Luz ambiente realista */}
-        <hemisphereLight
-          skyColor="#87CEEB"
-          groundColor="#a0896b"
-          intensity={0.8}
-        />
-        
-        {/* Sistema de luzes pontuais para realce de detalhes */}
-        <pointLight 
-          position={[30, 25, 25]} 
-          intensity={2.0} 
-          color="#ffffff"
-          castShadow
-          shadow-mapSize-width={2048}
-          shadow-mapSize-height={2048}
-        />
-        <pointLight 
-          position={[-25, 25, 25]} 
-          intensity={1.5} 
-          color="#fff8e7"
-          castShadow
-          shadow-mapSize-width={2048}
-          shadow-mapSize-height={2048}
-        />
-        <pointLight 
-          position={[0, 40, 0]} 
-          intensity={1.0} 
-          color="#f0f8ff"
-        />
-        
-        {/* Luz de contra para definir silhuetas */}
-        <directionalLight
-          position={[-20, -10, -30]}
-          intensity={0.5}
-          color="#ffeaa7"
-        />
-
-        {/* Ambiente HDR de alta qualidade */}
-        <Environment 
-          preset="city" 
-          background={false}
-          environmentIntensity={2.0}
-          resolution={512}
-        />
+        {/* Sistema de iluminação adaptativo para mobile/desktop */}
+        <MobileLighting />
 
         {/* Contact Shadows removidas para eliminar grid */}
 

@@ -136,6 +136,13 @@ canvas:active {
     -ms-user-select: none;
     user-select: none;
     max-height: 50vh;
+    /* Forçar aceleração de hardware */
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    will-change: transform;
+    /* Otimizações específicas para WebGL mobile */
+    image-rendering: optimizeSpeed;
+    image-rendering: -webkit-optimize-contrast;
   }
   
   /* Melhor performance no mobile */
