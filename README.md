@@ -1,82 +1,171 @@
-# 🏗️ Sistema de Gerenciamento de Projetos
+# 🏗️ Prévia Unique - Visualizador 3D Interativo
 
-Sistema completo para criação de dashboards de gerenciamento de projetos arquitetônicos, baseado no projeto da Clínica UNIQUE.
+## 📋 Descrição
 
-## 🎯 O que foi criado
+Visualizador 3D interativo para Prévia Unique - Sistema de gestão de serviços com modelo GLB e texturas dinâmicas baseadas em dados CSV. Interface moderna que permite visualizar, destacar e gerenciar elementos arquitetônicos em tempo real.
 
-✅ **Template Base Reutilizável** - Código fonte completo do projeto da Clínica  
-✅ **Sistema de Configuração** - Arquivo JSON para personalização fácil  
-✅ **Script de Criação** - Gerador automático de novos projetos  
-✅ **Documentação Completa** - Guias e exemplos de uso  
-✅ **Estrutura Organizada** - Pastas para template, projetos e configurações  
+## ✨ Funcionalidades
 
-## 📁 Estrutura Criada
+* **Visualizador 3D GLB**: Renderização de modelos arquitetônicos com Three.js
+* **Texturas Dinâmicas**: Aplicação automática de materiais baseados em dados CSV
+* **Sistema de Highlighting**: Destacar elementos específicos no modelo 3D
+* **Controle de Visibilidade**: Ocultar/mostrar elementos por categoria
+* **Tabela de Serviços**: Interface integrada para gestão de orçamentos
+* **Iluminação Realista**: Sistema PBR com sombras e reflexos
+* **Design Responsivo**: Interface adaptável para desktop e mobile
+
+## 🎯 Características Técnicas
+
+### 🎨 **Sistema de Texturas**
+- **Materiais PBR**: Propriedades físicas realistas (roughness, metalness)
+- **Cores Baseadas em CSV**: Pintura, Asfalto, Porcelanato, Telha, Vidro, Madeira
+- **Iluminação Natural**: Luz solar, ambiente e preenchimento
+- **Transparência**: Vidros com opacidade adequada
+
+### 📊 **Integração CSV**
+- **Carregamento Automático**: Dados do arquivo `Link.csv`
+- **Mapeamento Dinâmico**: Objetos 3D ↔ Texturas do CSV
+- **Coluna de Texturas**: Quinta coluna define material de cada elemento
+- **Elementos 3D**: Lista completa de objetos por serviço
+
+### 🎮 **Interatividade**
+- **Controles de Órbita**: Navegação livre no modelo 3D
+- **Seleção por Clique**: Destacar elementos na tabela
+- **Toggle de Visibilidade**: Ocultar/mostrar por categoria
+- **Zoom e Pan**: Controles intuitivos de câmera
+
+## 🚀 Deploy e Acesso
+
+### **🌐 Aplicação (Vercel)**
+
+* **URL**: `previa-unique-3d-viewer.vercel.app`
+* **Status**: ✅ Deployado e Funcionando
+* **Acesso**: Direto pelo navegador, sem instalações
+
+## 🛠️ Tecnologias Utilizadas
+
+* **Frontend**: React 18 + TypeScript
+* **3D Engine**: Three.js + React Three Fiber
+* **Styling**: Tailwind CSS
+* **Ícones**: Lucide React
+* **Build Tool**: Vite
+* **Deploy**: Vercel
+* **Versionamento**: Git + GitHub
+
+## 📁 Estrutura do Projeto
 
 ```
-Gerenciamento de Projetos/
-├── 01-Template-Base/           # Template reutilizável
-│   ├── Template-Projeto/       # Código da Clínica UNIQUE
-│   └── create-new-project.js   # Script gerador
-├── 02-Projetos-Ativos/         # Projetos criados
-│   └── Exemplo-Projeto/        # Exemplo de uso
-├── 03-Documentacao/            # Documentação
-│   ├── README.md               # Guia completo
-│   └── GUIA-RAPIDO.md          # Guia de 5 minutos
-└── 04-Configuracoes/           # Configurações globais
-    └── global-settings.json    # Configurações do sistema
+previa-unique-3d-viewer/
+├── public/
+│   ├── ARQ.glb              # Modelo 3D principal
+│   ├── Link.csv             # Dados de serviços e texturas
+│   ├── Prévia Unique.png    # Logo da empresa
+│   └── previa-unique.png    # Logo alternativa
+├── src/
+│   ├── components/
+│   │   ├── layout/
+│   │   │   └── Header.tsx   # Cabeçalho com logo
+│   │   └── ui/
+│   │       ├── CSVTable.tsx # Tabela de serviços
+│   │       └── Model3DViewer.tsx # Visualizador 3D
+│   ├── utils/
+│   │   ├── serviceMapping.ts # Mapeamento serviços ↔ 3D
+│   │   └── textureConfig.ts  # Configurações de materiais
+│   └── App.tsx              # Componente principal
+├── vercel.json              # Configuração de deploy
+└── package.json             # Dependências do projeto
 ```
 
-## 🚀 Como Usar
+## 🌟 **Como Usar**
 
-### Criar Novo Projeto (5 minutos)
-```bash
-cd "01-Template-Base"
-node create-new-project.js
+### **1. Acesse a Aplicação**
+* Abra: `previa-unique-3d-viewer.vercel.app`
+* Aguarde o carregamento do modelo 3D
+
+### **2. Navegue no Modelo 3D**
+* **Rotação**: Arraste com o mouse
+* **Zoom**: Scroll do mouse
+* **Pan**: Shift + arrastar
+
+### **3. Interaja com a Tabela**
+* **Clique em uma linha**: Destaca elementos no 3D
+* **Ícone do olho**: Oculta/mostra elementos
+* **Cores**: Cada serviço tem cor específica
+
+### **4. Visualize Texturas**
+* **Paredes**: Pintura bege claro
+* **Pisos**: Porcelanato branco
+* **Telhados**: Telha vermelha
+* **Vidros**: Transparente azul
+* **Asfalto**: Preto rugoso
+
+## 🎨 Sistema de Cores
+
+| Material | Cor | Rugosidade | Aplicação |
+|----------|-----|------------|-----------|
+| Pintura | `#F5F5DC` | 0.3 | Paredes |
+| Asfalto | `#2F2F2F` | 0.95 | Calçadas |
+| Porcelanato | `#F8F8FF` | 0.05 | Pisos |
+| Telha | `#8B0000` | 0.8 | Telhados |
+| Vidro | `#87CEEB` | 0.0 | Janelas |
+| Madeira | `#8B4513` | 0.7 | Estruturas |
+
+## 🔧 Configuração para Produção
+
+### **Vercel Configuration**
+```json
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
 ```
 
-### Executar Projeto
-```bash
-cd "../02-Projetos-Ativos/meu-projeto"
-npm install
-npm run dev
-```
+## 📱 Responsividade
 
-## 🎨 Personalização
+* ✅ Desktop (1024px+)
+* ✅ Tablet (768px - 1023px)
+* ✅ Mobile (320px - 767px)
 
-- **Cores da empresa** (preto/amarelo, azul/branco, etc.)
-- **Logo e identidade visual**
-- **Nomes e descrições**
-- **Imagens e documentos**
-- **Estrutura das abas**
+## 🎨 Design System
 
-## 📋 Funcionalidades
+* **Cores**: Paleta baseada em azul, laranja e cinza
+* **Tipografia**: Inter + Lucide React
+* **Componentes**: Cards, tabelas, controles 3D
+* **Animações**: Hover effects, transições suaves
 
-- ✅ **Header personalizado** com logo e cores da empresa
-- ✅ **Galeria de imagens** interativa
-- ✅ **Cards de projetos** com progresso
-- ✅ **Sistema de documentos** com download
-- ✅ **Design responsivo** para mobile/desktop
-- ✅ **Efeitos visuais** animados
-- ✅ **Deploy fácil** no Vercel/Netlify
+## 🚀 **Vantagens do Deploy Vercel**
 
-## 🎯 Casos de Uso
+* ✅ **Sem Instalação**: Acesso direto pelo navegador
+* ✅ **Sempre Atualizado**: Deploy automático do GitHub
+* ✅ **Performance**: CDN global para carregamento rápido
+* ✅ **Responsivo**: Funciona em qualquer dispositivo
+* ✅ **Seguro**: HTTPS automático e proteções de segurança
 
-- **Clínicas e Hospitais** - Documentação médica
-- **Edifícios Comerciais** - Projetos arquitetônicos
-- **Residências** - Documentação legal
-- **Obras Públicas** - Licenciamento
-- **Qualquer projeto** que precise de documentação visual
+## 📊 Logs de Debug
 
-## 📞 Próximos Passos
+No console do navegador você verá:
+- `📊 CSV carregado: X itens`
+- `🎨 Iniciando aplicação de texturas baseadas no CSV...`
+- `🎨 Objeto: [nome] - Textura: [tipo]`
+- `✅ Aplicadas X texturas baseadas no CSV`
 
-1. **Teste o template** executando o projeto da Clínica
-2. **Crie seu primeiro projeto** usando o script
-3. **Personalize** cores, logo e conteúdo
-4. **Adicione** suas imagens e documentos
-5. **Faça deploy** para produção
+## 📞 Suporte
+
+Para dúvidas ou problemas:
+* Abra uma issue no GitHub
+* Entre em contato com a equipe de desenvolvimento
+
+## 📄 Licença
+
+© 2024 Prévia Unique - Visualizador 3D Interativo. Todos os direitos reservados.
 
 ---
 
-**Criado por**: Bonfim Imobiliária e Engenharia  
-**Baseado em**: Projeto Clínica UNIQUE  
-**Data**: Janeiro 2025
+**Desenvolvido com ❤️ pela equipe de Desenvolvimento 3D**
