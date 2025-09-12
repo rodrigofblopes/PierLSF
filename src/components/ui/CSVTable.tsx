@@ -8,7 +8,6 @@ interface CSVItem {
   unid: string;
   qtd: string;
   elementos3d: string; // Mantido para consulta interna, mas não exibido
-  textura: string; // Nova coluna para texturas
 }
 
 interface CSVTableProps {
@@ -48,13 +47,12 @@ export const CSVTable: React.FC<CSVTableProps> = ({
         .slice(1) // Pular cabeçalho
         .filter(line => line.trim()) // Filtrar linhas vazias
         .map(line => {
-          const [item, unid, qtd, elementos3d, textura] = line.split(';');
+          const [item, unid, qtd, elementos3d] = line.split(';');
           return {
             item: item?.trim() || '',
             unid: unid?.trim() || '',
             qtd: qtd?.trim() || '',
-            elementos3d: elementos3d?.trim() || '',
-            textura: textura?.trim() || ''
+            elementos3d: elementos3d?.trim() || ''
           };
         });
       
@@ -74,12 +72,17 @@ export const CSVTable: React.FC<CSVTableProps> = ({
   const handleServiceClick = (serviceName: string) => {
     console.log('🖱️ Clique na linha:', serviceName);
     const mapping = findServiceMapping(serviceName);
-    const item = data.find(d => d.item === serviceName);
-    const textureType = item?.textura || '';
     console.log('🔗 Mapeamento encontrado:', mapping);
-    console.log('🎨 Tipo de textura:', textureType);
+    
     if (onServiceSelect) {
-      onServiceSelect(mapping || null, textureType);
+      // Se já está selecionado, desseleciona. Senão, seleciona.
+      if (selectedService === serviceName) {
+        console.log('🔄 Deselecionando serviço:', serviceName);
+        onServiceSelect(null);
+      } else {
+        console.log('✅ Selecionando serviço:', serviceName);
+        onServiceSelect(mapping || null);
+      }
     }
   };
 
@@ -91,6 +94,7 @@ export const CSVTable: React.FC<CSVTableProps> = ({
       onToggleVisibility(mapping || null);
     }
   };
+
 
   if (loading) {
     return (
@@ -128,7 +132,7 @@ export const CSVTable: React.FC<CSVTableProps> = ({
   }
 
   return (
-    <div className={`bg-white rounded-lg shadow-sm border ${className}`}>
+    <div className={`bg-white rounded-lg shadow-sm border flex flex-col ${className}`}>
       {/* Cabeçalho */}
       <div className="px-3 sm:px-6 py-3 sm:py-5 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">
         <div className="flex items-center justify-between">
@@ -145,11 +149,12 @@ export const CSVTable: React.FC<CSVTableProps> = ({
               </p>
             </div>
           </div>
+          
         </div>
       </div>
 
       {/* Tabela */}
-      <div className="overflow-x-auto overflow-y-auto max-h-[calc(100vh-200px)] sm:max-h-none">
+      <div className="overflow-x-auto overflow-y-auto flex-1 min-h-0">
         <table className="w-full min-w-[300px] sm:min-w-[450px]">
           <thead className="bg-gradient-to-r from-gray-50 to-gray-100">
             <tr>

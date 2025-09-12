@@ -1,11 +1,11 @@
-﻿Item;unid.;QTD;Elementos 3D;Textura
-Paredes Terreo;m²;348;ParedeTerreo, ParedeTerreo.001, ParedeTerreo.002, ParedeTerreo.003, ParedeTerreo.004... (+69 objetos);Pintura Toque de Brilho cor Clara
-Paredes Pav. Superior;m²;178;ParedePavSuperior, ParedePavSuperior.001, ParedePavSuperior.002, ParedePavSuperior.003, ParedePavSuperior.004... (+9 objetos);Pintura Toque de Brilho cor Clara
-Piso Calçada;m²;127;PisoCalcada, PisoCalcada.001, PisoCalcada.002, PisoCalcada.003, PisoCalcada.004... (+126 objetos);Asfalto
-Piso Térreo;m²;129;PisoTerreo, PisoTerreo.001, PisoTerreo.002, PisoTerreo.003, PisoTerreo.004... (+12 objetos);Porcelanato
-Piso Pav. Superior;m²;58;PisoPavSuperior, PisoPavSuperior.001, PisoPavSuperior.002, PisoPavSuperior.003, PisoPavSuperior.004, PisoPavSuperior.005, PisoPavSuperior.006, PisoPavSuperior.007, PisoPavSuperior.008;Porcelanato
-Telhado Terreo;m²;76;TelhadoTerreo;Telha Fibrocimento
-Telhado Pav. Superior;m²;63;TelhadoPavSuperior;Telha Fibrocimento
-Esquadrias Terreo;unid.;13;EsquadriasTerreo, EsquadriasTerreo.001, EsquadriasTerreo.002, EsquadriasTerreo.003, EsquadriasTerreo.004... (+8 objetos);Vidro
-Esquadrias Pav.Superior;unid.;5;EsquadriasPavSuperior, EsquadriasPavSuperior.001, EsquadriasPavSuperior.002, EsquadriasPavSuperior.003;Vidro
-Pergolado;m²;9;Pergolado, Pergolado.001, Pergolado.002, Pergolado.003, Pergolado.004... (+23 objetos);Madeira
+﻿Item;unid.;QTD;Elementos 3D
+Paredes Terreo;m²;348;ParedeTerreo, ParedeTerreo.001, ParedeTerreo.002, ParedeTerreo.003, ParedeTerreo.004... (+69 objetos)
+Paredes Pav. Superior;m²;178;ParedePavSuperior, ParedePavSuperior.001, ParedePavSuperior.002, ParedePavSuperior.003, ParedePavSuperior.004... (+9 objetos)
+Piso Calçada;m²;127;PisoCalcada, PisoCalcada.001, PisoCalcada.002, PisoCalcada.003, PisoCalcada.004... (+126 objetos)
+Piso Térreo;m²;129;PisoTerreo, PisoTerreo.001, PisoTerreo.002, PisoTerreo.003, PisoTerreo.004... (+12 objetos)
+Piso Pav. Superior;m²;58;PisoPavSuperior, PisoPavSuperior.001, PisoPavSuperior.002, PisoPavSuperior.003, PisoPavSuperior.004, PisoPavSuperior.005, PisoPavSuperior.006, PisoPavSuperior.007, PisoPavSuperior.008
+Telhado Terreo;m²;76;TelhadoTerreo
+Telhado Pav. Superior;m²;63;TelhadoPavSuperior
+Esquadrias Terreo;unid.;13;EsquadriasTerreo, EsquadriasTerreo.001, EsquadriasTerreo.002, EsquadriasTerreo.003, EsquadriasTerreo.004... (+8 objetos)
+Esquadrias Pav.Superior;unid.;5;EsquadriasPavSuperior, EsquadriasPavSuperior.001, EsquadriasPavSuperior.002, EsquadriasPavSuperior.003
+Pergolado;m²;9;Pergolado, Pergolado.001, Pergolado.002, Pergolado.003, Pergolado.004... (+23 objetos)

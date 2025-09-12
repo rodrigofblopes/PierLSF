@@ -86,14 +86,8 @@ function App() {
   const [selectedService, setSelectedService] = useState<ServiceMapping | null>(null);
   const [hiddenServices, setHiddenServices] = useState<string[]>([]);
 
-  const handleServiceSelect = (serviceMapping: ServiceMapping | null, textureType?: string) => {
-    // Atualizar o mapeamento com a textura do CSV se disponível
-    if (serviceMapping && textureType) {
-      const updatedMapping = { ...serviceMapping, textureType };
-      setSelectedService(updatedMapping);
-    } else {
-      setSelectedService(serviceMapping);
-    }
+  const handleServiceSelect = (serviceMapping: ServiceMapping | null) => {
+    setSelectedService(serviceMapping);
   };
 
   const handleToggleVisibility = (serviceMapping: ServiceMapping | null) => {
@@ -541,9 +535,9 @@ function App() {
           )}
 
           {activeTab === '3d' && (
-            <div className="h-screen flex flex-col gap-2 p-2 sm:gap-4 sm:p-4 lg:flex-row">
+            <div className="h-[calc(100vh-120px)] flex flex-col gap-2 p-2 sm:gap-4 sm:p-4 lg:flex-row">
               {/* Visualizador 3D */}
-              <div className="flex-1 min-h-0 h-1/2 lg:h-full">
+              <div className="flex-1 min-h-0 h-2/5 lg:h-full">
                 <Model3DViewer 
                   modelPath="./ARQ.glb" 
                   className="h-full rounded-lg border border-white/10" 
@@ -552,8 +546,9 @@ function App() {
                 />
               </div>
               
-              {/* Tabela CSV */}
-              <div className="w-full h-1/2 lg:h-full lg:w-[500px] min-h-0 overflow-hidden">
+              {/* Painel lateral - Tabela */}
+              <div className="w-full h-3/5 lg:h-full lg:w-[500px] min-h-0 overflow-hidden">
+                {/* Tabela CSV */}
                 <CSVTable 
                   className="h-full" 
                   onServiceSelect={handleServiceSelect}
