@@ -86,12 +86,6 @@ function App() {
   const [selectedService, setSelectedService] = useState<ServiceMapping | null>(null);
   const [hiddenServices, setHiddenServices] = useState<string[]>([]);
 
-  // DEBUG: Logs para rastrear o estado
-  console.log('🐛 DEBUG App.tsx - Component rendered');
-  console.log('🐛 DEBUG activeTab:', activeTab);
-  console.log('🐛 DEBUG selectedService:', selectedService);
-  console.log('🐛 DEBUG hiddenServices:', hiddenServices);
-
   const handleServiceSelect = (serviceMapping: ServiceMapping | null, textureType?: string) => {
     // Atualizar o mapeamento com a textura do CSV se disponível
     if (serviceMapping && textureType) {
@@ -126,14 +120,8 @@ function App() {
     { id: '3d', label: '3D', icon: <Box /> },
   ];
 
-  // DEBUG: Log das abas
-  console.log('🐛 DEBUG tabs array:', tabs);
-
   const handleTabChange = (tabId: string) => {
-    console.log('🐛 DEBUG handleTabChange called with:', tabId);
-    console.log('🐛 DEBUG Previous activeTab:', activeTab);
     setActiveTab(tabId);
-    console.log('🐛 DEBUG setActiveTab called with:', tabId);
   };
 
 
@@ -245,15 +233,6 @@ function App() {
       {/* Conteúdo das Abas */}
       <div className="p-3 sm:p-6">
         <div className="max-w-6xl mx-auto">
-          
-          {/* DEBUG: Status das condições */}
-          <div className="hidden">
-            {console.log('🐛 DEBUG Rendering tab content...')}
-            {console.log('🐛 DEBUG activeTab === "home":', activeTab === 'home')}
-            {console.log('🐛 DEBUG activeTab === "projetos":', activeTab === 'projetos')}
-            {console.log('🐛 DEBUG activeTab === "documentos":', activeTab === 'documentos')}
-            {console.log('🐛 DEBUG activeTab === "3d":', activeTab === '3d')}
-          </div>
           {activeTab === 'home' && (
             <div className="space-y-6">
               {/* Header da aba Início */}
@@ -561,19 +540,6 @@ function App() {
 
           {activeTab === '3d' && (
             <div className="h-screen flex flex-col lg:flex-row gap-4 p-4">
-              {/* DEBUG: Aba 3D sendo renderizada */}
-              <div className="hidden">
-                {console.log('🐛 DEBUG 3D TAB IS RENDERING!')}
-                {console.log('🐛 DEBUG Model path: ./ARQ.glb')}
-                {console.log('🐛 DEBUG selectedService:', selectedService)}
-                {console.log('🐛 DEBUG hiddenServices:', hiddenServices)}
-              </div>
-              
-              {/* Header de debug visível */}
-              <div className="w-full bg-red-500 text-white p-2 text-center font-bold">
-                🐛 DEBUG: ABA 3D ESTÁ SENDO RENDERIZADA! Se você vê isso, a aba funciona!
-              </div>
-              
               {/* Visualizador 3D */}
               <div className="flex-1 min-h-0">
                 <Model3DViewer 

@@ -30,32 +30,17 @@ export const CSVTable: React.FC<CSVTableProps> = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // DEBUG: Log do CSVTable
-  console.log('🐛 DEBUG CSVTable component rendered');
-  console.log('🐛 DEBUG className:', className);
-  console.log('🐛 DEBUG onServiceSelect:', onServiceSelect);
-  console.log('🐛 DEBUG selectedService:', selectedService);
-  console.log('🐛 DEBUG hiddenServices:', hiddenServices);
-
   const loadCSVData = async () => {
-    console.log('🐛 DEBUG loadCSVData started');
     setLoading(true);
     setError(null);
     
     try {
-      console.log('🐛 DEBUG Fetching CSV from: ./Link.csv');
       const response = await fetch('./Link.csv');
-      console.log('🐛 DEBUG CSV response:', response);
-      console.log('🐛 DEBUG CSV response.ok:', response.ok);
-      console.log('🐛 DEBUG CSV response.status:', response.status);
-      
       if (!response.ok) {
-        throw new Error(`Arquivo CSV não encontrado - Status: ${response.status}`);
+        throw new Error('Arquivo CSV não encontrado');
       }
       
       const csvText = await response.text();
-      console.log('🐛 DEBUG CSV text length:', csvText.length);
-      console.log('🐛 DEBUG CSV first 100 chars:', csvText.substring(0, 100));
       const lines = csvText.split('\n').filter(line => line.trim());
       
       // Converter CSV para array de objetos

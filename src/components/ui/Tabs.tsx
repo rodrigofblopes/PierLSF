@@ -20,22 +20,13 @@ export const Tabs: React.FC<TabsProps> = ({
   onTabChange,
   className,
 }) => {
-  // DEBUG: Logs do componente Tabs
-  console.log('🐛 DEBUG Tabs component rendered');
-  console.log('🐛 DEBUG tabs prop:', tabs);
-  console.log('🐛 DEBUG activeTab prop:', activeTab);
-  console.log('🐛 DEBUG onTabChange prop:', onTabChange);
-
   return (
     <div className={cn('border-b border-white/20', className)}>
       <nav className="flex space-x-1 sm:space-x-8">
         {tabs.map((tab) => (
           <button
             key={tab.id}
-            onClick={() => {
-              console.log('🐛 DEBUG Tab clicked:', tab.id, tab.label);
-              onTabChange(tab.id);
-            }}
+            onClick={() => onTabChange(tab.id)}
             className={cn(
               'flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base font-medium border-b-2 transition-all duration-300 rounded-t-lg',
               activeTab === tab.id
