@@ -1,0 +1,121 @@
+{
+  "template": {
+    "version": "1.0.0",
+    "lastUpdated": "2025-01-07",
+    "author": "Bonfim Imobiliária e Engenharia",
+    "description": "Template reutilizável para dashboards de gerenciamento de projetos"
+  },
+  "defaultColors": {
+    "combinations": [
+      {
+        "name": "Preto e Amarelo",
+        "primary": "black",
+        "secondary": "yellow",
+        "gradient": "from-black via-yellow-600 to-black"
+      },
+      {
+        "name": "Azul e Branco",
+        "primary": "blue",
+        "secondary": "white",
+        "gradient": "from-blue-600 via-blue-500 to-blue-700"
+      },
+      {
+        "name": "Verde e Branco",
+        "primary": "green",
+        "secondary": "white",
+        "gradient": "from-green-600 via-green-500 to-green-700"
+      },
+      {
+        "name": "Roxo e Rosa",
+        "primary": "purple",
+        "secondary": "pink",
+        "gradient": "from-purple-600 via-pink-500 to-purple-700"
+      },
+      {
+        "name": "Vermelho e Laranja",
+        "primary": "red",
+        "secondary": "orange",
+        "gradient": "from-red-600 via-orange-500 to-red-700"
+      }
+    ]
+  },
+  "availableIcons": [
+    "Home",
+    "FolderOpen",
+    "FileText",
+    "Building",
+    "MapPin",
+    "Users",
+    "Settings",
+    "Download",
+    "Share",
+    "Eye",
+    "Camera",
+    "Image",
+    "File",
+    "Archive"
+  ],
+  "projectTypes": [
+    "Arquitetura",
+    "Estrutural",
+    "Elétrica",
+    "Hidráulica",
+    "Paisagismo",
+    "Interiores",
+    "Regularização",
+    "Licenciamento"
+  ],
+  "documentTypes": [
+    "licenca",
+    "alvara",
+    "habite-se",
+    "projeto",
+    "laudo",
+    "certificado",
+    "contrato",
+    "planta"
+  ],
+  "statusOptions": [
+    "ativo",
+    "planejamento",
+    "concluido",
+    "pausado",
+    "cancelado"
+  ],
+  "fileExtensions": {
+    "images": [".jpg", ".jpeg", ".png", ".gif", ".webp"],
+    "documents": [".pdf", ".doc", ".docx"],
+    "models": [".glb", ".gltf", ".fbx", ".obj"],
+    "drawings": [".dwg", ".dxf", ".pdf"]
+  },
+  "recommendedStructure": {
+    "public": {
+      "images": "Fotos e imagens do projeto",
+      "documents": "PDFs e documentos",
+      "models": "Modelos 3D",
+      "logos": "Logos e identidade visual"
+    },
+    "src": {
+      "components": "Componentes React reutilizáveis",
+      "utils": "Funções utilitárias",
+      "types": "Definições TypeScript",
+      "styles": "Estilos CSS"
+    }
+  },
+  "deployment": {
+    "vercel": {
+      "buildCommand": "npm run build",
+      "outputDirectory": "dist",
+      "installCommand": "npm install"
+    },
+    "netlify": {
+      "buildCommand": "npm run build",
+      "publishDirectory": "dist"
+    }
+  },
+  "maintenance": {
+    "backupFrequency": "weekly",
+    "updateCheck": "monthly",
+    "dependenciesUpdate": "quarterly"
+  }
+}
