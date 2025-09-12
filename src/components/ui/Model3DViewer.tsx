@@ -560,7 +560,7 @@ export const Model3DViewer: React.FC<Model3DViewerProps> = ({ modelPath, classNa
   };
 
   return (
-    <div className={`relative w-full bg-white overflow-hidden ${className}`}>
+    <div className={`relative w-full bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden ${className}`}>
       
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm z-10">
@@ -651,7 +651,7 @@ export const Model3DViewer: React.FC<Model3DViewerProps> = ({ modelPath, classNa
         dpr={[0.5, 2]}
         performance={{ min: 0.3, max: 1.0 }}
         gl={{ 
-          alpha: false,
+          alpha: true,
           antialias: false,
           stencil: false,
           depth: true,
