@@ -43,7 +43,7 @@ export const LinkManager: React.FC<LinkManagerProps> = ({
     setError(null);
     
     try {
-      const response = await fetch('/Link.csv');
+      const response = await fetch('./Link.csv');
       if (!response.ok) {
         throw new Error('Arquivo não encontrado');
       }

@@ -35,7 +35,7 @@ export const CSVTable: React.FC<CSVTableProps> = ({
     setError(null);
     
     try {
-      const response = await fetch('/Link.csv');
+      const response = await fetch('./Link.csv');
       if (!response.ok) {
         throw new Error('Arquivo CSV não encontrado');
       }

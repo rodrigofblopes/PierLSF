@@ -40,7 +40,7 @@ function Model({ modelPath, selectedService, hiddenServices }: {
   // Carregar dados do CSV
   const loadCSVData = async () => {
     try {
-      const response = await fetch('/Link.csv');
+      const response = await fetch('./Link.csv');
       if (!response.ok) {
         throw new Error('Arquivo CSV não encontrado');
       }

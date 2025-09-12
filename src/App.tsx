@@ -543,7 +543,7 @@ function App() {
               {/* Visualizador 3D */}
               <div className="flex-1 min-h-0">
                 <Model3DViewer 
-                  modelPath="/ARQ.glb" 
+                  modelPath="./ARQ.glb" 
                   className="h-full" 
                   selectedService={selectedService}
                   hiddenServices={hiddenServices}
