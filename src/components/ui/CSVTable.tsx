@@ -130,17 +130,18 @@ export const CSVTable: React.FC<CSVTableProps> = ({
   return (
     <div className={`bg-white rounded-lg shadow-sm border ${className}`}>
       {/* Cabeçalho */}
-      <div className="px-6 py-5 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">
+      <div className="px-3 sm:px-6 py-3 sm:py-5 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <div className="p-3 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl shadow-lg">
-              <BarChart3 className="w-6 h-6 text-white" />
+          <div className="flex items-center space-x-2 sm:space-x-4">
+            <div className="p-2 sm:p-3 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl shadow-lg">
+              <BarChart3 className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-gray-900">Tabela de Serviços</h3>
-              <p className="text-sm text-gray-600 flex items-center space-x-2">
-                <CheckCircle className="w-4 h-4 text-green-500" />
-                <span>Sistema de gestão de serviços</span>
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900">Serviços</h3>
+              <p className="text-xs sm:text-sm text-gray-600 flex items-center space-x-1 sm:space-x-2">
+                <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-green-500" />
+                <span className="hidden sm:inline">Sistema de gestão de serviços</span>
+                <span className="sm:hidden">Gestão</span>
               </p>
             </div>
           </div>
@@ -148,26 +149,28 @@ export const CSVTable: React.FC<CSVTableProps> = ({
       </div>
 
       {/* Tabela */}
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[450px]">
+      <div className="overflow-x-auto overflow-y-auto max-h-[calc(100vh-200px)] sm:max-h-none">
+        <table className="w-full min-w-[300px] sm:min-w-[450px]">
           <thead className="bg-gradient-to-r from-gray-50 to-gray-100">
             <tr>
-              <th className="px-4 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-r border-gray-200 w-[60%]">
-                <div className="flex items-center space-x-2">
-                  <FileText className="w-4 h-4 text-blue-600" />
-                  <span>Serviço</span>
+              <th className="px-2 sm:px-4 py-2 sm:py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-r border-gray-200 w-[50%] sm:w-[60%]">
+                <div className="flex items-center space-x-1 sm:space-x-2">
+                  <FileText className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
+                  <span className="text-xs sm:text-xs">Serviço</span>
                 </div>
               </th>
-              <th className="px-4 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-r border-gray-200 w-[20%]">
-                <div className="flex items-center space-x-2">
-                  <Package className="w-4 h-4 text-green-600" />
-                  <span>Unidade</span>
+              <th className="px-2 sm:px-4 py-2 sm:py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-r border-gray-200 w-[25%] sm:w-[20%]">
+                <div className="flex items-center space-x-1 sm:space-x-2">
+                  <Package className="w-3 h-3 sm:w-4 sm:h-4 text-green-600" />
+                  <span className="text-xs sm:text-xs hidden sm:inline">Unidade</span>
+                  <span className="text-xs sm:hidden">Unid</span>
                 </div>
               </th>
-              <th className="px-4 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider w-[20%]">
-                <div className="flex items-center space-x-2">
-                  <BarChart3 className="w-4 h-4 text-purple-600" />
-                  <span>Quantidade</span>
+              <th className="px-2 sm:px-4 py-2 sm:py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider w-[25%] sm:w-[20%]">
+                <div className="flex items-center space-x-1 sm:space-x-2">
+                  <BarChart3 className="w-3 h-3 sm:w-4 sm:h-4 text-purple-600" />
+                  <span className="text-xs sm:text-xs hidden sm:inline">Quantidade</span>
+                  <span className="text-xs sm:hidden">Qtd</span>
                 </div>
               </th>
             </tr>

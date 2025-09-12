@@ -192,28 +192,30 @@ function App() {
                 </div>
               </div>
               
-              {/* Título do Projeto - Responsivo */}
-              <div className="flex justify-center items-center min-h-[80px] sm:min-h-[100px] lg:min-h-[120px]">
-                <div className="text-center relative group px-2 sm:px-4">
-                  <div className="relative">
-                    <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-center relative leading-tight">
+              {/* Header Clínica UNIQUE */}
+              <div className="flex flex-col justify-center items-center min-h-[80px] sm:min-h-[90px] lg:min-h-[100px] space-y-1 sm:space-y-2">
+                {/* Título Principal UNIQUE */}
+                <div className="flex justify-center items-center">
+                  <div className="relative group">
+                    <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black text-center relative leading-tight">
                       <span className="bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 bg-clip-text text-transparent drop-shadow-2xl filter drop-shadow-yellow-400/70 animate-pulse">
-                        Clínica UNIQUE
-                      </span>
-                      <br />
-                      <span className="text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-3xl text-yellow-300 font-bold mt-1 sm:mt-2 lg:mt-3 block tracking-wide">
-                        Medicina Especializada
+                        CLÍNICA UNIQUE
                       </span>
                     </h1>
                     
                     {/* Efeitos de brilho responsivos */}
                     <div className="absolute -inset-4 sm:-inset-6 lg:-inset-8 bg-gradient-to-r from-yellow-400/10 via-yellow-300/20 to-yellow-500/10 rounded-2xl sm:rounded-3xl blur-xl sm:blur-2xl opacity-60 group-hover:opacity-80 transition-opacity duration-500 animate-pulse"></div>
                     <div className="absolute -inset-2 sm:-inset-3 lg:-inset-4 bg-gradient-to-r from-yellow-400/5 via-yellow-300/10 to-yellow-500/5 rounded-xl sm:rounded-2xl blur-lg sm:blur-xl opacity-40 group-hover:opacity-60 transition-opacity duration-300"></div>
-                    
-                    {/* Linha de destaque responsiva */}
-                    <div className="absolute -bottom-3 sm:-bottom-4 lg:-bottom-6 left-1/2 transform -translate-x-1/2 w-24 sm:w-32 md:w-40 lg:w-48 h-1 sm:h-1.5 lg:h-2 bg-gradient-to-r from-transparent via-yellow-400 to-transparent rounded-full shadow-lg shadow-yellow-400/30"></div>
-                    <div className="absolute -bottom-2 sm:-bottom-3 lg:-bottom-5 left-1/2 transform -translate-x-1/2 w-16 sm:w-20 md:w-24 lg:w-32 h-0.5 sm:h-1 bg-gradient-to-r from-transparent via-yellow-300 to-transparent rounded-full"></div>
                   </div>
+                </div>
+                
+                {/* Subtítulo Medicina Especializada */}
+                <div className="text-center">
+                  <h2 className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl font-bold text-yellow-300 drop-shadow-lg tracking-wide">
+                    <span className="bg-gradient-to-r from-yellow-300 via-yellow-200 to-yellow-400 bg-clip-text text-transparent filter drop-shadow-yellow-300/50">
+                      Medicina Especializada
+                    </span>
+                  </h2>
                 </div>
               </div>
             </div>
@@ -539,19 +541,19 @@ function App() {
           )}
 
           {activeTab === '3d' && (
-            <div className="h-screen flex flex-col lg:flex-row gap-4 p-4">
+            <div className="h-screen flex flex-col gap-2 p-2 sm:gap-4 sm:p-4 lg:flex-row">
               {/* Visualizador 3D */}
-              <div className="flex-1 min-h-0">
+              <div className="flex-1 min-h-0 h-1/2 lg:h-full">
                 <Model3DViewer 
                   modelPath="./ARQ.glb" 
-                  className="h-full" 
+                  className="h-full rounded-lg border border-white/10" 
                   selectedService={selectedService}
                   hiddenServices={hiddenServices}
                 />
               </div>
               
               {/* Tabela CSV */}
-              <div className="w-full lg:w-[500px] min-h-0">
+              <div className="w-full h-1/2 lg:h-full lg:w-[500px] min-h-0 overflow-hidden">
                 <CSVTable 
                   className="h-full" 
                   onServiceSelect={handleServiceSelect}

@@ -37,6 +37,62 @@ function Model({ modelPath, selectedService, hiddenServices }: {
   const [csvData, setCsvData] = useState<CSVData[]>([]);
   const [texturesLoaded, setTexturesLoaded] = useState(false);
 
+  // Função para aplicar texturas procedurais simples
+  const applyProceduralTexture = (material: THREE.MeshPhysicalMaterial, textureType: string, mesh: THREE.Mesh) => {
+    // Criar textura procedural baseada no tipo
+    const canvas = document.createElement('canvas');
+    canvas.width = 512;
+    canvas.height = 512;
+    const ctx = canvas.getContext('2d');
+    
+    if (ctx) {
+      // Gerar padrão baseado no tipo de material
+      switch(textureType) {
+        case 'Concreto':
+          // Textura de concreto com ruído
+          ctx.fillStyle = '#A9A9A9';
+          ctx.fillRect(0, 0, 512, 512);
+          for(let i = 0; i < 1000; i++) {
+            ctx.fillStyle = `rgba(${Math.random() * 50}, ${Math.random() * 50}, ${Math.random() * 50}, 0.3)`;
+            ctx.fillRect(Math.random() * 512, Math.random() * 512, 2, 2);
+          }
+          break;
+        case 'Tijolo':
+          // Padrão de tijolos
+          ctx.fillStyle = '#8B4513';
+          ctx.fillRect(0, 0, 512, 512);
+          ctx.strokeStyle = '#654321';
+          ctx.lineWidth = 2;
+          for(let y = 0; y < 512; y += 64) {
+            for(let x = 0; x < 512; x += 128) {
+              ctx.strokeRect(x + (y % 128 === 0 ? 0 : 64), y, 128, 64);
+            }
+          }
+          break;
+        case 'Madeira':
+          // Padrão de madeira
+          ctx.fillStyle = '#A0522D';
+          ctx.fillRect(0, 0, 512, 512);
+          for(let i = 0; i < 20; i++) {
+            ctx.strokeStyle = `rgba(101, 67, 33, ${Math.random() * 0.5 + 0.3})`;
+            ctx.lineWidth = Math.random() * 3 + 1;
+            ctx.beginPath();
+            ctx.moveTo(0, Math.random() * 512);
+            ctx.lineTo(512, Math.random() * 512);
+            ctx.stroke();
+          }
+          break;
+      }
+      
+      // Aplicar textura ao material
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+      texture.repeat.set(2, 2);
+      material.map = texture;
+      material.needsUpdate = true;
+    }
+  };
+
   // Carregar dados do CSV
   const loadCSVData = async () => {
     try {
@@ -95,8 +151,8 @@ function Model({ modelPath, selectedService, hiddenServices }: {
       // Centralizar o modelo
       modelRef.current.position.copy(center.multiplyScalar(-1));
       
-      // Ajustar posição da câmera para uma boa visualização
-      const distance = maxDim * 2;
+      // Ajustar posição da câmera para uma visualização mais próxima
+      const distance = maxDim * 1.2;
       camera.position.set(distance, distance * 0.7, distance);
       camera.lookAt(center);
     }
@@ -123,22 +179,85 @@ function Model({ modelPath, selectedService, hiddenServices }: {
           console.log(`🎨 Textura encontrada: ${textureType}`);
           console.log(`🎨 Configuração:`, textureConfig);
           
-          // Criar material com propriedades PBR realistas
+          // Material PBR de alta qualidade com configurações avançadas
           const material = new THREE.MeshPhysicalMaterial({
             color: new THREE.Color(textureConfig.color),
             metalness: textureConfig.metalness,
             roughness: textureConfig.roughness,
-            clearcoat: 0.1,
-            clearcoatRoughness: 0.1,
-            envMapIntensity: 1.0,
-            reflectivity: 0.5,
-            transparent: textureType === 'Vidro',
-            opacity: textureType === 'Vidro' ? 0.3 : 1.0,
+            
+            // Clearcoat baseado no tipo de material
+            clearcoat: (() => {
+              switch(textureType) {
+                case 'Pintura': case 'Porcelanato': case 'Cerâmica': return 0.8;
+                case 'Madeira': return 0.3;
+                case 'Metal': case 'Alumínio': case 'Aço': return 0.1;
+                default: return 0.0;
+              }
+            })(),
+            clearcoatRoughness: textureType === 'Pintura' ? 0.05 : 0.15,
+            
+            // Environment mapping otimizado
+            envMapIntensity: textureConfig.metalness > 0.5 ? 3.0 : 
+                           textureType === 'Vidro' ? 2.5 : 1.5,
+            reflectivity: textureConfig.metalness > 0.5 ? 0.95 : 
+                         textureType === 'Vidro' ? 0.9 : 0.5,
+            
+            // Sistema de transparência avançado
+            transparent: textureType.includes('Vidro'),
+            opacity: textureType === 'Vidro' ? 0.15 : 
+                    textureType === 'Vidro_Transparente' ? 0.05 : 1.0,
+            transmission: textureType.includes('Vidro') ? 0.95 : 0,
+            thickness: textureType.includes('Vidro') ? 0.1 : 0,
+            ior: textureType.includes('Vidro') ? 1.52 : 1.0,
+            
+            // Sheen para materiais orgânicos
+            sheen: textureType === 'Madeira' ? 0.5 : 
+                  textureType === 'Cerâmica' ? 0.2 : 0,
+            sheenRoughness: textureType === 'Madeira' ? 0.8 : 0.9,
+            sheenColor: textureType === 'Madeira' ? 
+                       new THREE.Color(textureConfig.color).multiplyScalar(0.7) : 
+                       new THREE.Color(0x000000),
+            
+            // Iridescence para metais especiais
+            iridescence: textureType === 'Aço' ? 0.3 : 
+                        textureType === 'Cobre' ? 0.4 : 0,
+            iridescenceIOR: 1.3,
+            iridescenceThicknessRange: [100, 400],
+            
+            // Sistema de emissão
             emissive: textureConfig.emissive ? new THREE.Color(textureConfig.emissive) : new THREE.Color(0x000000),
             emissiveIntensity: textureConfig.emissiveIntensity || 0.0,
+            
+            // Configurações de qualidade máxima
+            side: THREE.FrontSide,
+            flatShading: false,
+            wireframe: false,
+            vertexColors: false,
+            fog: true,
+            alphaTest: 0.01,
+            
+            // Sombras e normais
+            castShadow: true,
+            receiveShadow: true,
+            normalScale: new THREE.Vector2(1.0, 1.0),
           });
 
+          // Aplicar filtro anisótrópico se disponível
+          if (child.material && child.material.map) {
+            const renderer = document.querySelector('canvas')?.getContext('webgl2') || 
+                           document.querySelector('canvas')?.getContext('webgl');
+            if (renderer) {
+              const maxAnisotropy = renderer.getParameter(renderer.MAX_TEXTURE_MAX_ANISOTROPY_EXT) || 1;
+              child.material.map.anisotropy = Math.min(16, maxAnisotropy);
+            }
+          }
+
+          // Aplicar textura procedural para alguns materiais
+          applyProceduralTexture(material, textureType, child);
+          
           child.material = material;
+          child.castShadow = true;
+          child.receiveShadow = true;
           appliedTextures++;
         }
       });
@@ -289,59 +408,122 @@ export const Model3DViewer: React.FC<Model3DViewerProps> = ({ modelPath, classNa
       )}
 
       <Canvas
-        camera={{ position: [10, 10, 10], fov: 50 }}
-        onCreated={handleLoad}
+        camera={{ position: [5, 5, 5], fov: 50 }}
+        onCreated={(state) => {
+          // Configurações avançadas de renderização
+          state.gl.outputColorSpace = 'srgb';
+          state.gl.toneMapping = THREE.ACESFilmicToneMapping;
+          state.gl.toneMappingExposure = 0.9;
+          
+          // Sombras de alta qualidade
+          state.gl.shadowMap.enabled = true;
+          state.gl.shadowMap.type = THREE.PCFSoftShadowMap;
+          state.gl.shadowMap.autoUpdate = true;
+          
+          // Anti-aliasing e pixel ratio otimizados
+          state.gl.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+          state.gl.antialias = true;
+          
+          // Extensões para melhor qualidade de textura
+          const gl = state.gl.getContext();
+          const extensions = gl.getSupportedExtensions();
+          
+          // Filtro anisótrópico para texturas mais nítidas
+          if (extensions?.includes('EXT_texture_filter_anisotropic')) {
+            const ext = gl.getExtension('EXT_texture_filter_anisotropic');
+            state.gl.capabilities.maxAnisotropy = gl.getParameter(ext.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
+          }
+          
+          // Floating point textures para HDR
+          if (extensions?.includes('OES_texture_float')) {
+            gl.getExtension('OES_texture_float');
+          }
+          
+          // Configurações de performance
+          state.gl.physicallyCorrectLights = true;
+          state.gl.gammaFactor = 2.2;
+          
+          handleLoad();
+        }}
         onError={handleError}
         className="w-full h-full"
+        shadows
+        dpr={[1, 2]}
+        performance={{ min: 0.5 }}
       >
-        {/* Sistema de iluminação realista para destacar texturas */}
-        <ambientLight intensity={0.4} color="#ffffff" />
+        {/* Sistema de iluminação profissional para texturas realistas */}
+        <ambientLight intensity={0.3} color="#f0f8ff" />
         
-        {/* Luz principal do sol */}
+        {/* Luz principal do sol com sombras suaves */}
         <directionalLight
-          position={[50, 50, 25]}
-          intensity={2.5}
-          color="#fff8dc"
+          position={[40, 60, 30]}
+          intensity={3.0}
+          color="#fff5e6"
           castShadow
-          shadow-mapSize-width={4096}
-          shadow-mapSize-height={4096}
-          shadow-camera-far={100}
-          shadow-camera-left={-50}
-          shadow-camera-right={50}
-          shadow-camera-top={50}
-          shadow-camera-bottom={-50}
+          shadow-mapSize-width={8192}
+          shadow-mapSize-height={8192}
+          shadow-camera-far={200}
+          shadow-camera-left={-80}
+          shadow-camera-right={80}
+          shadow-camera-top={80}
+          shadow-camera-bottom={-80}
+          shadow-bias={-0.0001}
+          shadow-normalBias={0.02}
         />
         
-        {/* Luz de preenchimento suave */}
+        {/* Luz de preenchimento lateral */}
         <directionalLight
-          position={[-30, 30, 15]}
-          intensity={0.8}
-          color="#e6f3ff"
+          position={[-25, 35, 20]}
+          intensity={1.2}
+          color="#e8f4fd"
         />
         
-        {/* Luz ambiente azulada para simular céu */}
+        {/* Luz ambiente realista */}
         <hemisphereLight
           skyColor="#87CEEB"
-          groundColor="#8B7355"
-          intensity={0.6}
+          groundColor="#a0896b"
+          intensity={0.8}
         />
         
-        {/* Luzes pontuais para detalhes */}
-        <pointLight position={[20, 20, 20]} intensity={1.5} color="#ffffff" />
-        <pointLight position={[-20, 20, 20]} intensity={1.0} color="#ffffff" />
-        <pointLight position={[0, 30, 0]} intensity={0.8} color="#ffffff" />
-
-        {/* Ambiente */}
-        <Environment preset="city" />
-
-        {/* Sombras de contato */}
-        <ContactShadows
-          position={[0, -2, 0]}
-          opacity={0.4}
-          scale={20}
-          blur={2}
-          far={4.5}
+        {/* Sistema de luzes pontuais para realce de detalhes */}
+        <pointLight 
+          position={[30, 25, 25]} 
+          intensity={2.0} 
+          color="#ffffff"
+          castShadow
+          shadow-mapSize-width={2048}
+          shadow-mapSize-height={2048}
         />
+        <pointLight 
+          position={[-25, 25, 25]} 
+          intensity={1.5} 
+          color="#fff8e7"
+          castShadow
+          shadow-mapSize-width={2048}
+          shadow-mapSize-height={2048}
+        />
+        <pointLight 
+          position={[0, 40, 0]} 
+          intensity={1.0} 
+          color="#f0f8ff"
+        />
+        
+        {/* Luz de contra para definir silhuetas */}
+        <directionalLight
+          position={[-20, -10, -30]}
+          intensity={0.5}
+          color="#ffeaa7"
+        />
+
+        {/* Ambiente HDR de alta qualidade */}
+        <Environment 
+          preset="city" 
+          background={false}
+          environmentIntensity={2.0}
+          resolution={512}
+        />
+
+        {/* Contact Shadows removidas para eliminar grid */}
 
         {/* Modelo 3D */}
         <Suspense fallback={null}>
@@ -353,9 +535,11 @@ export const Model3DViewer: React.FC<Model3DViewerProps> = ({ modelPath, classNa
           enablePan={true}
           enableZoom={true}
           enableRotate={true}
-          minDistance={5}
-          maxDistance={50}
+          minDistance={1}
+          maxDistance={30}
           maxPolarAngle={Math.PI / 2}
+          enableDamping={true}
+          dampingFactor={0.05}
         />
       </Canvas>
     </div>

@@ -81,6 +81,30 @@
   @apply animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500;
 }
 
+/* Image optimizations */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.logo-image {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+}
+
+/* Header logo specific styles */
+.header-logo {
+  filter: drop-shadow(0 4px 8px rgba(251, 191, 36, 0.3));
+  transition: all 0.3s ease;
+}
+
+.header-logo:hover {
+  filter: drop-shadow(0 8px 16px rgba(251, 191, 36, 0.5));
+  transform: scale(1.05);
+}
+
 /* 3D Canvas specific styles */
 canvas {
   outline: none;
@@ -97,6 +121,12 @@ canvas:active {
 
 /* Mobile optimizations */
 @media (max-width: 768px) {
+  /* Prevent zoom on inputs */
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+  
+  /* Canvas optimizations */
   canvas {
     touch-action: none;
     -webkit-touch-callout: none;
@@ -105,11 +135,43 @@ canvas:active {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    max-height: 50vh;
   }
   
   /* Melhor performance no mobile */
   .model-loaded {
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
+  }
+  
+  /* Mobile-specific containers */
+  .mobile-split-view {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .mobile-split-view > div {
+    flex: 1;
+    min-height: 0;
+  }
+  
+  /* Improved touch targets */
+  button, .touchable {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Better scrolling */
+  .mobile-scroll {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+}
+
+/* Tablet optimizations */
+@media (min-width: 769px) and (max-width: 1024px) {
+  canvas {
+    max-height: 60vh;
   }
 }
