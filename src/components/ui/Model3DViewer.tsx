@@ -120,6 +120,42 @@ function MobileLighting() {
   );
 }
 
+// Error Boundary para capturar erros do modelo 3D
+class ErrorBoundary extends React.Component<{children: React.ReactNode}, {hasError: boolean}> {
+  constructor(props: {children: React.ReactNode}) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    console.error('🚨 Error Boundary capturou erro:', error);
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('🚨 Detalhes do erro 3D:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <group>
+          <mesh position={[0, 0, 0]}>
+            <boxGeometry args={[4, 4, 4]} />
+            <meshStandardMaterial color="orange" />
+          </mesh>
+          <mesh position={[0, 5, 0]}>
+            <sphereGeometry args={[1]} />
+            <meshStandardMaterial color="red" />
+          </mesh>
+        </group>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
 interface Model3DViewerProps {
   modelPath: string;
   className?: string;
@@ -136,22 +172,24 @@ interface CSVData {
   textura: string;
 }
 
+// Preload do modelo 3D
+useGLTF.preload('./ARQ.glb');
+
 // Componente do modelo 3D
 function Model({ modelPath, selectedService, hiddenServices }: { 
   modelPath: string; 
   selectedService?: ServiceMapping | null;
   hiddenServices?: string[];
 }) {
-  let scene;
+  const { scene } = useGLTF(modelPath);
   
-  try {
-    const gltf = useGLTF(modelPath);
-    scene = gltf.scene;
-    console.log('✅ Modelo GLTF carregado com sucesso');
-  } catch (error) {
-    console.error('❌ Erro ao carregar modelo GLTF:', error);
-    throw new Error('Falha ao carregar modelo 3D');
-  }
+  // Log do carregamento
+  React.useEffect(() => {
+    if (scene) {
+      console.log('✅ Modelo GLTF carregado com sucesso:', modelPath);
+      console.log('📊 Objetos no scene:', scene.children.length);
+    }
+  }, [scene, modelPath]);
   const modelRef = useRef<Group>(null);
   const { camera } = useThree();
   const [originalMaterials, setOriginalMaterials] = useState<Map<Mesh, THREE.Material>>(new Map());
@@ -593,8 +631,8 @@ export const Model3DViewer: React.FC<Model3DViewerProps> = ({ modelPath, classNa
                 gl.getExtension('OES_texture_float');
               }
               
-              state.gl.physicallyCorrectLights = true;
-              state.gl.gammaFactor = 2.2;
+              // Lighting configuração atualizada para Three.js r155+
+              state.gl.useLegacyLights = false;
               console.log('🖥️ Configurações de desktop aplicadas');
             }
             
@@ -618,7 +656,16 @@ export const Model3DViewer: React.FC<Model3DViewerProps> = ({ modelPath, classNa
           stencil: false,
           depth: true,
           logarithmicDepthBuffer: false,
-          powerPreference: "default"
+          powerPreference: "default",
+          preserveDrawingBuffer: true,
+          failIfMajorPerformanceCaveat: false
+        }}
+        onContextLost={(event) => {
+          console.warn('⚠️ WebGL Context Lost:', event);
+          event.preventDefault();
+        }}
+        onContextRestored={() => {
+          console.log('🔄 WebGL Context Restored');
         }}
       >
         {/* Sistema de iluminação adaptativo para mobile/desktop */}
@@ -626,9 +673,11 @@ export const Model3DViewer: React.FC<Model3DViewerProps> = ({ modelPath, classNa
 
         {/* Contact Shadows removidas para eliminar grid */}
 
-        {/* Modelo 3D */}
+        {/* Modelo 3D com Error Boundary */}
         <Suspense fallback={null}>
-          <Model modelPath={modelPath} selectedService={selectedService} hiddenServices={hiddenServices} />
+          <ErrorBoundary>
+            <Model modelPath={modelPath} selectedService={selectedService} hiddenServices={hiddenServices} />
+          </ErrorBoundary>
         </Suspense>
 
         {/* Controles de órbita */}
