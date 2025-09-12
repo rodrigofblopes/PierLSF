@@ -4,6 +4,77 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Mobile-specific improvements */
+@layer utilities {
+  /* Smooth scrolling for touch devices */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Touch-friendly interactions */
+  .touch-manipulation {
+    touch-action: manipulation;
+  }
+
+  /* Smooth momentum scrolling for iOS */
+  .-webkit-overflow-scrolling-touch {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Prevent text selection during touch */
+  .select-none-touch {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  /* Better tap targets for mobile */
+  .tap-highlight-transparent {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Responsive text scaling */
+  @media (max-width: 640px) {
+    .text-responsive {
+      font-size: clamp(0.75rem, 2.5vw, 0.875rem);
+    }
+  }
+
+  /* Safe area insets for mobile devices */
+  .safe-area-inset-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  .safe-area-inset-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Extra small breakpoint */
+  @media (max-width: 480px) {
+    .xs\:hidden {
+      display: none;
+    }
+    
+    .xs\:inline {
+      display: inline;
+    }
+    
+    .xs\:block {
+      display: block;
+    }
+    
+    .xs\:flex {
+      display: flex;
+    }
+  }
+}
+
 @layer base {
   * {
     @apply border-gray-600;

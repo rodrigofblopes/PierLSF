@@ -201,10 +201,10 @@ export const CSVTable: React.FC<CSVTableProps> = ({
                   `}
                   onClick={() => handleServiceClick(item.item)}
                 >
-                  <td className="px-6 py-4 whitespace-nowrap border-r border-gray-100">
-                    <div className="flex items-center space-x-3">
+                  <td className="px-1.5 sm:px-6 py-2 sm:py-4 border-r border-gray-100">
+                    <div className="flex items-center space-x-1.5 sm:space-x-3">
                       <div className={`
-                        w-2 h-2 rounded-full transition-colors
+                        w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-colors flex-shrink-0
                         ${isSelected 
                           ? 'bg-orange-500' 
                           : hasMapping 
@@ -213,7 +213,7 @@ export const CSVTable: React.FC<CSVTableProps> = ({
                         }
                       `}></div>
                       <div className={`
-                        text-sm font-medium transition-colors
+                        text-xs sm:text-sm font-medium transition-colors truncate min-w-0
                         ${isSelected 
                           ? 'text-orange-900' 
                           : 'text-gray-900 group-hover:text-blue-900'
@@ -224,24 +224,24 @@ export const CSVTable: React.FC<CSVTableProps> = ({
                       {hasMapping && (
                         <button
                           onClick={(e) => handleToggleVisibility(item.item, e)}
-                          className={`p-1 rounded transition-colors ${
+                          className={`p-0.5 sm:p-1 rounded transition-colors touch-manipulation flex-shrink-0 ${
                             isHidden 
-                              ? 'text-gray-400 hover:text-gray-600' 
+                              ? 'text-gray-400 hover:text-gray-600 active:text-gray-700' 
                               : isSelected 
-                                ? 'text-orange-600 hover:text-orange-700' 
-                                : 'text-blue-500 hover:text-blue-600'
+                                ? 'text-orange-600 hover:text-orange-700 active:text-orange-800' 
+                                : 'text-blue-500 hover:text-blue-600 active:text-blue-700'
                           }`}
                           title={isHidden ? 'Mostrar elementos' : 'Ocultar elementos'}
                         >
-                          {isHidden ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                          {isHidden ? <EyeOff className="w-2.5 h-2.5 sm:w-4 sm:h-4" /> : <Eye className="w-2.5 h-2.5 sm:w-4 sm:h-4" />}
                         </button>
                       )}
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap border-r border-gray-100">
-                    <div className="flex items-center space-x-2">
+                  <td className="px-1.5 sm:px-6 py-2 sm:py-4 border-r border-gray-100">
+                    <div className="flex items-center">
                       <span className={`
-                        inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium transition-colors
+                        inline-flex items-center px-1.5 sm:px-2.5 py-0.5 rounded-full text-xs font-medium transition-colors truncate
                         ${isSelected 
                           ? 'bg-orange-100 text-orange-800' 
                           : 'bg-green-100 text-green-800 group-hover:bg-green-200'
@@ -251,11 +251,11 @@ export const CSVTable: React.FC<CSVTableProps> = ({
                       </span>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center space-x-2">
+                  <td className="px-1.5 sm:px-6 py-2 sm:py-4">
+                    <div className="flex items-center">
                       {item.qtd ? (
                         <span className={`
-                          inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium transition-colors
+                          inline-flex items-center px-1.5 sm:px-2.5 py-0.5 rounded-full text-xs font-medium transition-colors
                           ${isSelected 
                             ? 'bg-orange-100 text-orange-800' 
                             : 'bg-purple-100 text-purple-800 group-hover:bg-purple-200'
@@ -264,9 +264,10 @@ export const CSVTable: React.FC<CSVTableProps> = ({
                           {item.qtd}
                         </span>
                       ) : (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-500 group-hover:bg-gray-200 transition-colors">
-                          <AlertCircle className="w-3 h-3 mr-1" />
-                          Pendente
+                        <span className="inline-flex items-center px-1.5 sm:px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-500 group-hover:bg-gray-200 transition-colors">
+                          <AlertCircle className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-1" />
+                          <span className="hidden sm:inline">Pendente</span>
+                          <span className="sm:hidden">--</span>
                         </span>
                       )}
                     </div>

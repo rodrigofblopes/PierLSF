@@ -5,8 +5,10 @@ import { Tabs } from '@/components/ui/Tabs';
 import { ImageGallery } from '@/components/ui/ImageGallery';
 import { Model3DViewer } from '@/components/ui/Model3DViewer';
 import { CSVTable } from '@/components/ui/CSVTable';
+import { MobileTabBar, MobileNavigation } from '@/components/ui/MobileNavigation';
 import { Home, FolderOpen, FileText, Box } from 'lucide-react';
 import { ServiceMapping } from '@/utils/serviceMapping';
+import { useIsMobile, useIsExtraSmall } from '@/hooks/useMediaQuery';
 
 
 // Images data for Clínica UNIQUE
@@ -85,6 +87,10 @@ function App() {
   const [modelInfo, setModelInfo] = useState<any>(null);
   const [selectedService, setSelectedService] = useState<ServiceMapping | null>(null);
   const [hiddenServices, setHiddenServices] = useState<string[]>([]);
+  
+  // Mobile detection hooks
+  const isMobile = useIsMobile();
+  const isExtraSmall = useIsExtraSmall();
 
   const handleServiceSelect = (serviceMapping: ServiceMapping | null) => {
     setSelectedService(serviceMapping);
@@ -535,20 +541,20 @@ function App() {
           )}
 
           {activeTab === '3d' && (
-            <div className="h-[calc(100vh-120px)] flex flex-col gap-2 p-2 sm:gap-4 sm:p-4 lg:flex-row">
-              {/* Visualizador 3D */}
-              <div className="flex-1 min-h-0 h-2/5 lg:h-full">
+            <div className="h-[calc(100vh-140px)] sm:h-[calc(100vh-120px)] flex flex-col gap-1 p-1 sm:gap-4 sm:p-4 lg:flex-row">
+              {/* Visualizador 3D - Mobile Optimized */}
+              <div className="flex-1 min-h-0 h-2/5 sm:h-2/5 lg:h-full">
                 <Model3DViewer 
-                  modelPath="./ARQ.glb" 
-                  className="h-full rounded-lg border border-white/10" 
+                  modelPath="./Compatibilização.glb" 
+                  className="h-full rounded-lg border border-white/10 touch-manipulation" 
                   selectedService={selectedService}
                   hiddenServices={hiddenServices}
                 />
               </div>
               
-              {/* Painel lateral - Tabela */}
-              <div className="w-full h-3/5 lg:h-full lg:w-[500px] min-h-0 overflow-hidden">
-                {/* Tabela CSV */}
+              {/* Painel lateral - Tabela Mobile Optimized */}
+              <div className="w-full h-3/5 sm:h-3/5 lg:h-full lg:w-[500px] min-h-0 overflow-hidden">
+                {/* Tabela CSV - Mobile Responsive */}
                 <CSVTable 
                   className="h-full" 
                   onServiceSelect={handleServiceSelect}
@@ -563,6 +569,18 @@ function App() {
 
         </div>
       </div>
+      
+      {/* Mobile Navigation - Bottom Bar */}
+      {isMobile && (
+        <MobileNavigation 
+          tabs={tabs}
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+        />
+      )}
+      
+      {/* Safe area spacing for mobile */}
+      {isMobile && <div className="h-20 safe-area-inset-bottom"></div>}
     </div>
   );
 }

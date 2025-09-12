@@ -130,6 +130,27 @@ export const serviceMappings: ServiceMapping[] = [
     ],
     blenderCollectionName: 'Pergolado',
     textureType: 'Madeira'
+  },
+  {
+    serviceName: 'Eletrica',
+    sceneCollectionId: 'GREletrica',
+    sceneCollectionName: 'Instalação Elétrica',
+    color: '#FF6600',
+    description: 'Sistema elétrico completo - tomadas, interruptores, eletrodutos e iluminação',
+    keywords: [
+      'Interruptor',
+      'Tomada',
+      'PVC_Corrugado_Amarelo',
+      'Caixa_de_Luz',
+      'Caixa_de_Octogonal',
+      'LED_Tape',
+      'Perfil_LED',
+      'Poste_de_Medição',
+      'Quadro_de_Distribuição',
+      'Curva'
+    ],
+    blenderCollectionName: 'Eletrica',
+    textureType: 'Metálico Laranja'
   }
 ];
 
@@ -158,15 +179,13 @@ export const isObjectInCollection = (objectName: string, collectionName: string)
 
 // Função para obter a coleção de um objeto
 export const getObjectCollection = (objectName: string): ServiceMapping | undefined => {
-  console.log(`🔍 Buscando coleção para objeto: ${objectName}`);
-  
   const result = serviceMappings.find(mapping => {
     const match = mapping.keywords.some(keyword => {
       const objectLower = objectName.toLowerCase();
       const keywordLower = keyword.toLowerCase();
       const found = objectLower.includes(keywordLower);
       if (found) {
-        console.log(`✅ Match encontrado: ${objectName} contém ${keyword}`);
+        console.log(`✅ Match encontrado: ${objectName} → ${mapping.serviceName}`);
       }
       return found;
     });
@@ -174,9 +193,7 @@ export const getObjectCollection = (objectName: string): ServiceMapping | undefi
   });
   
   if (result) {
-    console.log(`🎯 Coleção encontrada: ${result.serviceName} com textura: ${result.textureType}`);
-  } else {
-    console.log(`❌ Nenhuma coleção encontrada para: ${objectName}`);
+    console.log(`🎯 ${objectName} → ${result.serviceName}`);
   }
   
   return result;

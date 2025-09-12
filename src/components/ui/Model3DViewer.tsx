@@ -158,9 +158,9 @@ interface CSVData {
 }
 
 // Sistema de cache inteligente para recarregar GLB atualizado
-const GLB_CACHE_BUSTER = Date.now(); // Arquivo NOVA VERSÃO - força novo carregamento
-const MODEL_PATH_WITH_CACHE = `./ARQ.glb?v=${GLB_CACHE_BUSTER}`;
-console.log(`🔥 GLB NOVA VERSÃO CARREGADA! Cache buster: ${GLB_CACHE_BUSTER}`);
+const GLB_CACHE_BUSTER = Date.now(); // Arquivo COMPATIBILIZAÇÃO - força novo carregamento
+const MODEL_PATH_WITH_CACHE = `./Compatibilização.glb?v=${GLB_CACHE_BUSTER}`;
+console.log(`🔥 GLB COMPATIBILIZAÇÃO CARREGADA! Cache buster: ${GLB_CACHE_BUSTER}`);
 
 // Preload do modelo 3D com cache buster
 useGLTF.preload(MODEL_PATH_WITH_CACHE);
@@ -172,7 +172,7 @@ function Model({ modelPath, selectedService, hiddenServices }: {
   hiddenServices?: string[];
 }) {
   // Usar o path com cache buster para garantir carregamento da versão mais recente
-  const actualModelPath = modelPath.includes('ARQ.glb') ? MODEL_PATH_WITH_CACHE : modelPath;
+  const actualModelPath = modelPath.includes('Compatibilização.glb') ? MODEL_PATH_WITH_CACHE : modelPath;
   const { scene } = useGLTF(actualModelPath);
   
   // Log detalhado do carregamento
@@ -589,6 +589,18 @@ function Model({ modelPath, selectedService, hiddenServices }: {
                     originalMaterial.metalness = 0.6;
                     originalMaterial.roughness = 0.3;
                     console.log(`🚪 Cor de esquadria aplicada`);
+                  } else if (objectName.includes('eletrica') || materialName.includes('eletrica') ||
+                             objectName.includes('interruptor') || materialName.includes('interruptor') ||
+                             objectName.includes('tomada') || materialName.includes('tomada') ||
+                             objectName.includes('eletroduto') || materialName.includes('eletroduto') ||
+                             objectName.includes('caixa de luz') || materialName.includes('caixa de luz') ||
+                             objectName.includes('pvc corrugado') || materialName.includes('pvc corrugado')) {
+                    originalMaterial.color.setHex(0xFF6600); // Laranja para elétrica
+                    originalMaterial.metalness = 0.7;
+                    originalMaterial.roughness = 0.2;
+                    originalMaterial.emissive.setHex(0x331100); // Leve emissão laranja
+                    originalMaterial.emissiveIntensity = 0.1;
+                    console.log(`⚡ Cor elétrica aplicada para: ${child.name}`);
                   } else if (objectName.includes('pergolado') || objectName.includes('madeira')) {
                     originalMaterial.color.setHex(0x8B4513); // Marrom madeira
                     console.log(`🌳 Cor de madeira aplicada`);
