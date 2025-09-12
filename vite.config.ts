@@ -8,7 +8,7 @@ export default defineConfig(({ command }) => {
   
   return {
     plugins: [react()],
-    base: isDev ? '/' : '/RegularizaObra/',
+    base: isDev ? '/' : './',
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),
