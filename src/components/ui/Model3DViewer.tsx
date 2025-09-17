@@ -407,7 +407,7 @@ export function Model3DViewer({
 
       <Canvas
         camera={{ 
-          position: [120, 30, -60], 
+          position: [80, 40, -40], 
           fov: 45,
           near: 0.1,
           far: 2000
@@ -439,29 +439,20 @@ export function Model3DViewer({
           />
         </Suspense>
 
+        {/* Controles de órbita */}
         <OrbitControls
           enablePan={true}
           enableZoom={true}
           enableRotate={true}
-          minDistance={20}
-          maxDistance={400}
-          maxPolarAngle={Math.PI / 1.8}
-          minPolarAngle={Math.PI / 6}
-          autoRotate={false}
-          autoRotateSpeed={0.3}
-          target={[0, 0, 0]}
+          minDistance={10}          // ← Distância mínima mais adequada
+          maxDistance={200}         // ← Distância máxima para liberdade
+          maxPolarAngle={Math.PI / 2}  // ← **TRAVA NO TÉRREO - não vai para baixo**
+          minPolarAngle={0}         // ← **LIBERDADE TOTAL PARA CIMA**
           enableDamping={true}
-          dampingFactor={0.08}
-          panSpeed={0.8}
-          rotateSpeed={0.6}
-          zoomSpeed={1.2}
-          screenSpacePanning={false}
-          keys={{
-            LEFT: 'ArrowLeft',
-            UP: 'ArrowUp', 
-            RIGHT: 'ArrowRight',
-            BOTTOM: 'ArrowDown'
-          }}
+          dampingFactor={0.08}      // ← Movimento mais responsivo
+          panSpeed={1.0}
+          rotateSpeed={1.0}
+          zoomSpeed={1.0}
         />
       </Canvas>
     </div>
