@@ -1,8 +1,8 @@
-# 🏗️ Prévia Unique - Visualizador 3D Interativo
+# 🏬 Shopping 3D Viewer - Visualizador Interativo
 
 ## 📋 Descrição
 
-Visualizador 3D interativo para Prévia Unique - Sistema de gestão de serviços com modelo GLB e texturas dinâmicas baseadas em dados CSV. Interface moderna que permite visualizar, destacar e gerenciar elementos arquitetônicos em tempo real.
+Visualizador 3D interativo para projetos de Shopping - Sistema de gestão de serviços com modelo GLB e texturas dinâmicas baseadas em dados CSV. Interface moderna que permite visualizar, destacar e gerenciar elementos arquitetônicos em tempo real.
 
 ## ✨ Funcionalidades
 
@@ -38,7 +38,7 @@ Visualizador 3D interativo para Prévia Unique - Sistema de gestão de serviços
 
 ### **🌐 Aplicação (Vercel)**
 
-* **URL**: `previa-unique-3d-viewer.vercel.app`
+* **URL**: `shopping-3d-viewer.vercel.app`
 * **Status**: ✅ Deployado e Funcionando
 * **Acesso**: Direto pelo navegador, sem instalações
 
@@ -55,12 +55,12 @@ Visualizador 3D interativo para Prévia Unique - Sistema de gestão de serviços
 ## 📁 Estrutura do Projeto
 
 ```
-previa-unique-3d-viewer/
+shopping-3d-viewer/
 ├── public/
-│   ├── ARQ.glb              # Modelo 3D principal
+│   ├── Shopping.glb         # Modelo 3D principal
 │   ├── Link.csv             # Dados de serviços e texturas
-│   ├── Prévia Unique.png    # Logo da empresa
-│   └── previa-unique.png    # Logo alternativa
+│   ├── Shopping.png         # Logo da empresa
+│   └── shopping-logo.png    # Logo alternativa
 ├── src/
 │   ├── components/
 │   │   ├── layout/
@@ -79,7 +79,7 @@ previa-unique-3d-viewer/
 ## 🌟 **Como Usar**
 
 ### **1. Acesse a Aplicação**
-* Abra: `previa-unique-3d-viewer.vercel.app`
+* Abra: `shopping-3d-viewer.vercel.app`
 * Aguarde o carregamento do modelo 3D
 
 ### **2. Navegue no Modelo 3D**
@@ -164,7 +164,7 @@ Para dúvidas ou problemas:
 
 ## 📄 Licença
 
-© 2024 Prévia Unique - Visualizador 3D Interativo. Todos os direitos reservados.
+© 2024 Shopping 3D Viewer - Visualizador Interativo. Todos os direitos reservados.
 
 ---
 

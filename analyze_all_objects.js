@@ -144,8 +144,8 @@ function analyzeAllObjects(filePath) {
   }
 }
 
-// Analisar o arquivo ARQ.glb
-const arqPath = path.join(__dirname, 'public', 'ARQ.glb');
-console.log('Analisando arquivo ARQ.glb:', arqPath);
-analyzeAllObjects(arqPath);
+// Analisar o arquivo Shopping.glb
+const shoppingPath = path.join(__dirname, 'public', 'Shopping.glb');
+console.log('Analisando arquivo Shopping.glb:', shoppingPath);
+analyzeAllObjects(shoppingPath);
 

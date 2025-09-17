@@ -133,6 +133,6 @@ function findGroupsInGLB(filePath) {
   }
 }
 
-// Analisar o arquivo ARQ.glb
-const arqPath = path.join(__dirname, 'public', 'ARQ.glb');
-findGroupsInGLB(arqPath);
+// Analisar o arquivo Shopping.glb
+const shoppingPath = path.join(__dirname, 'public', 'Shopping.glb');
+findGroupsInGLB(shoppingPath);

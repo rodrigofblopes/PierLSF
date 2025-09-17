@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { FileText, BarChart3, CheckCircle, AlertCircle, Eye, EyeOff, Package } from 'lucide-react';
+import { FileText, AlertCircle, Eye, EyeOff, Package } from 'lucide-react';
 import { LoadingSpinner } from './LoadingSpinner';
 import { findServiceMapping, ServiceMapping } from '@/utils/serviceMapping';
 
 interface CSVItem {
-  item: string;
-  unid: string;
-  qtd: string;
-  elementos3d: string; // Mantido para consulta interna, mas não exibido
+  disciplina: string;
+  elementos3d: string;
 }
 
 interface CSVTableProps {
   className?: string;
-  onServiceSelect?: (serviceMapping: ServiceMapping | null, textureType?: string) => void;
+  onServiceSelect?: (serviceMapping: ServiceMapping | null, textureType?: string, elements3d?: string[]) => void;
   selectedService?: string | null;
   onToggleVisibility?: (serviceMapping: ServiceMapping | null) => void;
   hiddenServices?: string[];
@@ -42,22 +40,26 @@ export const CSVTable: React.FC<CSVTableProps> = ({
       const csvText = await response.text();
       const lines = csvText.split('\n').filter(line => line.trim());
       
-      // Converter CSV para array de objetos
-      const csvData: CSVItem[] = lines
-        .slice(1) // Pular cabeçalho
-        .filter(line => line.trim()) // Filtrar linhas vazias
-        .map(line => {
-          const [item, unid, qtd, elementos3d] = line.split(';');
-          return {
-            item: item?.trim() || '',
-            unid: unid?.trim() || '',
-            qtd: qtd?.trim() || '',
-            elementos3d: elementos3d?.trim() || ''
-          };
-        });
+          // Converter CSV para array de objetos - Nova estrutura com elementos 3D
+          const csvData: CSVItem[] = lines
+            .slice(1) // Pular cabeçalho
+            .filter(line => line.trim()) // Filtrar linhas vazias
+            .map(line => {
+              const parts = line.split(';').map(part => part.trim());
+              const disciplina = parts[0] || '';
+              const elementos3d = parts.slice(1).join(';'); // Pegar todos os elementos a partir do segundo
+              
+              
+              return {
+                disciplina,
+                elementos3d
+              };
+            });
       
+      console.log('📊 Dados CSV carregados:', csvData);
       setData(csvData);
     } catch (err) {
+      console.error('❌ Erro ao carregar CSV:', err);
       setError(err instanceof Error ? err.message : 'Erro ao carregar dados CSV');
     } finally {
       setLoading(false);
@@ -69,22 +71,54 @@ export const CSVTable: React.FC<CSVTableProps> = ({
   }, []);
 
 
-  const handleServiceClick = (serviceName: string) => {
-    console.log('🖱️ Clique na linha:', serviceName);
-    const mapping = findServiceMapping(serviceName);
-    console.log('🔗 Mapeamento encontrado:', mapping);
-    
-    if (onServiceSelect) {
-      // Se já está selecionado, desseleciona. Senão, seleciona.
-      if (selectedService === serviceName) {
-        console.log('🔄 Deselecionando serviço:', serviceName);
-        onServiceSelect(null);
-      } else {
-        console.log('✅ Selecionando serviço:', serviceName);
-        onServiceSelect(mapping || null);
-      }
-    }
-  };
+      const handleServiceClick = (disciplina: string) => {
+        console.log('🖱️ Clique na linha:', disciplina);
+        const mapping = findServiceMapping(disciplina);
+        console.log('🔗 Mapeamento encontrado:', mapping);
+        
+        
+        
+        
+        
+        
+
+        if (onServiceSelect) {
+          // Verificar se já está selecionado para desselecionar
+          if (selectedService === disciplina) {
+            console.log('🔄 Desselecionando disciplina:', disciplina);
+            onServiceSelect(null, undefined, []);
+            return;
+          }
+          
+          // Selecionar a disciplina
+          console.log('✅ Selecionando disciplina:', disciplina);
+            
+          // Encontrar os elementos 3D da disciplina selecionada
+          const item = data.find(d => d.disciplina === disciplina);
+          console.log('🔍 Item encontrado no CSV:', item);
+          
+          // Função para dividir corretamente os elementos 3D usando ponto e vírgula (;) como separador
+          const parseElements3D = (elementsString: string): string[] => {
+            if (!elementsString) return [];
+            
+            // Dividir por ponto e vírgula (;) e limpar espaços
+            const elements = elementsString.split(';').map(el => el.trim()).filter(el => el.length > 0);
+            
+            return elements;
+          };
+          
+          const elements3d = item?.elementos3d 
+            ? parseElements3D(item.elementos3d)
+            : [];
+          
+          console.log('🎯 Elementos 3D encontrados:', elements3d);
+          console.log('📊 Total de elementos 3D:', elements3d.length);
+          console.log('🔍 Primeiros 5 elementos:', elements3d.slice(0, 5));
+          console.log('🔍 Últimos 5 elementos:', elements3d.slice(-5));
+          console.log('🔍 Chamando onServiceSelect com elementos3d:', elements3d);
+          onServiceSelect(mapping || null, mapping?.textureType, elements3d);
+        }
+      };
 
   const handleToggleVisibility = (serviceName: string, event: React.MouseEvent) => {
     event.stopPropagation(); // Evitar que o clique na linha seja acionado
@@ -133,145 +167,93 @@ export const CSVTable: React.FC<CSVTableProps> = ({
 
   return (
     <div className={`bg-white rounded-lg shadow-sm border flex flex-col ${className}`}>
-      {/* Cabeçalho */}
-      <div className="px-3 sm:px-6 py-3 sm:py-5 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2 sm:space-x-4">
-            <div className="p-2 sm:p-3 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl shadow-lg">
-              <BarChart3 className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
-            </div>
-            <div>
-              <h3 className="text-lg sm:text-xl font-bold text-gray-900">Serviços</h3>
-              <p className="text-xs sm:text-sm text-gray-600 flex items-center space-x-1 sm:space-x-2">
-                <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-green-500" />
-                <span className="hidden sm:inline">Sistema de gestão de serviços</span>
-                <span className="sm:hidden">Gestão</span>
-              </p>
-            </div>
-          </div>
-          
-        </div>
-      </div>
 
       {/* Tabela */}
       <div className="overflow-x-auto overflow-y-auto flex-1 min-h-0">
-        <table className="w-full min-w-[300px] sm:min-w-[450px]">
-          <thead className="bg-gradient-to-r from-gray-50 to-gray-100">
-            <tr>
-              <th className="px-2 sm:px-4 py-2 sm:py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-r border-gray-200 w-[50%] sm:w-[60%]">
-                <div className="flex items-center space-x-1 sm:space-x-2">
-                  <FileText className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
-                  <span className="text-xs sm:text-xs">Serviço</span>
-                </div>
-              </th>
-              <th className="px-2 sm:px-4 py-2 sm:py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-r border-gray-200 w-[25%] sm:w-[20%]">
-                <div className="flex items-center space-x-1 sm:space-x-2">
-                  <Package className="w-3 h-3 sm:w-4 sm:h-4 text-green-600" />
-                  <span className="text-xs sm:text-xs hidden sm:inline">Unidade</span>
-                  <span className="text-xs sm:hidden">Unid</span>
-                </div>
-              </th>
-              <th className="px-2 sm:px-4 py-2 sm:py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider w-[25%] sm:w-[20%]">
-                <div className="flex items-center space-x-1 sm:space-x-2">
-                  <BarChart3 className="w-3 h-3 sm:w-4 sm:h-4 text-purple-600" />
-                  <span className="text-xs sm:text-xs hidden sm:inline">Quantidade</span>
-                  <span className="text-xs sm:hidden">Qtd</span>
-                </div>
-              </th>
-            </tr>
-          </thead>
+        <table className="w-full min-w-[250px] sm:min-w-[350px]">
+              <thead className="bg-gradient-to-r from-gray-50 to-gray-100">
+                <tr>
+                  <th className="px-2 sm:px-4 py-2 sm:py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                    <div className="flex items-center space-x-1 sm:space-x-2">
+                      <FileText className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
+                      <span className="text-xs sm:text-xs">Disciplinas</span>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
           <tbody className="bg-white divide-y divide-gray-100">
             {data.map((item, index) => {
-              const isSelected = selectedService === item.item;
-              const mapping = findServiceMapping(item.item);
+              const isSelected = selectedService === item.disciplina;
+              const mapping = findServiceMapping(item.disciplina);
               const hasMapping = !!mapping;
-              const isHidden = hiddenServices.includes(item.item);
+              const isHidden = hiddenServices.includes(item.disciplina);
               
               return (
                 <tr 
                   key={index} 
                   className={`
-                    transition-all duration-200 group cursor-pointer
+                    transition-all duration-300 group cursor-pointer
                     ${isSelected 
-                      ? 'bg-gradient-to-r from-orange-100 to-orange-50 border-l-4 border-orange-500' 
+                      ? 'bg-gradient-to-r from-orange-200 to-orange-100 border-l-4 border-orange-500 shadow-md ring-1 ring-orange-200' 
                       : isHidden
                         ? 'bg-gradient-to-r from-gray-100 to-gray-50 opacity-60'
                         : 'hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50'
                     }
                   `}
-                  onClick={() => handleServiceClick(item.item)}
+                  onClick={() => handleServiceClick(item.disciplina)}
                 >
-                  <td className="px-1.5 sm:px-6 py-2 sm:py-4 border-r border-gray-100">
-                    <div className="flex items-center space-x-1.5 sm:space-x-3">
-                      <div className={`
-                        w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-colors flex-shrink-0
-                        ${isSelected 
-                          ? 'bg-orange-500' 
-                          : hasMapping 
-                            ? 'bg-blue-500 group-hover:bg-blue-600' 
-                            : 'bg-gray-400'
-                        }
-                      `}></div>
-                      <div className={`
-                        text-xs sm:text-sm font-medium transition-colors truncate min-w-0
-                        ${isSelected 
-                          ? 'text-orange-900' 
-                          : 'text-gray-900 group-hover:text-blue-900'
-                        }
-                      `}>
-                        {item.item}
-                      </div>
-                      {hasMapping && (
-                        <button
-                          onClick={(e) => handleToggleVisibility(item.item, e)}
-                          className={`p-0.5 sm:p-1 rounded transition-colors touch-manipulation flex-shrink-0 ${
-                            isHidden 
-                              ? 'text-gray-400 hover:text-gray-600 active:text-gray-700' 
-                              : isSelected 
-                                ? 'text-orange-600 hover:text-orange-700 active:text-orange-800' 
-                                : 'text-blue-500 hover:text-blue-600 active:text-blue-700'
-                          }`}
-                          title={isHidden ? 'Mostrar elementos' : 'Ocultar elementos'}
-                        >
-                          {isHidden ? <EyeOff className="w-2.5 h-2.5 sm:w-4 sm:h-4" /> : <Eye className="w-2.5 h-2.5 sm:w-4 sm:h-4" />}
-                        </button>
-                      )}
-                    </div>
-                  </td>
-                  <td className="px-1.5 sm:px-6 py-2 sm:py-4 border-r border-gray-100">
-                    <div className="flex items-center">
-                      <span className={`
-                        inline-flex items-center px-1.5 sm:px-2.5 py-0.5 rounded-full text-xs font-medium transition-colors truncate
-                        ${isSelected 
-                          ? 'bg-orange-100 text-orange-800' 
-                          : 'bg-green-100 text-green-800 group-hover:bg-green-200'
-                        }
-                      `}>
-                        {item.unid}
-                      </span>
-                    </div>
-                  </td>
-                  <td className="px-1.5 sm:px-6 py-2 sm:py-4">
-                    <div className="flex items-center">
-                      {item.qtd ? (
-                        <span className={`
-                          inline-flex items-center px-1.5 sm:px-2.5 py-0.5 rounded-full text-xs font-medium transition-colors
-                          ${isSelected 
-                            ? 'bg-orange-100 text-orange-800' 
-                            : 'bg-purple-100 text-purple-800 group-hover:bg-purple-200'
-                          }
-                        `}>
-                          {item.qtd}
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center px-1.5 sm:px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-500 group-hover:bg-gray-200 transition-colors">
-                          <AlertCircle className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-1" />
-                          <span className="hidden sm:inline">Pendente</span>
-                          <span className="sm:hidden">--</span>
-                        </span>
-                      )}
-                    </div>
-                  </td>
+                      <td className="px-1.5 sm:px-6 py-2 sm:py-4">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-1.5 sm:space-x-3 flex-1 min-w-0">
+                            <div className={`
+                              w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-colors flex-shrink-0
+                              ${isSelected
+                                ? 'bg-orange-600 shadow-sm'
+                                : hasMapping
+                                  ? 'bg-blue-500 group-hover:bg-blue-600'
+                                  : 'bg-gray-400'
+                              }
+                            `}></div>
+                            <div className={`
+                              text-xs sm:text-sm font-semibold transition-colors truncate min-w-0
+                              ${isSelected
+                                ? 'text-orange-800'
+                                : 'text-gray-900 group-hover:text-blue-900'
+                              }
+                            `}>
+                              {item.disciplina}
+                              {isSelected && (
+                                <span className="ml-1 text-xs text-orange-600 font-normal">
+                                  (clique para desselecionar)
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                          
+                          {/* Ícone de visibilidade ao lado do texto */}
+                          <div className="flex-shrink-0 ml-2">
+                            {hasMapping ? (
+                              <button
+                                onClick={(e) => handleToggleVisibility(item.disciplina, e)}
+                                className={`p-1 sm:p-2 rounded transition-colors touch-manipulation ${
+                                  isHidden
+                                    ? 'text-gray-400 hover:text-gray-600 active:text-gray-700'
+                                    : isSelected
+                                      ? 'text-orange-600 hover:text-orange-700 active:text-orange-800'
+                                      : 'text-blue-600 hover:text-blue-700 active:text-blue-800'
+                                }`}
+                                title={isHidden ? 'Mostrar elementos' : 'Ocultar elementos'}
+                              >
+                                {isHidden ? <EyeOff className="w-4 h-4 sm:w-5 sm:h-5" /> : <Eye className="w-4 h-4 sm:w-5 sm:h-5" />}
+                              </button>
+                            ) : (
+                              <div className="flex items-center justify-center">
+                                <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-500" />
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </td>
                 </tr>
               );
             })}

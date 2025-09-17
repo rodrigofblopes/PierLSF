@@ -1,85 +1,15 @@
 import { useState } from 'react';
-import { ProjectCard } from '@/components/ui/ProjectCard';
-import { DocumentCard } from '@/components/ui/DocumentCard';
 import { Tabs } from '@/components/ui/Tabs';
-import { ImageGallery } from '@/components/ui/ImageGallery';
 import { Model3DViewer } from '@/components/ui/Model3DViewer';
 import { CSVTable } from '@/components/ui/CSVTable';
+import { ImageGallery } from '@/components/ui/ImageGallery';
 import { MobileTabBar, MobileNavigation } from '@/components/ui/MobileNavigation';
 import { Home, FolderOpen, FileText, Box } from 'lucide-react';
 import { ServiceMapping } from '@/utils/serviceMapping';
 import { useIsMobile, useIsExtraSmall } from '@/hooks/useMediaQuery';
 
 
-// Images data for Clínica UNIQUE
-const images = [
-  {
-    src: '/IMG_0008.jpg',
-    alt: 'Imagem 0008',
-    title: 'Fotografia da Clínica'
-  },
-  {
-    src: '/IMG_0045.jpg',
-    alt: 'Imagem 0045',
-    title: 'Fotografia da Clínica'
-  },
-  {
-    src: '/IMG_0046.jpg',
-    alt: 'Imagem 0046',
-    title: 'Fotografia da Clínica'
-  },
-  {
-    src: '/IMG_0047.jpg',
-    alt: 'Imagem 0047',
-    title: 'Fotografia da Clínica'
-  },
-  {
-    src: '/IMG_0132.jpg',
-    alt: 'Imagem 0132',
-    title: 'Fotografia da Clínica'
-  },
-  {
-    src: '/ortomosaicooutboundary.jpg',
-    alt: 'Ortomosaico Outboundary',
-    title: 'Ortomosaico da Clínica'
-  }
-];
 
-// Projects data for Clínica UNIQUE
-const projects = [
-  {
-    title: 'Projeto Arquitetônico',
-    description: 'Desenvolvimento do projeto arquitetônico completo da Clínica UNIQUE - Medicina Especializada',
-    status: 'ativo' as const,
-    location: 'Porto Velho, RO',
-    type: 'arquitetura' as const,
-    files: [
-      { name: 'Arquitetura.pdf', path: '/Arquitetura.pdf' }
-    ],
-    professional: {
-      name: 'Mariana Casagrande',
-      role: 'Arquiteta Responsável',
-      instagram: 'https://www.instagram.com/marianacasagrande/'
-    }
-  },
-  {
-    title: 'Projeto Elétrico',
-    description: 'Sistema elétrico completo da Clínica UNIQUE - Medicina Especializada',
-    status: 'ativo' as const,
-    location: 'Porto Velho, RO',
-    type: 'eletrico' as const,
-    files: [
-      { name: 'Elétrico1-3.pdf', path: '/Elétrico1-3.pdf' },
-      { name: 'Elétrico2-3.pdf', path: '/Elétrico2-3.pdf' },
-      { name: 'Elétrico3-3.pdf', path: '/Elétrico3-3.pdf' }
-    ],
-    professional: {
-      name: 'Rodrigo Bonfim Lopes',
-      role: 'Engenheiro Civil',
-      instagram: 'https://www.instagram.com/engrodrigofblopes/'
-    }
-  },
-];
 
 
 function App() {
@@ -87,13 +17,16 @@ function App() {
   const [modelInfo, setModelInfo] = useState<any>(null);
   const [selectedService, setSelectedService] = useState<ServiceMapping | null>(null);
   const [hiddenServices, setHiddenServices] = useState<string[]>([]);
+  const [selectedElements3d, setSelectedElements3d] = useState<string[]>([]);
   
   // Mobile detection hooks
   const isMobile = useIsMobile();
   const isExtraSmall = useIsExtraSmall();
 
-  const handleServiceSelect = (serviceMapping: ServiceMapping | null) => {
+  const handleServiceSelect = (serviceMapping: ServiceMapping | null, textureType?: string, elements3d?: string[]) => {
     setSelectedService(serviceMapping);
+    setSelectedElements3d(elements3d || []);
+    console.log('🎯 Elementos 3D selecionados:', elements3d);
   };
 
   const handleToggleVisibility = (serviceMapping: ServiceMapping | null) => {
@@ -115,8 +48,6 @@ function App() {
   // Definir as abas
   const tabs = [
     { id: 'home', label: 'Início', icon: <Home /> },
-    { id: 'projetos', label: 'Projetos', icon: <FolderOpen /> },
-    { id: 'documentos', label: 'Documentos Regularização', icon: <FileText /> },
     { id: '3d', label: '3D', icon: <Box /> },
   ];
 
@@ -167,14 +98,14 @@ function App() {
             
             {/* Layout responsivo para mobile */}
             <div className="flex flex-col lg:block">
-              {/* Logo BIMTECH e Nome da Empresa - Mobile: Topo, Desktop: Canto Esquerdo */}
+              {/* Logo Bonfim Imobiliária e Engenharia - Mobile: Topo, Desktop: Canto Esquerdo */}
               <div className="flex justify-center lg:absolute lg:left-0 lg:top-6 lg:justify-start mb-4 lg:mb-0">
                 <div className="flex items-center gap-2 sm:gap-3 lg:gap-4 group">
                   <div className="relative">
                     <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600 rounded-xl lg:rounded-2xl flex items-center justify-center shadow-2xl overflow-hidden border-2 border-yellow-300 transform group-hover:scale-105 transition-all duration-300">
                       <img 
                         src="/BIMTECH.jpg" 
-                        alt="BIMTECH Logo" 
+                        alt="Bonfim Imobiliária e Engenharia Logo" 
                         className="w-full h-full object-cover rounded-lg lg:rounded-xl"
                       />
                     </div>
@@ -192,14 +123,15 @@ function App() {
                 </div>
               </div>
               
-              {/* Header Clínica UNIQUE */}
+              {/* Header Shopping */}
               <div className="flex flex-col justify-center items-center min-h-[80px] sm:min-h-[90px] lg:min-h-[100px] space-y-1 sm:space-y-2">
-                {/* Título Principal UNIQUE */}
+                {/* Título Principal Shopping */}
                 <div className="flex justify-center items-center">
                   <div className="relative group">
                     <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black text-center relative leading-tight">
                       <span className="bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 bg-clip-text text-transparent drop-shadow-2xl filter drop-shadow-yellow-400/70 animate-pulse">
-                        CLÍNICA UNIQUE
+                        YASAIBOWL<br />
+                        PORTO VELHO SHOPPING
                       </span>
                     </h1>
                     
@@ -209,14 +141,6 @@ function App() {
                   </div>
                 </div>
                 
-                {/* Subtítulo Medicina Especializada */}
-                <div className="text-center">
-                  <h2 className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl font-bold text-yellow-300 drop-shadow-lg tracking-wide">
-                    <span className="bg-gradient-to-r from-yellow-300 via-yellow-200 to-yellow-400 bg-clip-text text-transparent filter drop-shadow-yellow-300/50">
-                      Medicina Especializada
-                    </span>
-                  </h2>
-                </div>
               </div>
             </div>
           </div>
@@ -239,317 +163,37 @@ function App() {
             <div className="space-y-6">
               {/* Header da aba Início */}
               <div className="bg-white rounded-lg sm:rounded-xl shadow-lg p-6">
-                <h2 className="text-2xl font-bold text-gray-800 mb-2">Bem-vindo ao Dashboard da Clínica UNIQUE</h2>
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">Bem-vindo ao Dashboard do YasaiBowl Porto Velho Shopping</h2>
                 <p className="text-gray-600">
-                  Explore os projetos e documentos da Clínica UNIQUE - Medicina Especializada. Navegue pelas abas para acessar diferentes funcionalidades.
+                  Explore os projetos e documentos do YasaiBowl Porto Velho Shopping. Navegue pelas abas para acessar diferentes funcionalidades e visualizar o modelo 3D interativo.
                 </p>
               </div>
 
               {/* Galeria de Imagens */}
               <div className="bg-white rounded-lg sm:rounded-xl shadow-lg p-6">
-                <h3 className="text-xl font-bold text-gray-800 mb-4">Fotografias pré-obra</h3>
-                <p className="text-gray-600 mb-6">
-                  Explore o registro fotográfico do estado inicial da Clínica UNIQUE - Medicina Especializada, documentando as condições pré-obra. Esta galeria apresenta o ambiente antes do início das intervenções arquitetônicas e estruturais. Clique nas imagens para visualização em tela cheia.
-                </p>
-                <ImageGallery images={images} />
-              </div>
-            </div>
-          )}
-
-
-          {activeTab === 'projetos' && (
-            <div className="space-y-6">
-              {/* Header da aba Projetos */}
-              <div className="bg-white rounded-lg sm:rounded-xl shadow-lg p-6">
-                <h2 className="text-2xl font-bold text-gray-800 mb-2">Projetos da Clínica UNIQUE</h2>
-                <p className="text-gray-600">
-                  Acompanhe o progresso dos projetos em andamento e planejados.
-                </p>
-              </div>
-
-              {/* Grid de Cards dos Projetos */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                {projects.map((project, index) => (
-                  <ProjectCard
-                    key={index}
-                    title={project.title}
-                    description={project.description}
-                    status={project.status}
-                    location={project.location}
-                    type={project.type}
-                    files={project.files}
-                    professional={project.professional}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'documentos' && (
-            <div className="space-y-6">
-              {/* Header da aba Documentos */}
-              <div className="bg-white rounded-lg sm:rounded-xl shadow-lg p-6">
-                <h2 className="text-2xl font-bold text-gray-800 mb-2">Documentos de Regularização</h2>
-                <p className="text-gray-600 text-sm">
-                  <strong>Inscrição do Imóvel:</strong> 03010170062001
-                </p>
-                <p className="text-gray-600 text-sm">
-                  <strong>Endereço:</strong> Rua Duque de Caxias N 604 - Caiari - Porto Velho -RO
-                </p>
-              </div>
-
-            {/* Cards dos Documentos */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-              {/* Card da Certidão Informativa */}
-              <div className="w-full">
-                <DocumentCard
-                  title="Certidão Informativa"
-                  type="certificado"
-                  description="📑 Certidão Informativa - Informa os dados do imóvel na Prefeitura quando não há registro em cartório. Obs.: Não substitui a matrícula."
-                  deadline="15 dias"
-                  checklist={[
-                    {
-                      id: "requerimento",
-                      text: "Requerimento Padrão devidamente preenchido",
-                      required: true
-                    },
-                    {
-                      id: "taxa",
-                      text: "Taxa de Abertura de Processo com comprovante de pagamento",
-                      required: true
-                    },
-                    {
-                      id: "pessoa_fisica",
-                      text: "Pessoa Física",
-                      required: true
-                    },
-                    {
-                      id: "contrato",
-                      text: "Contrato de Compra e Venda",
-                      required: false
-                    },
-                    {
-                      id: "croqui",
-                      text: "Croqui da área identificando a localização do lote em relação à quadra, constando nome das ruas no entorno da quadra e número predial, se houver (ANEXO VIII)",
-                      required: false
-                    },
-                    {
-                      id: "comprovante_residencia",
-                      text: "Cópia do comprovante de residência",
-                      required: true
-                    }
-                  ]}
+                <ImageGallery 
+                  images={['/1.jpeg', '/2.jpeg', '/3.jpeg']}
+                  className="w-full"
                 />
               </div>
 
-              {/* Card da Certidão Narrativa */}
-              <div className="w-full">
-                <DocumentCard
-                  title="Certidão Narrativa"
-                  type="certificado"
-                  description="📜 Certidão Narrativa - Apresenta as características físicas, fundiárias e cadastrais do lote — emitida pela Prefeitura."
-                  deadline="15 dias"
-                  checklist={[
-                    {
-                      id: "requerimento_narrativa",
-                      text: "Requerimento Padrão devidamente preenchido",
-                      required: true
-                    },
-                    {
-                      id: "taxa_narrativa",
-                      text: "Taxa de Abertura de Processo (original) com comprovante de pagamento",
-                      required: true
-                    },
-                    {
-                      id: "pessoa_fisica_narrativa",
-                      text: "Pessoa Física",
-                      required: true
-                    },
-                    {
-                      id: "comprovante_residencia_narrativa",
-                      text: "Cópia do comprovante de residência",
-                      required: true
-                    },
-                    {
-                      id: "certidao_registro",
-                      text: "Certidão de Registro de Imóveis - Inteiro Teor atualizada. (Somente para área escriturada)",
-                      required: false
-                    },
-                    {
-                      id: "certidao_fiscal",
-                      text: "Certidão de Regularidade Fiscal do Imóvel Atualizada (Negativa de Tributos Municipais)",
-                      required: true
-                    },
-                    {
-                      id: "contrato_narrativa",
-                      text: "Contrato de Compra e Venda",
-                      required: false
-                    }
-                  ]}
-                />
-              </div>
-
-
-                {/* Card da Regularização de Obra Comercial */}
-                <div className="w-full">
-                  <DocumentCard
-                    title="Regularização de Obra Comercial"
-                    type="projeto"
-                    description="Certidão de Regularização de Obra - Documento que regulariza construções realizadas sem autorização municipal, permitindo a obtenção do Habite-se e a legalização do imóvel."
-                    checklist={[
-                      {
-                        id: "requerimento_regularizacao",
-                        text: "Requerimento padrão com Declaração, totalmente preenchido e assinado",
-                        required: true
-                      },
-                      {
-                        id: "certidao_negativa",
-                        text: "Certidão Negativa de Débitos do Imóvel atualizada - IPTU (exceto para imóveis em zona rural)",
-                        required: true
-                      },
-                      {
-                        id: "comprovacao_propriedade",
-                        text: "Documentos de comprovação de propriedade do terreno (Certidão de Inteiro Teor ou Certidão Narrativa)",
-                        required: true
-                      },
-                      {
-                        id: "documentos_pessoais",
-                        text: "Documentos pessoais do Interessado e Procurador",
-                        required: true
-                      },
-                      {
-                        id: "arquivo_cad",
-                        text: "01 arquivo eletrônico em plataforma CAD (extensão DWG) dos projetos (versão 2010 ou anterior)",
-                        required: true
-                      },
-                      {
-                        id: "art_rrt",
-                        text: "Cópia das ART (autenticada pelo CREA) ou RRT (autenticada pelo CAU) dos profissionais responsáveis",
-                        required: true
-                      },
-                      {
-                        id: "projeto_arquitetonico",
-                        text: "03 jogos de Projeto Arquitetônico completo com título de REGULARIZAÇÃO (plantas, cortes, fachadas)",
-                        required: true
-                      },
-                      {
-                        id: "projeto_acessibilidade",
-                        text: "03 jogos de Projeto de Acessibilidade (Decreto Federal 5.296/2004 e NBR-9050)",
-                        required: true
-                      },
-                      {
-                        id: "laudo_tecnico",
-                        text: "Laudo Técnico com Relatório Fotográfico NÍTIDO da edificação, atestando condições de habitabilidade",
-                        required: true
-                      },
-                      {
-                        id: "certificado_bombeiros",
-                        text: "Certificado de Vistoria Final da Obra expedido pelo CORPO DE BOMBEIROS Militar de Rondônia",
-                        required: true
-                      },
-                      {
-                        id: "licenca_ambiental",
-                        text: "Licença Ambiental de Operação emitida pelo Órgão Ambiental Municipal, Estadual ou Federal",
-                        required: true
-                      },
-                      {
-                        id: "certidao_calcadas",
-                        text: "Certidão de Conclusão de Calçadas com Relatório Fotográfico ou Notificação de Dispensa Temporária",
-                        required: true
-                      },
-                      {
-                        id: "trd_trad",
-                        text: "Termo de Recebimento Definitivo (TRD) ou TRAD emitido pela SEMTRAN com PARECER FAVORÁVEL",
-                        required: true
-                      },
-                      {
-                        id: "autorizacao_iphan",
-                        text: "Autorização do IPHAN para execução de obras em área de bem tombado e seu entorno",
-                        required: false
-                      },
-                      {
-                        id: "declaracao_conformidade_sanitaria",
-                        text: "Declaração de Conformidade Sanitária de Projeto Arquitetônico emitida pela Vigilância Sanitária (SEMUSA)",
-                        required: false
-                      }
-                    ]}
-                  />
-                </div>
-
-                {/* Card do HABITE-SE */}
-                <div className="w-full">
-                  <DocumentCard
-                    title="HABITE-SE"
-                    type="projeto"
-                    description="Laudo técnico expedido pelo município atestando a conclusão de obra devidamente licenciada, e que autoriza a sua utilização."
-                    checklist={[
-                      {
-                        id: "requerimento_habite",
-                        text: "Requerimento padrão com Declaração, totalmente preenchido e assinado",
-                        required: true
-                      },
-                      {
-                        id: "certidao_negativa_habite",
-                        text: "Certidão Negativa de Débitos do Imóvel atualizada - IPTU, conforme Art. 265 LC 199/2004 (exceto para imóveis em zona rural)",
-                        required: true
-                      },
-                      {
-                        id: "comprovacao_propriedade_habite",
-                        text: "Apresentar um dos documentos de comprovação de propriedade do terreno: Certidão de Inteiro Teor atualizada do lote para áreas escrituradas individualmente; Certidão Narrativa do lote, emitida pela SEMUR, para casos em que não há escritura (exceto para casos de condomínio)",
-                        required: true
-                      },
-                      {
-                        id: "documentos_pessoais_habite",
-                        text: "Documentos pessoais do Interessado e Procurador (caso tenha): Pessoa Física: cópia do RG e CPF ou carteira de habilitação/profissional; Pessoa Jurídica: cópia do Contrato Social da última alteração e CNPJ",
-                        required: true
-                      },
-                      {
-                        id: "licenca_ambiental_habite",
-                        text: "Licença Ambiental de Operação emitida pelo Órgão Ambiental Municipal (Subsecretaria Municipal de Meio Ambiente e Desenvolvimento Sustentável - SEMA) ou Estadual, ou Federal, conforme disposto em Lei, exceto para residências unifamiliares",
-                        required: true
-                      },
-                      {
-                        id: "laudo_tecnico_habite",
-                        text: "Laudo Técnico de edificação emitido pelo profissional responsável técnico da obra atestando a conclusão das instalações prediais, registrado no Conselho Profissional, com RRT/ART, conforme art. 40, inciso IV da Lei 560/2014",
-                        required: true
-                      },
-                      {
-                        id: "certificado_bombeiros_habite",
-                        text: "Apresentar Certificado de Vistoria Final da Obra expedido pelo Corpo de Bombeiros Militar de Rondônia, exceto para residências unifamiliares",
-                        required: true
-                      },
-                      {
-                        id: "certidao_calcadas_habite",
-                        text: "Apresentar Certidão de Conclusão de Calçadas com Relatório Fotográfico assinado por Técnico da Comissão Específica de Padronização de Calçadas ou Notificação de Dispensa Temporária de padronização de Calçadas. SEMTRAN",
-                        required: true
-                      },
-                      {
-                        id: "trd_trad_habite",
-                        text: "Apresentar Termo de Recebimento Definitivo (TRD) ou Termo de Recebimento e Aceitação Definitivo (TRAD) emitido pela Secretaria Municipal de Trânsito, Mobilidade e Transportes - SEMTRAN, exceto para residências unifamiliares. SEMTRAN",
-                        required: true
-                      },
-                      {
-                        id: "licenca_obra_habite",
-                        text: "01 Cópia da última Licença de Obra expedida",
-                        required: true
-                      }
-                    ]}
-                  />
-                </div>
-              </div>
             </div>
           )}
+
+
+
 
           {activeTab === '3d' && (
             <div className="h-[calc(100vh-140px)] sm:h-[calc(100vh-120px)] flex flex-col gap-1 p-1 sm:gap-4 sm:p-4 lg:flex-row">
               {/* Visualizador 3D - Mobile Optimized */}
               <div className="flex-1 min-h-0 h-2/5 sm:h-2/5 lg:h-full">
-                <Model3DViewer 
-                  modelPath="./Compatibilização.glb" 
-                  className="h-full rounded-lg border border-white/10 touch-manipulation" 
-                  selectedService={selectedService}
-                  hiddenServices={hiddenServices}
-                />
+                    <Model3DViewer
+                      modelPath="./Shopping.glb"
+                      className="h-full rounded-lg border border-white/10 touch-manipulation"
+                      selectedService={selectedService}
+                      hiddenServices={hiddenServices}
+                      selectedElements3d={selectedElements3d}
+                    />
               </div>
               
               {/* Painel lateral - Tabela Mobile Optimized */}
