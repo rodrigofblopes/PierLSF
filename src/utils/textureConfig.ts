@@ -122,6 +122,105 @@ export const textureConfigs: Record<string, TextureConfig> = {
     color: '#4A4A4A', // Cinza escuro ferro
     roughness: 0.6,
     metalness: 0.7
+  },
+  // Materiais específicos para dutos
+  'Dutos': {
+    name: 'Dutos',
+    color: '#4169E1', // Azul royal para dutos
+    roughness: 0.15,
+    metalness: 0.7,
+    emissive: '#001040',
+    emissiveIntensity: 0.05
+  },
+  'Dutos_Metalico': {
+    name: 'Dutos_Metalico',
+    color: '#4682B4', // Azul aço para dutos metálicos
+    roughness: 0.1,
+    metalness: 0.8,
+    emissive: '#001040',
+    emissiveIntensity: 0.03
+  },
+  'Dutos_Galvanizado': {
+    name: 'Dutos_Galvanizado',
+    color: '#708090', // Cinza galvanizado
+    roughness: 0.2,
+    metalness: 0.6,
+    emissive: '#2F4F4F',
+    emissiveIntensity: 0.02
+  },
+  // Materiais específicos para sistema de gás GLP (vermelho intenso)
+  'Gas': {
+    name: 'Gas',
+    color: '#B22222', // Vermelho GLP mais escuro
+    roughness: 0.1,
+    metalness: 0.9,
+    emissive: '#8B0000',
+    emissiveIntensity: 0.1
+  },
+  'Gas_Tubulacao': {
+    name: 'Gas_Tubulacao',
+    color: '#8B0000', // Vermelho muito escuro para tubulações
+    roughness: 0.15,
+    metalness: 0.85,
+    emissive: '#660000',
+    emissiveIntensity: 0.08
+  },
+  'Gas_Conexao': {
+    name: 'Gas_Conexao',
+    color: '#DC143C', // Vermelho crimson para conexões
+    roughness: 0.2,
+    metalness: 0.8,
+    emissive: '#B22222',
+    emissiveIntensity: 0.08
+  },
+  'Gas_Valvula': {
+    name: 'Gas_Valvula',
+    color: '#FF0000', // Vermelho intenso para válvulas
+    roughness: 0.1,
+    metalness: 0.9,
+    emissive: '#DC143C',
+    emissiveIntensity: 0.12
+  },
+  // Materiais específicos para sistema PPCIP (vermelho intenso)
+  'PPCIP': {
+    name: 'PPCIP',
+    color: '#8B0000', // Vermelho escuro PPCIP
+    roughness: 0.1,
+    metalness: 0.9,
+    emissive: '#660000',
+    emissiveIntensity: 0.1
+  },
+  'PPCIP_Sprinkler': {
+    name: 'PPCIP_Sprinkler',
+    color: '#DC143C', // Vermelho crimson para sprinklers
+    roughness: 0.1,
+    metalness: 0.9,
+    emissive: '#B22222',
+    emissiveIntensity: 0.12
+  },
+  'PPCIP_Hidrante': {
+    name: 'PPCIP_Hidrante',
+    color: '#FF0000', // Vermelho intenso para hidrantes
+    roughness: 0.15,
+    metalness: 0.85,
+    emissive: '#DC143C',
+    emissiveIntensity: 0.1
+  },
+  'PPCIP_Alarme': {
+    name: 'PPCIP_Alarme',
+    color: '#B22222', // Vermelho escuro para alarmes
+    roughness: 0.2,
+    metalness: 0.8,
+    emissive: '#8B0000',
+    emissiveIntensity: 0.08
+  },
+  'PPCIP_Tubulacao': {
+    name: 'PPCIP_Tubulacao',
+    color: '#8B0000', // Vermelho muito escuro para tubulações
+    roughness: 0.1,
+    metalness: 0.9,
+    emissive: '#660000',
+    emissiveIntensity: 0.06
   }
 };
 

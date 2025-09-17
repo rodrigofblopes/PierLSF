@@ -221,8 +221,8 @@ function Model3D({
       if (child instanceof THREE.Mesh) {
         const serviceMapping = getObjectCollection(child.name);
         
-        if (serviceMapping && (serviceMapping.serviceName === 'Eletrica' || serviceMapping.serviceName === 'Hidrosanitario')) {
-          // Aplicar cor específica apenas para Eletrica e Hidrosanitario
+        if (serviceMapping && (serviceMapping.serviceName === 'Eletrica' || serviceMapping.serviceName === 'Hidrosanitario' || serviceMapping.serviceName === 'Dutos' || serviceMapping.serviceName === 'Gas' || serviceMapping.serviceName === 'PPCIP')) {
+          // Aplicar cor específica para Eletrica, Hidrosanitario e Dutos
           if (child.material instanceof THREE.MeshStandardMaterial) {
             const colorHex = parseInt(serviceMapping.color.replace('#', ''), 16);
             child.material.color.setHex(colorHex);
@@ -240,6 +240,42 @@ function Model3D({
               child.material.metalness = 0.8; // Alto metalness para metais
               child.material.roughness = 0.2; // Superfície metálica
             }
+            
+            // Melhorar propriedades do material para Dutos
+            if (serviceMapping.serviceName === 'Dutos') {
+              child.material.metalness = 0.7; // Alto metalness para dutos metálicos
+              child.material.roughness = 0.15; // Superfície metálica lisa
+              child.material.emissive.setHex(0x001040); // Leve brilho azul
+              child.material.emissiveIntensity = 0.05;
+              // Adicionar reflexão para dutos metálicos
+              child.material.envMapIntensity = 0.8;
+            }
+            
+            // Melhorar propriedades do material para Gas GLP (vermelho intenso)
+            if (serviceMapping.serviceName === 'Gas') {
+              child.material.metalness = 0.9; // Alto metalness para tubulações de gás
+              child.material.roughness = 0.1; // Superfície metálica muito lisa
+              child.material.emissive.setHex(0x8B0000); // Brilho vermelho escuro GLP
+              child.material.emissiveIntensity = 0.1;
+              // Adicionar reflexão intensa para gás
+              child.material.envMapIntensity = 1.0;
+              // Adicionar transparência sutil para efeito de brilho
+              child.material.transparent = false;
+              child.material.opacity = 1.0;
+            }
+            
+            // Melhorar propriedades do material para PPCIP (vermelho intenso)
+            if (serviceMapping.serviceName === 'PPCIP') {
+              child.material.metalness = 0.9; // Alto metalness para equipamentos PPCIP
+              child.material.roughness = 0.1; // Superfície metálica muito lisa
+              child.material.emissive.setHex(0x660000); // Brilho vermelho muito escuro PPCIP
+              child.material.emissiveIntensity = 0.1;
+              // Adicionar reflexão intensa para PPCIP
+              child.material.envMapIntensity = 1.0;
+              // Adicionar transparência sutil para efeito de brilho
+              child.material.transparent = false;
+              child.material.opacity = 1.0;
+            }
           }
         }
       }
@@ -255,7 +291,7 @@ function Model3D({
     });
     
     // Mostrar serviços que não estão na lista de ocultos
-    const allServices = ['Arquitetura', 'Eletrica', 'Hidrosanitario', 'Dutos', 'Incendio'];
+    const allServices = ['Arquitetura', 'Eletrica', 'Hidrosanitario', 'Dutos', 'Incendio', 'Gas', 'PPCIP'];
     const visibleServices = allServices.filter(service => !hiddenServices.includes(service));
     
     visibleServices.forEach(serviceName => {
@@ -272,6 +308,39 @@ function Model3D({
       if (child instanceof THREE.Mesh) {
         child.castShadow = true;
         child.receiveShadow = true;
+        
+        // Configurações específicas para dutos, gás e PPCIP
+        const serviceMapping = getObjectCollection(child.name);
+        if (serviceMapping && (serviceMapping.serviceName === 'Dutos' || serviceMapping.serviceName === 'Gas' || serviceMapping.serviceName === 'PPCIP')) {
+          // Melhorar sombras para dutos e gás
+          child.castShadow = true;
+          child.receiveShadow = true;
+          // Ajustar geometria para melhor renderização
+          if (child.geometry) {
+            child.geometry.computeBoundingBox();
+            child.geometry.computeBoundingSphere();
+          }
+          
+          // Configurações específicas para gás
+          if (serviceMapping.serviceName === 'Gas') {
+            // Melhorar renderização de tubulações de gás
+            child.frustumCulled = true;
+            // Otimizar para elementos cilíndricos
+            if (child.geometry) {
+              child.geometry.computeVertexNormals();
+            }
+          }
+          
+          // Configurações específicas para PPCIP
+          if (serviceMapping.serviceName === 'PPCIP') {
+            // Melhorar renderização de equipamentos PPCIP
+            child.frustumCulled = true;
+            // Otimizar para elementos de segurança
+            if (child.geometry) {
+              child.geometry.computeVertexNormals();
+            }
+          }
+        }
       }
     });
     
@@ -338,7 +407,7 @@ export function Model3DViewer({
 
       <Canvas
         camera={{ 
-          position: [200, 50, -100], 
+          position: [120, 30, -60], 
           fov: 45,
           near: 0.1,
           far: 2000

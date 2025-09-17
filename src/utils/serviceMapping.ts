@@ -70,6 +70,36 @@ export const serviceMappings: ServiceMapping[] = [
     ],
     blenderCollectionName: 'Incendio',
     textureType: 'Metálico Vermelho'
+  },
+  {
+    serviceName: 'Gas',
+    sceneCollectionId: 'GRGas',
+    sceneCollectionName: 'Sistema de Gás GLP',
+    color: '#B22222',
+    description: 'Sistema de gás GLP - tubulações e conexões de gás liquefeito de petróleo',
+    keywords: [
+      'Gas',
+      'Gás',
+      'GLP'
+    ],
+    blenderCollectionName: 'Gas',
+    textureType: 'Metálico Vermelho Escuro'
+  },
+  {
+    serviceName: 'PPCIP',
+    sceneCollectionId: 'GRPPCIP',
+    sceneCollectionName: 'Sistema PPCIP',
+    color: '#8B0000',
+    description: 'Projeto de Prevenção e Combate a Incêndio e Pânico - sprinklers, hidrantes e alarmes',
+    keywords: [
+      'PPCIP',
+      'Incendio',
+      'Sprinkler',
+      'Hidrante',
+      'Alarme'
+    ],
+    blenderCollectionName: 'PPCIP',
+    textureType: 'Metálico Vermelho Intenso'
   }
 ];
 
