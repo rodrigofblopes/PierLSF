@@ -12,94 +12,99 @@ export interface ServiceMapping {
 
 export const serviceMappings: ServiceMapping[] = [
   {
-    serviceName: 'Arquitetura',
-    sceneCollectionId: 'GRArquitetura',
-    sceneCollectionName: 'Arquitetura',
-    color: '#FF8C00',
-    description: 'Elementos arquitetônicos - paredes, pisos, telhados e esquadrias',
+    serviceName: 'Estrutura Flutuante',
+    sceneCollectionId: 'GREstruturaFlutuante',
+    sceneCollectionName: 'Estrutura Flutuante',
+    color: '#0066CC',
+    description: 'Estrutura flutuante - elementos estruturais principais',
     keywords: [
-      'Arquitetura'
+      'AÇO - PILAR STEEL FRAME',
+      'AÇO - VIGA STEEL FRAME',
+      'AÇO - PISO STEEL DECK',
+      'Steel Frame',
+      'STEEL FRAME'
     ],
-    blenderCollectionName: 'Arquitetura',
-    textureType: 'Múltiplas texturas'
+    blenderCollectionName: 'Estrutura Flutuante',
+    textureType: 'Original'
   },
   {
-    serviceName: 'Eletrica',
-    sceneCollectionId: 'GREletrica',
-    sceneCollectionName: 'Instalação Elétrica',
-    color: '#FF6600',
-    description: 'Sistema elétrico - dispositivos LED e iluminação',
+    serviceName: 'Estrutura',
+    sceneCollectionId: 'GREstrutura',
+    sceneCollectionName: 'Estrutura',
+    color: '#FF6B35',
+    description: 'Estrutura principal - elementos estruturais secundários',
     keywords: [
-      'Eletrica'
+      'Guarda-corpo',
+      'corrimão',
+      'Escada',
+      'Water tank'
     ],
-    blenderCollectionName: 'Eletrica',
-    textureType: 'Metálico Laranja'
+    blenderCollectionName: 'Estrutura',
+    textureType: 'Original'
   },
   {
-    serviceName: 'Dutos',
-    sceneCollectionId: 'GRDutos',
-    sceneCollectionName: 'Sistema de Dutos',
-    color: '#4169E1',
-    description: 'Sistema de dutos - ventilação e ar condicionado',
+    serviceName: 'Piso',
+    sceneCollectionId: 'GRPiso',
+    sceneCollectionName: 'Piso',
+    color: '#2E8B57',
+    description: 'Elementos de piso - pisos e pavimentos',
     keywords: [
-      'Dutos'
+      'Piso int - PORCELLANATO',
+      'PORCELLANATO',
+      'Piso int',
+      'Piso',
+      'piso'
     ],
-    blenderCollectionName: 'Dutos',
-    textureType: 'Metálico Azul'
+    blenderCollectionName: 'Piso',
+    textureType: 'Original'
   },
   {
-    serviceName: 'Hidrosanitario',
-    sceneCollectionId: 'GRHidrosanitario',
-    sceneCollectionName: 'Hidrossanitário',
-    color: '#228B22',
-    description: 'Sistema hidrossanitário - tubulações, sanitários e drenagem',
+    serviceName: 'Parede',
+    sceneCollectionId: 'GRParede',
+    sceneCollectionName: 'Parede',
+    color: '#FFFFFF',
+    description: 'Elementos de parede - paredes e divisórias',
     keywords: [
-      'Hidrosanitario'
+      'Parede básica int - DRY WALL',
+      'DRY WALL',
+      'Parede básica',
+      'Parede',
+      'parede'
     ],
-    blenderCollectionName: 'Hidrosanitario',
-    textureType: 'PVC Verde'
+    blenderCollectionName: 'Parede',
+    textureType: 'Original'
   },
   {
-    serviceName: 'Incendio',
-    sceneCollectionId: 'GRIncendio',
-    sceneCollectionName: 'Sistema de Incêndio',
+    serviceName: 'Esquadrias',
+    sceneCollectionId: 'GREsquadrias',
+    sceneCollectionName: 'Esquadrias',
     color: '#FF1493',
-    description: 'Sistema de proteção contra incêndio',
+    description: 'Esquadrias - portas, janelas e aberturas',
     keywords: [
-      'Incendio'
+      'Janela',
+      'Porta de alumínio',
+      'Esquadria',
+      'Basculante',
+      'Correr'
     ],
-    blenderCollectionName: 'Incendio',
-    textureType: 'Metálico Vermelho'
+    blenderCollectionName: 'Esquadrias',
+    textureType: 'Alumínio Rosa'
   },
   {
-    serviceName: 'Gas',
-    sceneCollectionId: 'GRGas',
-    sceneCollectionName: 'Sistema de Gás GLP',
-    color: '#B22222',
-    description: 'Sistema de gás GLP - tubulações e conexões de gás liquefeito de petróleo',
+    serviceName: 'Telhado',
+    sceneCollectionId: 'GRTelhado',
+    sceneCollectionName: 'Telhado',
+    color: '#808080',
+    description: 'Elementos de telhado - coberturas e telhas',
     keywords: [
-      'Gas',
-      'Gás',
-      'GLP'
+      'Telhado básico TELHA DE FIBROCIMENTO',
+      'TELHA DE FIBROCIMENTO',
+      'Telhado básico',
+      'Telhado',
+      'telhado'
     ],
-    blenderCollectionName: 'Gas',
-    textureType: 'Metálico Vermelho Escuro'
-  },
-  {
-    serviceName: 'PPCIP',
-    sceneCollectionId: 'GRPPCIP',
-    sceneCollectionName: 'Sistema PPCIP',
-    color: '#8B0000',
-    description: 'Projeto de Prevenção e Combate a Incêndio e Pânico - sprinklers, hidrantes e alarmes',
-    keywords: [
-      'PPCIP',
-      'Incendio',
-      'Sprinkler',
-      'Hidrante',
-      'Alarme'
-    ],
-    blenderCollectionName: 'PPCIP',
-    textureType: 'Metálico Vermelho Intenso'
+    blenderCollectionName: 'Telhado',
+    textureType: 'Telha Vermelha'
   }
 ];
 
@@ -128,14 +133,41 @@ export const isObjectInCollection = (objectName: string, collectionName: string)
 
 // Função para obter a coleção de um objeto
 export const getObjectCollection = (objectName: string): ServiceMapping | undefined => {
-  const result = serviceMappings.find(mapping => {
-    const match = mapping.keywords.some(keyword => {
-      const objectLower = objectName.toLowerCase();
-      const keywordLower = keyword.toLowerCase();
-      return objectLower.includes(keywordLower);
-    });
-    return match;
-  });
+  const objectLower = objectName.toLowerCase();
   
-  return result;
+  // Buscar por matches específicos primeiro
+  for (const mapping of serviceMappings) {
+    for (const keyword of mapping.keywords) {
+      const keywordLower = keyword.toLowerCase();
+      
+      // Match exato
+      if (objectLower === keywordLower) {
+        return mapping;
+      }
+      
+      // Match que comece com a keyword seguida de ponto
+      if (objectLower.startsWith(keywordLower + '.')) {
+        return mapping;
+      }
+      
+      // Para "Estrutura Flutuante", verificar se contém "flutuante"
+      if (mapping.serviceName === 'Estrutura Flutuante' && objectLower.includes('flutuante')) {
+        return mapping;
+      }
+      
+      // Para "Estrutura" simples, verificar se contém "estrutura" mas NÃO "flutuante"
+      if (mapping.serviceName === 'Estrutura' && objectLower.includes('estrutura') && !objectLower.includes('flutuante')) {
+        return mapping;
+      }
+      
+      // Para outras disciplinas, usar match simples
+      if (mapping.serviceName !== 'Estrutura Flutuante' && mapping.serviceName !== 'Estrutura') {
+        if (objectLower.includes(keywordLower)) {
+          return mapping;
+        }
+      }
+    }
+  }
+  
+  return undefined;
 };

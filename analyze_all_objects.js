@@ -144,8 +144,8 @@ function analyzeAllObjects(filePath) {
   }
 }
 
-// Analisar o arquivo Shopping.glb
-const shoppingPath = path.join(__dirname, 'public', 'Shopping.glb');
-console.log('Analisando arquivo Shopping.glb:', shoppingPath);
-analyzeAllObjects(shoppingPath);
+// Analisar o arquivo Pier.glb
+const pierPath = path.join(__dirname, 'public', 'Pier.glb');
+console.log('Analisando arquivo Pier.glb:', pierPath);
+analyzeAllObjects(pierPath);
 

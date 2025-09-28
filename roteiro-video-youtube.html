@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roteiro - Como criei uma aplicação 3D interativa</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #e74c3c;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-left: 4px solid #e74c3c;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #27ae60;
+            margin-top: 25px;
+        }
+        .hook {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .timing {
+            color: #7f8c8d;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        .screen-note {
+            background-color: #e8f4fd;
+            border-left: 3px solid #3498db;
+            padding: 8px 15px;
+            margin: 10px 0;
+            font-style: italic;
+        }
+        .dialogue {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 3px solid #6c757d;
+        }
+        .key-points {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .tips {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        ul, ol {
+            padding-left: 20px;
+        }
+        li {
+            margin: 5px 0;
+        }
+        .cta {
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        @media print {
+            body {
+                background-color: white;
+            }
+            .container {
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎬 ROTEIRO COMPLETO - YOUTUBE</h1>
+        <h2>"Como criei uma aplicação 3D interativa: da frustração com PowerBI ao sucesso com Python/React"</h2>
+
+        <div class="hook">
+            <h3>🎣 HOOK (Primeiros 15 segundos)</h3>
+            <div class="screen-note">[Tela: Screenshot da aplicação 3D funcionando]</div>
+            <div class="dialogue">"Olha só isso aqui... uma aplicação 3D completamente interativa, com visualização de dados, modelos 3D, e uma interface moderna. E adivinha? Eu comecei tentando fazer isso no PowerBI, paguei cursos, mas simplesmente... não consegui."</div>
+            <div class="screen-note">[Tela: Mudança para PowerBI com cara de frustração]</div>
+            <div class="dialogue">"Hoje vou te mostrar exatamente por que mudei de ferramenta, como o curso da Asimov me salvou, e por que hoje vejo que ficou muito mais fácil."</div>
+        </div>
+
+        <h2>📝 ROTEIRO DETALHADO</h2>
+
+        <h3>1. INTRODUÇÃO <span class="timing">(0:00 - 2:30)</span></h3>
+        <div class="screen-note">[Tela: Apresentação pessoal + problema]</div>
+        <div class="dialogue">"Oi pessoal! Eu sou [seu nome] e hoje vou compartilhar uma história que pode te ajudar muito se você está pensando em criar visualizações de dados interativas."</div>
+        
+        <div class="screen-note">[Tela: Mostrar o projeto final]</div>
+        <div class="dialogue">"O que vocês estão vendo aqui é uma aplicação web completa para visualização de dados 3D, com modelos interativos, galeria de imagens, e uma interface responsiva. Mas a história de como cheguei aqui... é bem diferente do que eu planejava."</div>
+        
+        <div class="screen-note">[Tela: PowerBI logo]</div>
+        <div class="dialogue">"Tudo começou quando eu decidi usar PowerBI para esse projeto..."</div>
+
+        <h3>2. A FRUSTRAÇÃO COM POWERBI <span class="timing">(2:30 - 6:00)</span></h3>
+        <div class="screen-note">[Tela: PowerBI interface]</div>
+        <div class="dialogue">"PowerBI é uma ferramenta incrível para dashboards tradicionais, mas quando eu tentei criar algo mais interativo e visual... as limitações começaram a aparecer."</div>
+        
+        <div class="screen-note">[Tela: Mostrar investimento em cursos]</div>
+        <div class="dialogue">"E olha, eu não desisti fácil. Paguei cursos de PowerBI, investi tempo e dinheiro tentando dominar a ferramenta. Mas mesmo assim, quando eu tentava fazer algo mais complexo..."</div>
+        
+        <div class="screen-note">[Tela: Lista de problemas]</div>
+        <div class="dialogue">"Primeiro problema: não consegui importar modelos 3D complexos. Segundo: a interatividade era muito limitada. Terceiro: customização visual era restrita. E o pior: quando eu tentava fazer algo diferente, o PowerBI simplesmente... travava."</div>
+        
+        <div class="screen-note">[Tela: Frustração visível]</div>
+        <div class="dialogue">"E aí eu percebi: eu estava tentando forçar ferramentas que não foram feitas para o que eu queria fazer. Era hora de mudar completamente de abordagem."</div>
+
+        <h3>3. A DESCOBERTA E O CURSO DA ASIMOV <span class="timing">(6:00 - 9:00)</span></h3>
+        <div class="screen-note">[Tela: Python logo]</div>
+        <div class="dialogue">"Foi aí que eu pensei: 'E se eu tentasse Python?' Python tem bibliotecas como Plotly, Dash, Streamlit... mas mesmo assim, ainda não era exatamente o que eu queria."</div>
+        
+        <div class="screen-note">[Tela: Logo da Asimov]</div>
+        <div class="dialogue">"E foi quando descobri o curso da Asimov. Cara, no início parecia ser complicado, muito mais complexo que PowerBI. Mas eu estava determinado a aprender."</div>
+        
+        <div class="screen-note">[Tela: Código Python inicial]</div>
+        <div class="dialogue">"As primeiras aulas foram desafiadoras. Python, React, Three.js... parecia um mundo completamente novo. Mas a cada aula, eu ia entendendo melhor."</div>
+        
+        <div class="screen-note">[Tela: React + Three.js logos]</div>
+        <div class="dialogue">"E foi quando descobri React + Three.js. E cara... foi como abrir uma porta para um mundo completamente novo."</div>
+        
+        <div class="screen-note">[Tela: Código React]</div>
+        <div class="dialogue">"Com React, eu tinha controle total sobre a interface. Com Three.js, podia criar qualquer visualização 3D que eu quisesse. E o melhor: tudo funcionava perfeitamente no navegador."</div>
+
+        <h3>4. A EVOLUÇÃO E FACILIDADE <span class="timing">(9:00 - 11:00)</span></h3>
+        <div class="screen-note">[Tela: Comparação antes/depois]</div>
+        <div class="dialogue">"E olha só a evolução: no início, cada linha de código parecia um mistério. Hoje, vejo que ficou muito mais fácil do que eu imaginava."</div>
+        
+        <div class="screen-note">[Tela: Código funcionando]</div>
+        <div class="dialogue">"O que antes me levava horas no PowerBI, agora faço em minutos. O que antes era impossível, agora é só uma questão de implementar."</div>
+        
+        <div class="screen-note">[Tela: Aplicação funcionando]</div>
+        <div class="dialogue">"E o resultado? Muito mais profissional, mais rápido, e com funcionalidades que eu nem sonhava em ter."</div>
+
+        <h3>5. DEMONSTRAÇÃO DA APLICAÇÃO <span class="timing">(11:00 - 16:30)</span></h3>
+        <div class="screen-note">[Tela: Aplicação funcionando - mostrar cada funcionalidade]</div>
+        <div class="dialogue">"Vamos ver o que consegui criar:"</div>
+        
+        <h4>Funcionalidade 1 - Modelos 3D:</h4>
+        <div class="dialogue">"Aqui temos modelos 3D completamente interativos. Posso rotacionar, dar zoom, e cada elemento tem suas próprias propriedades."</div>
+        
+        <h4>Funcionalidade 2 - Galeria de Imagens:</h4>
+        <div class="dialogue">"Uma galeria de imagens integrada, com navegação fluida e responsiva."</div>
+        
+        <h4>Funcionalidade 3 - Visualização de Dados:</h4>
+        <div class="dialogue">"Dados organizados em tabelas interativas, com filtros e busca."</div>
+        
+        <h4>Funcionalidade 4 - Interface Responsiva:</h4>
+        <div class="dialogue">"E tudo funciona perfeitamente no mobile também."</div>
+        
+        <div class="screen-note">[Tela: Código sendo mostrado]</div>
+        <div class="dialogue">"E o código? Muito mais limpo e organizado do que eu conseguiria fazer em qualquer ferramenta de drag-and-drop."</div>
+
+        <h3>6. COMPARAÇÃO E LIÇÕES <span class="timing">(16:30 - 18:30)</span></h3>
+        <div class="screen-note">[Tela: Comparação visual]</div>
+        <div class="dialogue">"Então, PowerBI vs Desenvolvimento Web:"</div>
+        <div class="dialogue">"PowerBI: Excelente para dashboards tradicionais, mas limitado para inovações."</div>
+        <div class="dialogue">"Desenvolvimento Web: Controle total, flexibilidade infinita, e resultado profissional."</div>
+        
+        <div class="screen-note">[Tela: Lições aprendidas]</div>
+        <div class="dialogue">"As lições que aprendi:"</div>
+        <ol>
+            <li>"Investir em cursos é importante, mas escolher o curso certo é fundamental"</li>
+            <li>"No início pode parecer complicado, mas com prática fica muito mais fácil"</li>
+            <li>"Às vezes você precisa sair da zona de conforto"</li>
+            <li>"O resultado final compensa o aprendizado inicial"</li>
+        </ol>
+
+        <h3>7. CONCLUSÃO E CALL-TO-ACTION <span class="timing">(18:30 - 20:00)</span></h3>
+        <div class="screen-note">[Tela: Projeto final]</div>
+        <div class="dialogue">"Se você está enfrentando limitações similares, talvez seja hora de considerar uma abordagem diferente. O código está disponível no GitHub, link na descrição."</div>
+        
+        <div class="screen-note">[Tela: Logo da Asimov]</div>
+        <div class="dialogue">"E se você quer aprender Python e desenvolvimento web, recomendo muito o curso da Asimov. No início pode parecer difícil, mas confia em mim: vale muito a pena."</div>
+        
+        <div class="screen-note">[Tela: Thumbnail do próximo vídeo]</div>
+        <div class="dialogue">"No próximo vídeo, vou mostrar como implementar cada uma dessas funcionalidades passo a passo. Se inscreva no canal para não perder!"</div>
+        
+        <div class="screen-note">[Tela: Like e subscribe]</div>
+        <div class="dialogue">"Se esse vídeo te ajudou, deixa um like e se inscreva no canal. E me conta nos comentários: você já passou por uma situação similar? Já investiu em cursos que no final não te ajudaram tanto quanto esperava?"</div>
+
+        <div class="key-points">
+            <h2>🎯 PONTOS-CHAVE PARA DESTACAR</h2>
+            <h3>Frustrações com PowerBI:</h3>
+            <ul>
+                <li>Limitações de importação 3D</li>
+                <li>Interatividade restrita</li>
+                <li>Customização visual limitada</li>
+                <li>Performance com dados complexos</li>
+                <li>Dificuldade para implementar funcionalidades específicas</li>
+            </ul>
+            
+            <h3>Investimento em Cursos:</h3>
+            <ul>
+                <li>Cursos de PowerBI pagos mas com limitações</li>
+                <li>Curso da Asimov como solução</li>
+                <li>Dificuldade inicial vs facilidade atual</li>
+                <li>Evolução do aprendizado</li>
+            </ul>
+            
+            <h3>Vantagens da Solução Final:</h3>
+            <ul>
+                <li>Controle total sobre a interface</li>
+                <li>Performance superior</li>
+                <li>Flexibilidade infinita</li>
+                <li>Código reutilizável</li>
+                <li>Resultado profissional</li>
+            </ul>
+        </div>
+
+        <div class="tips">
+            <h2>📝 FRASES-CHAVE PARA USAR</h2>
+            <ul>
+                <li>"No início parecia complicado, mas hoje vejo que ficou muito mais fácil"</li>
+                <li>"Investi em cursos de PowerBI, mas o curso da Asimov foi o que realmente me ajudou"</li>
+                <li>"A cada aula, eu ia entendendo melhor"</li>
+                <li>"O que antes me levava horas, agora faço em minutos"</li>
+                <li>"Era hora de mudar completamente de abordagem"</li>
+                <li>"Foi como abrir uma porta para um mundo completamente novo"</li>
+            </ul>
+        </div>
+
+        <div class="cta">
+            <h2>📱 CALL-TO-ACTION FINAL</h2>
+            <h3>Links para incluir na descrição:</h3>
+            <ul>
+                <li>Repositório GitHub: https://github.com/rodrigofblopes/Yasai.git</li>
+                <li>Curso da Asimov: [link do curso]</li>
+                <li>Canal do YouTube: [seu canal]</li>
+            </ul>
+            
+            <h3>Perguntas para engajamento:</h3>
+            <ul>
+                <li>"Você já passou por uma situação similar?"</li>
+                <li>"Já investiu em cursos que no final não te ajudaram tanto quanto esperava?"</li>
+                <li>"Qual ferramenta você usa para visualização de dados?"</li>
+                <li>"Quer que eu faça um tutorial passo a passo?"</li>
+            </ul>
+        </div>
+
+        <div class="tips">
+            <h2>🎬 DICAS PARA GRAVAÇÃO</h2>
+            <h3>Preparação:</h3>
+            <ul>
+                <li>Testar a aplicação antes de gravar</li>
+                <li>Ter screenshots prontos</li>
+                <li>Preparar código para mostrar</li>
+                <li>Testar áudio e vídeo</li>
+            </ul>
+            
+            <h3>Durante a gravação:</h3>
+            <ul>
+                <li>Falar com naturalidade</li>
+                <li>Mostrar entusiasmo genuíno</li>
+                <li>Fazer pausas para respiração</li>
+                <li>Manter contato visual com a câmera</li>
+            </ul>
+            
+            <h3>Pós-produção:</h3>
+            <ul>
+                <li>Adicionar música de fundo suave</li>
+                <li>Inserir transições entre seções</li>
+                <li>Adicionar texto nas telas importantes</li>
+                <li>Verificar áudio e sincronização</li>
+            </ul>
+        </div>
+
+        <div class="key-points">
+            <h2>📊 INFORMAÇÕES TÉCNICAS</h2>
+            <p><strong>Duração estimada:</strong> 18-20 minutos</p>
+            <p><strong>Público-alvo:</strong> Desenvolvedores, analistas de dados, pessoas interessadas em visualização de dados</p>
+            <p><strong>Tom:</strong> Conversacional, honesto, motivacional</p>
+            <p><strong>Tags:</strong> PowerBI, Python, React, Three.js, desenvolvimento web, aplicação 3D, programação, data visualization, dashboard, frontend, Asimov, curso Python, aprendizado</p>
+            <p><strong>Thumbnail:</strong> "PowerBI vs React" com setas, screenshot da aplicação, texto: "Por que mudei?"</p>
+        </div>
+    </div>
+</body>
+</html>

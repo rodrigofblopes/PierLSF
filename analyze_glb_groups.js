@@ -134,6 +134,6 @@ function analyzeGLBGroups(filePath) {
   }
 }
 
-// Analisar o arquivo ARQ.glb
-const arqPath = path.join(__dirname, 'public', 'ARQ.glb');
-analyzeGLBGroups(arqPath);
+// Analisar o arquivo Pier.glb
+const pierPath = path.join(__dirname, 'public', 'Pier.glb');
+analyzeGLBGroups(pierPath);

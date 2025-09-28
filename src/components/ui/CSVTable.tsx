@@ -32,7 +32,7 @@ export const CSVTable: React.FC<CSVTableProps> = ({
     setError(null);
     
     try {
-      const response = await fetch('./Link.csv');
+      const response = await fetch('./Etapas.csv');
       if (!response.ok) {
         throw new Error('Arquivo CSV não encontrado');
       }
@@ -97,12 +97,17 @@ export const CSVTable: React.FC<CSVTableProps> = ({
           const item = data.find(d => d.disciplina === disciplina);
           console.log('🔍 Item encontrado no CSV:', item);
           
-          // Função para dividir corretamente os elementos 3D usando ponto e vírgula (;) como separador
+          // Função para dividir corretamente os elementos 3D
           const parseElements3D = (elementsString: string): string[] => {
             if (!elementsString) return [];
             
-            // Dividir por ponto e vírgula (;) e limpar espaços
-            const elements = elementsString.split(';').map(el => el.trim()).filter(el => el.length > 0);
+            // Caso especial para "Estrutura (7337 elementos)" - usar apenas "Estrutura"
+            if (elementsString.includes('(7337 elementos)')) {
+              return ['Estrutura'];
+            }
+            
+            // Dividir por vírgula (,) e limpar espaços
+            const elements = elementsString.split(',').map(el => el.trim()).filter(el => el.length > 0);
             
             return elements;
           };
@@ -121,11 +126,17 @@ export const CSVTable: React.FC<CSVTableProps> = ({
       };
 
   const handleToggleVisibility = (serviceName: string, event: React.MouseEvent) => {
+    console.log('🛑 Evento de toggle capturado, chamando stopPropagation');
     event.stopPropagation(); // Evitar que o clique na linha seja acionado
-    console.log('👁️ Toggle visibilidade:', serviceName);
+    event.preventDefault(); // Prevenir comportamento padrão
+    console.log('👁️ Toggle visibilidade clicado:', serviceName);
     const mapping = findServiceMapping(serviceName);
+    console.log('🔍 Mapping encontrado:', mapping);
     if (onToggleVisibility) {
+      console.log('📞 Chamando onToggleVisibility com mapping:', mapping);
       onToggleVisibility(mapping || null);
+    } else {
+      console.log('❌ onToggleVisibility não está definido');
     }
   };
 
@@ -188,6 +199,9 @@ export const CSVTable: React.FC<CSVTableProps> = ({
               const hasMapping = !!mapping;
               const isHidden = hiddenServices.includes(item.disciplina);
               
+              // Debug log para verificar se o mapping está sendo encontrado
+              console.log(`🔍 Item: ${item.disciplina}, mapping:`, mapping, `hasMapping: ${hasMapping}`);
+              
               return (
                 <tr 
                   key={index} 
@@ -234,8 +248,11 @@ export const CSVTable: React.FC<CSVTableProps> = ({
                           <div className="flex-shrink-0 ml-2">
                             {hasMapping ? (
                               <button
-                                onClick={(e) => handleToggleVisibility(item.disciplina, e)}
-                                className={`p-1 sm:p-2 rounded transition-colors touch-manipulation ${
+                                onClick={(e) => {
+                                  console.log('🖱️ Botão de visibilidade clicado para:', item.disciplina);
+                                  handleToggleVisibility(item.disciplina, e);
+                                }}
+                                className={`p-1 sm:p-2 rounded transition-colors touch-manipulation relative z-10 ${
                                   isHidden
                                     ? 'text-gray-400 hover:text-gray-600 active:text-gray-700'
                                     : isSelected

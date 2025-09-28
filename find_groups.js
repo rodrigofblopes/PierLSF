@@ -133,6 +133,6 @@ function findGroupsInGLB(filePath) {
   }
 }
 
-// Analisar o arquivo Shopping.glb
-const shoppingPath = path.join(__dirname, 'public', 'Shopping.glb');
-findGroupsInGLB(shoppingPath);
+// Analisar o arquivo Pier.glb
+const pierPath = path.join(__dirname, 'public', 'Pier.glb');
+findGroupsInGLB(pierPath);
