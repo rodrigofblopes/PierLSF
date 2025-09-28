@@ -54,10 +54,9 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
               )}
               <span className={cn(
                 'text-xs font-medium transition-all duration-300',
-                isExtraSmall ? 'hidden' : 'block',
                 activeTab === tab.id ? 'font-bold' : 'font-medium'
               )}>
-                {isExtraSmall ? tab.label.charAt(0) : tab.label.split(' ')[0]}
+                {tab.label}
               </span>
             </button>
           ))}

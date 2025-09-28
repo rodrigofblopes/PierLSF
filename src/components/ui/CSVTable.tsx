@@ -177,10 +177,10 @@ export const CSVTable: React.FC<CSVTableProps> = ({
   }
 
   return (
-    <div className={`bg-white rounded-lg shadow-sm border flex flex-col ${className}`}>
+    <div className={`bg-white rounded-lg shadow-sm border flex flex-col h-full ${className}`}>
 
       {/* Tabela - Enhanced Mobile */}
-      <div className="overflow-x-auto overflow-y-auto flex-1 min-h-0">
+      <div className="overflow-x-auto overflow-y-auto flex-1 min-h-0 h-full">
         <table className="w-full min-w-[280px] sm:min-w-[350px]">
               <thead className="bg-gradient-to-r from-gray-50 to-gray-100 sticky top-0 z-10">
                 <tr>
