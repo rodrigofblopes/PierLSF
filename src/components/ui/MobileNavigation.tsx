@@ -30,32 +30,32 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
 
   return (
     <div className={cn('bg-white/10 backdrop-blur-sm border-t border-white/20', className)}>
-      {/* Bottom Navigation for Mobile */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-t border-gray-200 safe-area-inset-bottom">
-        <nav className="flex items-center justify-around py-2 px-2">
+      {/* Bottom Navigation for Mobile - Enhanced */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-gray-200 safe-area-inset-bottom shadow-lg">
+        <nav className="flex items-center justify-around py-3 px-2">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => onTabChange(tab.id)}
               className={cn(
-                'flex flex-col items-center gap-1 px-2 py-2 rounded-lg transition-all duration-200 touch-manipulation tap-highlight-transparent',
+                'flex flex-col items-center gap-1.5 px-3 py-2.5 rounded-xl transition-all duration-300 touch-manipulation tap-highlight-transparent active:scale-95',
                 activeTab === tab.id
-                  ? 'bg-blue-100 text-blue-600'
-                  : 'text-gray-600 hover:text-gray-900 active:bg-gray-100'
+                  ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30 scale-105'
+                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100 active:bg-gray-200'
               )}
             >
               {tab.icon && (
                 <span className={cn(
-                  'transition-all duration-200',
+                  'transition-all duration-300 text-lg',
                   activeTab === tab.id ? 'scale-110' : 'scale-100'
                 )}>
                   {tab.icon}
                 </span>
               )}
               <span className={cn(
-                'text-xs font-medium transition-all duration-200',
+                'text-xs font-medium transition-all duration-300',
                 isExtraSmall ? 'hidden' : 'block',
-                activeTab === tab.id ? 'font-semibold' : 'font-medium'
+                activeTab === tab.id ? 'font-bold' : 'font-medium'
               )}>
                 {isExtraSmall ? tab.label.charAt(0) : tab.label.split(' ')[0]}
               </span>

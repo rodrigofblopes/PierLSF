@@ -179,15 +179,15 @@ export const CSVTable: React.FC<CSVTableProps> = ({
   return (
     <div className={`bg-white rounded-lg shadow-sm border flex flex-col ${className}`}>
 
-      {/* Tabela */}
+      {/* Tabela - Enhanced Mobile */}
       <div className="overflow-x-auto overflow-y-auto flex-1 min-h-0">
-        <table className="w-full min-w-[250px] sm:min-w-[350px]">
-              <thead className="bg-gradient-to-r from-gray-50 to-gray-100">
+        <table className="w-full min-w-[280px] sm:min-w-[350px]">
+              <thead className="bg-gradient-to-r from-gray-50 to-gray-100 sticky top-0 z-10">
                 <tr>
-                  <th className="px-2 sm:px-4 py-2 sm:py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                    <div className="flex items-center space-x-1 sm:space-x-2">
-                      <FileText className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
-                      <span className="text-xs sm:text-xs">Disciplinas</span>
+                  <th className="px-3 sm:px-4 py-3 sm:py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                    <div className="flex items-center space-x-2 sm:space-x-2">
+                      <FileText className="w-4 h-4 sm:w-4 sm:h-4 text-blue-600" />
+                      <span className="text-xs sm:text-sm">Disciplinas</span>
                     </div>
                   </th>
                 </tr>
@@ -206,21 +206,21 @@ export const CSVTable: React.FC<CSVTableProps> = ({
                 <tr 
                   key={index} 
                   className={`
-                    transition-all duration-300 group cursor-pointer
+                    transition-all duration-300 group cursor-pointer touch-manipulation
                     ${isSelected 
                       ? 'bg-gradient-to-r from-orange-200 to-orange-100 border-l-4 border-orange-500 shadow-md ring-1 ring-orange-200' 
                       : isHidden
                         ? 'bg-gradient-to-r from-gray-100 to-gray-50 opacity-60'
-                        : 'hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50'
+                        : 'hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 active:bg-blue-100'
                     }
                   `}
                   onClick={() => handleServiceClick(item.disciplina)}
                 >
-                      <td className="px-1.5 sm:px-6 py-2 sm:py-4">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4">
                         <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-1.5 sm:space-x-3 flex-1 min-w-0">
+                          <div className="flex items-center space-x-2 sm:space-x-3 flex-1 min-w-0">
                             <div className={`
-                              w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-colors flex-shrink-0
+                              w-2 h-2 sm:w-2 sm:h-2 rounded-full transition-colors flex-shrink-0
                               ${isSelected
                                 ? 'bg-orange-600 shadow-sm'
                                 : hasMapping
@@ -229,7 +229,7 @@ export const CSVTable: React.FC<CSVTableProps> = ({
                               }
                             `}></div>
                             <div className={`
-                              text-xs sm:text-sm font-semibold transition-colors truncate min-w-0
+                              text-sm sm:text-sm font-semibold transition-colors truncate min-w-0
                               ${isSelected
                                 ? 'text-orange-800'
                                 : 'text-gray-900 group-hover:text-blue-900'
@@ -244,7 +244,7 @@ export const CSVTable: React.FC<CSVTableProps> = ({
                             </div>
                           </div>
                           
-                          {/* Ícone de visibilidade ao lado do texto */}
+                          {/* Ícone de visibilidade - Enhanced Mobile */}
                           <div className="flex-shrink-0 ml-2">
                             {hasMapping ? (
                               <button
@@ -252,20 +252,20 @@ export const CSVTable: React.FC<CSVTableProps> = ({
                                   console.log('🖱️ Botão de visibilidade clicado para:', item.disciplina);
                                   handleToggleVisibility(item.disciplina, e);
                                 }}
-                                className={`p-1 sm:p-2 rounded transition-colors touch-manipulation relative z-10 ${
+                                className={`p-2 sm:p-2 rounded-lg transition-all duration-200 touch-manipulation relative z-10 active:scale-95 ${
                                   isHidden
-                                    ? 'text-gray-400 hover:text-gray-600 active:text-gray-700'
+                                    ? 'text-gray-400 hover:text-gray-600 hover:bg-gray-100'
                                     : isSelected
-                                      ? 'text-orange-600 hover:text-orange-700 active:text-orange-800'
-                                      : 'text-blue-600 hover:text-blue-700 active:text-blue-800'
+                                      ? 'text-orange-600 hover:text-orange-700 hover:bg-orange-50'
+                                      : 'text-blue-600 hover:text-blue-700 hover:bg-blue-50'
                                 }`}
                                 title={isHidden ? 'Mostrar elementos' : 'Ocultar elementos'}
                               >
-                                {isHidden ? <EyeOff className="w-4 h-4 sm:w-5 sm:h-5" /> : <Eye className="w-4 h-4 sm:w-5 sm:h-5" />}
+                                {isHidden ? <EyeOff className="w-5 h-5 sm:w-5 sm:h-5" /> : <Eye className="w-5 h-5 sm:w-5 sm:h-5" />}
                               </button>
                             ) : (
-                              <div className="flex items-center justify-center">
-                                <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-500" />
+                              <div className="flex items-center justify-center p-2">
+                                <AlertCircle className="w-5 h-5 sm:w-5 sm:h-5 text-yellow-500" />
                               </div>
                             )}
                           </div>

@@ -6,6 +6,7 @@ import { MobileTabBar, MobileNavigation } from '@/components/ui/MobileNavigation
 import { FolderOpen, FileText, Box } from 'lucide-react';
 import { ServiceMapping } from '@/utils/serviceMapping';
 import { useIsMobile, useIsExtraSmall } from '@/hooks/useMediaQuery';
+import { cn } from '@/utils/cn';
 
 
 
@@ -82,18 +83,27 @@ function App() {
         <div className="max-w-7xl mx-auto relative z-10 px-3 sm:px-4 lg:px-8">
           <div className="relative py-4 sm:py-6 lg:py-8">
             
-            {/* Layout responsivo para mobile */}
+            {/* Layout responsivo para mobile - Enhanced */}
             <div className="flex flex-col lg:block">
               
-              {/* Header Shopping */}
-              <div className="flex flex-col justify-center items-center min-h-[80px] sm:min-h-[90px] lg:min-h-[100px] space-y-1 sm:space-y-2">
+              {/* Header Shopping - Enhanced Mobile */}
+              <div className="flex flex-col justify-center items-center min-h-[70px] sm:min-h-[90px] lg:min-h-[100px] space-y-1 sm:space-y-2">
                 {/* Título Principal Shopping */}
                 <div className="flex justify-center items-center">
                   <div className="relative group">
-                    <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black text-center relative leading-tight">
+                    <h1 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black text-center relative leading-tight">
                       <span className="bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 bg-clip-text text-transparent drop-shadow-2xl filter drop-shadow-yellow-400/70 animate-pulse">
-                        FLUTUANTE<br />
-                        EM LIGHT STEEL FRAME
+                        {isMobile ? (
+                          <>
+                            FLUTUANTE<br />
+                            LSF
+                          </>
+                        ) : (
+                          <>
+                            FLUTUANTE<br />
+                            EM LIGHT STEEL FRAME
+                          </>
+                        )}
                       </span>
                     </h1>
                     
@@ -118,25 +128,39 @@ function App() {
         </div>
       </div>
 
-      {/* Conteúdo das Abas */}
-      <div className="p-3 sm:p-6">
-        <div className="max-w-6xl mx-auto">
+      {/* Conteúdo das Abas - Enhanced Mobile Layout */}
+      <div className="p-2 sm:p-4 lg:p-6">
+        <div className="max-w-7xl mx-auto">
           {activeTab === '3d' && (
-            <div className="h-[calc(100vh-140px)] sm:h-[calc(100vh-120px)] flex flex-col gap-1 p-1 sm:gap-4 sm:p-4 lg:flex-row">
-              {/* Visualizador 3D - Mobile Optimized */}
-              <div className="flex-1 min-h-0 h-2/5 sm:h-2/5 lg:h-full">
-                    <Model3DViewer
-                      modelPath="/Pier.glb"
-                      className="h-full rounded-lg border border-white/10 touch-manipulation"
-                      selectedService={selectedService}
-                      hiddenServices={hiddenServices}
-                      selectedElements3d={selectedElements3d}
-                    />
+            <div className={cn(
+              "flex gap-2 sm:gap-4",
+              isMobile 
+                ? "flex-col h-[calc(100vh-200px)]" 
+                : "flex-row h-[calc(100vh-140px)]"
+            )}>
+              {/* Visualizador 3D - Enhanced Mobile */}
+              <div className={cn(
+                "flex-1 min-h-0 rounded-xl overflow-hidden shadow-lg",
+                isMobile 
+                  ? "h-1/2 min-h-[300px]" 
+                  : "h-full"
+              )}>
+                <Model3DViewer
+                  modelPath="/Pier.glb"
+                  className="h-full rounded-xl border border-white/10 touch-manipulation"
+                  selectedService={selectedService}
+                  hiddenServices={hiddenServices}
+                  selectedElements3d={selectedElements3d}
+                />
               </div>
               
-              {/* Painel lateral - Tabela Mobile Optimized */}
-              <div className="w-full h-3/5 sm:h-3/5 lg:h-full lg:w-[500px] min-h-0 overflow-hidden">
-                {/* Tabela CSV - Mobile Responsive */}
+              {/* Painel lateral - Enhanced Mobile */}
+              <div className={cn(
+                "min-h-0 overflow-hidden rounded-xl shadow-lg bg-white/95 backdrop-blur-sm",
+                isMobile 
+                  ? "h-1/2 w-full" 
+                  : "h-full w-[500px]"
+              )}>
                 <CSVTable 
                   className="h-full" 
                   onServiceSelect={handleServiceSelect}
@@ -147,8 +171,6 @@ function App() {
               </div>
             </div>
           )}
-
-
         </div>
       </div>
       
