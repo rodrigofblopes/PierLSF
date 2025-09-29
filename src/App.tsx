@@ -3,6 +3,7 @@ import { Tabs } from '@/components/ui/Tabs';
 import { Model3DViewer } from '@/components/ui/Model3DViewer';
 import { CSVTable } from '@/components/ui/CSVTable';
 import { MobileTabBar, MobileNavigation } from '@/components/ui/MobileNavigation';
+import { ImageGallery } from '@/components/ui/ImageGallery';
 import { FolderOpen, FileText, Box } from 'lucide-react';
 import { ServiceMapping } from '@/utils/serviceMapping';
 import { useIsMobile, useIsExtraSmall } from '@/hooks/useMediaQuery';
@@ -55,6 +56,8 @@ function App() {
 
   // Definir as abas
   const tabs = [
+    { id: '3d', label: '3D', icon: <Box /> },
+    { id: 'plans', label: 'Plantas e Cortes', icon: <FolderOpen /> },
   ];
 
   const handleTabChange = (tabId: string) => {
@@ -116,53 +119,88 @@ function App() {
             </div>
           </div>
           
-        </div>
-      </div>
-
-      {/* Conteúdo Principal - Enhanced Mobile Layout */}
-      <div className="p-1 sm:p-2 md:p-4 lg:p-6">
-        <div className="max-w-7xl mx-auto">
-          <div className={cn(
-            "flex gap-1 sm:gap-2 md:gap-4",
-            isMobile 
-              ? "flex-col h-[calc(100vh-120px)]" 
-              : "flex-row h-[calc(100vh-140px)]"
-          )}>
-            {/* Visualizador 3D - Enhanced Mobile */}
-            <div className={cn(
-              "flex-1 min-h-0 rounded-lg sm:rounded-xl overflow-hidden shadow-lg",
-              isMobile 
-                ? "h-[45vh] min-h-[250px] max-h-[400px]" 
-                : "h-full"
-            )}>
-              <Model3DViewer
-                modelPath="/Pier.glb"
-                className="h-full rounded-lg sm:rounded-xl border border-white/10 touch-manipulation"
-                selectedService={selectedService}
-                hiddenServices={hiddenServices}
-                selectedElements3d={selectedElements3d}
-              />
-            </div>
-            
-            {/* Painel lateral - Enhanced Mobile */}
-            <div className={cn(
-              "min-h-0 overflow-hidden rounded-lg sm:rounded-xl shadow-lg bg-white/95 backdrop-blur-sm",
-              isMobile 
-                ? "h-[50vh] w-full min-h-[300px] max-h-[500px]" 
-                : "h-full w-[500px]"
-            )}>
-              <CSVTable 
-                className="h-full" 
-                onServiceSelect={handleServiceSelect}
-                selectedService={selectedService?.serviceName || null}
-                onToggleVisibility={handleToggleVisibility}
-                hiddenServices={hiddenServices}
-              />
-            </div>
+          {/* Sistema de Abas */}
+          <div className="relative z-20">
+            <Tabs
+              tabs={tabs}
+              activeTab={activeTab}
+              onTabChange={handleTabChange}
+            />
           </div>
         </div>
       </div>
+
+      {/* Conteúdo das Abas - Enhanced Mobile Layout */}
+      <div className="p-1 sm:p-2 md:p-4 lg:p-6">
+        <div className="max-w-7xl mx-auto">
+          {activeTab === '3d' && (
+            <div className={cn(
+              "flex gap-1 sm:gap-2 md:gap-4",
+              isMobile 
+                ? "flex-col h-[calc(100vh-120px)]" 
+                : "flex-row h-[calc(100vh-140px)]"
+            )}>
+              {/* Visualizador 3D - Enhanced Mobile */}
+              <div className={cn(
+                "flex-1 min-h-0 rounded-lg sm:rounded-xl overflow-hidden shadow-lg",
+                isMobile 
+                  ? "h-[45vh] min-h-[250px] max-h-[400px]" 
+                  : "h-full"
+              )}>
+                <Model3DViewer
+                  modelPath="/Pier.glb"
+                  className="h-full rounded-lg sm:rounded-xl border border-white/10 touch-manipulation"
+                  selectedService={selectedService}
+                  hiddenServices={hiddenServices}
+                  selectedElements3d={selectedElements3d}
+                />
+              </div>
+              
+              {/* Painel lateral - Enhanced Mobile */}
+              <div className={cn(
+                "min-h-0 overflow-hidden rounded-lg sm:rounded-xl shadow-lg bg-white/95 backdrop-blur-sm",
+                isMobile 
+                  ? "h-[50vh] w-full min-h-[300px] max-h-[500px]" 
+                  : "h-full w-[500px]"
+              )}>
+                <CSVTable 
+                  className="h-full" 
+                  onServiceSelect={handleServiceSelect}
+                  selectedService={selectedService?.serviceName || null}
+                  onToggleVisibility={handleToggleVisibility}
+                  hiddenServices={hiddenServices}
+                />
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'plans' && (
+            <div className="h-[calc(100vh-100px)]">
+              <ImageGallery 
+                images={[
+                  { src: '/Térreo.jpg', title: 'Planta Térreo', description: 'Vista do pavimento térreo' },
+                  { src: '/Pav.Superior.jpg', title: 'Pavimento Superior', description: 'Vista do pavimento superior' },
+                  { src: '/Corte Logintudinal.jpg', title: 'Corte Longitudinal', description: 'Corte longitudinal do projeto' },
+                  { src: '/Corte Transversal.jpg', title: 'Corte Transversal', description: 'Corte transversal do projeto' }
+                ]}
+                className="h-full"
+              />
+            </div>
+          )}
+        </div>
+      </div>
       
+      {/* Mobile Navigation - Bottom Bar */}
+      {isMobile && (
+        <MobileNavigation 
+          tabs={tabs}
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+        />
+      )}
+      
+      {/* Safe area spacing for mobile */}
+      {isMobile && <div className="h-20 safe-area-inset-bottom"></div>}
     </div>
   );
 }
