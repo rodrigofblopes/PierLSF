@@ -55,7 +55,6 @@ function App() {
 
   // Definir as abas
   const tabs = [
-    { id: '3d', label: '3D', icon: <Box /> },
   ];
 
   const handleTabChange = (tabId: string) => {
@@ -80,18 +79,18 @@ function App() {
           <div className="absolute top-1/2 left-1/6 sm:left-1/4 w-8 h-8 sm:w-12 sm:h-12 lg:w-16 lg:h-16 border border-yellow-500 rounded-full"></div>
         </div>
         
-        <div className="max-w-7xl mx-auto relative z-10 px-3 sm:px-4 lg:px-8">
-          <div className="relative py-4 sm:py-6 lg:py-8">
+        <div className="max-w-7xl mx-auto relative z-10 px-2 sm:px-4 lg:px-8">
+          <div className="relative py-2 sm:py-4 lg:py-6">
             
             {/* Layout responsivo para mobile - Enhanced */}
             <div className="flex flex-col lg:block">
               
               {/* Header Shopping - Enhanced Mobile */}
-              <div className="flex flex-col justify-center items-center min-h-[70px] sm:min-h-[90px] lg:min-h-[100px] space-y-1 sm:space-y-2">
+              <div className="flex flex-col justify-center items-center min-h-[50px] sm:min-h-[70px] lg:min-h-[90px] space-y-1">
                 {/* Título Principal Shopping */}
                 <div className="flex justify-center items-center">
                   <div className="relative group">
-                    <h1 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black text-center relative leading-tight">
+                    <h1 className="text-base sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-black text-center relative leading-tight">
                       <span className="bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 bg-clip-text text-transparent drop-shadow-2xl filter drop-shadow-yellow-400/70 animate-pulse">
                         {isMobile ? (
                           <>
@@ -117,74 +116,53 @@ function App() {
             </div>
           </div>
           
-          {/* Sistema de Abas */}
-          <div className="relative z-20">
-            <Tabs
-              tabs={tabs}
-              activeTab={activeTab}
-              onTabChange={handleTabChange}
-            />
-          </div>
         </div>
       </div>
 
-      {/* Conteúdo das Abas - Enhanced Mobile Layout */}
-      <div className="p-2 sm:p-4 lg:p-6">
+      {/* Conteúdo Principal - Enhanced Mobile Layout */}
+      <div className="p-1 sm:p-2 md:p-4 lg:p-6">
         <div className="max-w-7xl mx-auto">
-          {activeTab === '3d' && (
+          <div className={cn(
+            "flex gap-1 sm:gap-2 md:gap-4",
+            isMobile 
+              ? "flex-col h-[calc(100vh-120px)]" 
+              : "flex-row h-[calc(100vh-140px)]"
+          )}>
+            {/* Visualizador 3D - Enhanced Mobile */}
             <div className={cn(
-              "flex gap-2 sm:gap-4",
+              "flex-1 min-h-0 rounded-lg sm:rounded-xl overflow-hidden shadow-lg",
               isMobile 
-                ? "flex-col h-[calc(100vh-200px)]" 
-                : "flex-row h-[calc(100vh-140px)]"
+                ? "h-[45vh] min-h-[250px] max-h-[400px]" 
+                : "h-full"
             )}>
-              {/* Visualizador 3D - Enhanced Mobile */}
-              <div className={cn(
-                "flex-1 min-h-0 rounded-xl overflow-hidden shadow-lg",
-                isMobile 
-                  ? "h-1/2 min-h-[300px]" 
-                  : "h-full"
-              )}>
-                <Model3DViewer
-                  modelPath="/Pier.glb"
-                  className="h-full rounded-xl border border-white/10 touch-manipulation"
-                  selectedService={selectedService}
-                  hiddenServices={hiddenServices}
-                  selectedElements3d={selectedElements3d}
-                />
-              </div>
-              
-              {/* Painel lateral - Enhanced Mobile */}
-              <div className={cn(
-                "min-h-0 overflow-hidden rounded-xl shadow-lg bg-white/95 backdrop-blur-sm",
-                isMobile 
-                  ? "h-1/2 w-full" 
-                  : "h-full w-[500px]"
-              )}>
-                <CSVTable 
-                  className="h-full" 
-                  onServiceSelect={handleServiceSelect}
-                  selectedService={selectedService?.serviceName || null}
-                  onToggleVisibility={handleToggleVisibility}
-                  hiddenServices={hiddenServices}
-                />
-              </div>
+              <Model3DViewer
+                modelPath="/Pier.glb"
+                className="h-full rounded-lg sm:rounded-xl border border-white/10 touch-manipulation"
+                selectedService={selectedService}
+                hiddenServices={hiddenServices}
+                selectedElements3d={selectedElements3d}
+              />
             </div>
-          )}
+            
+            {/* Painel lateral - Enhanced Mobile */}
+            <div className={cn(
+              "min-h-0 overflow-hidden rounded-lg sm:rounded-xl shadow-lg bg-white/95 backdrop-blur-sm",
+              isMobile 
+                ? "h-[50vh] w-full min-h-[300px] max-h-[500px]" 
+                : "h-full w-[500px]"
+            )}>
+              <CSVTable 
+                className="h-full" 
+                onServiceSelect={handleServiceSelect}
+                selectedService={selectedService?.serviceName || null}
+                onToggleVisibility={handleToggleVisibility}
+                hiddenServices={hiddenServices}
+              />
+            </div>
+          </div>
         </div>
       </div>
       
-      {/* Mobile Navigation - Bottom Bar */}
-      {isMobile && (
-        <MobileNavigation 
-          tabs={tabs}
-          activeTab={activeTab}
-          onTabChange={handleTabChange}
-        />
-      )}
-      
-      {/* Safe area spacing for mobile */}
-      {isMobile && <div className="h-20 safe-area-inset-bottom"></div>}
     </div>
   );
 }

@@ -57,6 +57,8 @@ export const CSVTable: React.FC<CSVTableProps> = ({
             });
       
       console.log('📊 Dados CSV carregados:', csvData);
+      console.log('📊 Total de itens:', csvData.length);
+      console.log('📊 Primeiros 3 itens:', csvData.slice(0, 3));
       setData(csvData);
     } catch (err) {
       console.error('❌ Erro ao carregar CSV:', err);
@@ -181,13 +183,13 @@ export const CSVTable: React.FC<CSVTableProps> = ({
 
       {/* Tabela - Enhanced Mobile */}
       <div className="overflow-x-auto overflow-y-auto flex-1 min-h-0 h-full">
-        <table className="w-full min-w-[280px] sm:min-w-[350px]">
+        <table className="w-full min-w-[250px] sm:min-w-[300px] md:min-w-[350px]">
               <thead className="bg-gradient-to-r from-gray-50 to-gray-100 sticky top-0 z-10">
                 <tr>
-                  <th className="px-3 sm:px-4 py-3 sm:py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                  <th className="px-2 sm:px-3 md:px-4 py-2 sm:py-3 md:py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                     <div className="flex items-center space-x-2 sm:space-x-2">
                       <FileText className="w-4 h-4 sm:w-4 sm:h-4 text-blue-600" />
-                      <span className="text-xs sm:text-sm">Disciplinas</span>
+                      <span className="text-xs sm:text-sm">Etapas</span>
                     </div>
                   </th>
                 </tr>
@@ -216,9 +218,9 @@ export const CSVTable: React.FC<CSVTableProps> = ({
                   `}
                   onClick={() => handleServiceClick(item.disciplina)}
                 >
-                      <td className="px-3 sm:px-6 py-3 sm:py-4">
+                      <td className="px-2 sm:px-3 md:px-4 py-2 sm:py-3 md:py-4">
                         <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-2 sm:space-x-3 flex-1 min-w-0">
+                          <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-3 flex-1 min-w-0">
                             <div className={`
                               w-2 h-2 sm:w-2 sm:h-2 rounded-full transition-colors flex-shrink-0
                               ${isSelected
@@ -229,7 +231,7 @@ export const CSVTable: React.FC<CSVTableProps> = ({
                               }
                             `}></div>
                             <div className={`
-                              text-sm sm:text-sm font-semibold transition-colors truncate min-w-0
+                              text-xs sm:text-sm font-semibold transition-colors truncate min-w-0
                               ${isSelected
                                 ? 'text-orange-800'
                                 : 'text-gray-900 group-hover:text-blue-900'
@@ -252,7 +254,7 @@ export const CSVTable: React.FC<CSVTableProps> = ({
                                   console.log('🖱️ Botão de visibilidade clicado para:', item.disciplina);
                                   handleToggleVisibility(item.disciplina, e);
                                 }}
-                                className={`p-2 sm:p-2 rounded-lg transition-all duration-200 touch-manipulation relative z-10 active:scale-95 ${
+                                className={`p-1 sm:p-2 rounded-lg transition-all duration-200 touch-manipulation relative z-10 active:scale-95 ${
                                   isHidden
                                     ? 'text-gray-400 hover:text-gray-600 hover:bg-gray-100'
                                     : isSelected
@@ -261,11 +263,11 @@ export const CSVTable: React.FC<CSVTableProps> = ({
                                 }`}
                                 title={isHidden ? 'Mostrar elementos' : 'Ocultar elementos'}
                               >
-                                {isHidden ? <EyeOff className="w-5 h-5 sm:w-5 sm:h-5" /> : <Eye className="w-5 h-5 sm:w-5 sm:h-5" />}
+                                {isHidden ? <EyeOff className="w-4 h-4 sm:w-5 sm:h-5" /> : <Eye className="w-4 h-4 sm:w-5 sm:h-5" />}
                               </button>
                             ) : (
                               <div className="flex items-center justify-center p-2">
-                                <AlertCircle className="w-5 h-5 sm:w-5 sm:h-5 text-yellow-500" />
+                                <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-500" />
                               </div>
                             )}
                           </div>

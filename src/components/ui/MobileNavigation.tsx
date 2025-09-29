@@ -102,7 +102,7 @@ export const MobileTabBar: React.FC<MobileNavigationProps> = ({
               'transition-all duration-200',
               isExtraSmall && isMobile ? 'hidden' : 'block'
             )}>
-              {isExtraSmall ? tab.label.split(' ')[0] : tab.label}
+              {isExtraSmall ? (tab.id === '3d' ? '3D' : tab.label.split(' ')[0]) : tab.label}
             </span>
           </button>
         ))}

@@ -42,8 +42,10 @@ export const Tabs: React.FC<TabsProps> = ({
             )}
             {/* Mobile: Show only icon for very small screens, otherwise show full label */}
             <span className="hidden xs:inline sm:inline">{tab.label}</span>
-            {/* Extra small screens: only icon */}
-            <span className="xs:hidden sm:hidden text-xs">{tab.label.charAt(0)}</span>
+            {/* Extra small screens: show full label for 3D tab, otherwise first char */}
+            <span className="xs:hidden sm:hidden text-xs">
+              {tab.id === '3d' ? '3D' : tab.label.charAt(0)}
+            </span>
           </button>
         ))}
       </nav>
