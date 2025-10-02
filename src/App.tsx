@@ -201,7 +201,7 @@ function App() {
       )}
       
       {/* Safe area spacing for mobile */}
-      {isMobile && <div className="h-20 safe-area-inset-bottom"></div>} */}
+      {/* {isMobile && <div className="h-20 safe-area-inset-bottom"></div>} */}
     </div>
   );
 }
