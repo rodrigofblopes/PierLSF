@@ -237,7 +237,7 @@ export const CSVTable: React.FC<CSVTableProps> = ({
                                 : 'text-gray-900 group-hover:text-blue-900'
                               }
                             `}>
-                              {item.disciplina}
+                              {mapping?.sceneCollectionName || item.disciplina}
                               {isSelected && (
                                 <span className="ml-1 text-xs text-orange-600 font-normal">
                                   (clique para desselecionar)

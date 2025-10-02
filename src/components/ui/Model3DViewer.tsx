@@ -244,24 +244,24 @@ function Model3D({
            console.log(`🔍 Objeto 3D com "estrutura": "${child.name}"`);
          }
          
-         // Log específico para objetos que começam com "Estrutura Flutuante"
-         if (child.name.toLowerCase().startsWith('estrutura flutuante')) {
-           console.log(`🎯 Objeto que começa com "Estrutura Flutuante": "${child.name}"`);
+         // Log específico para objetos que começam com "Flutuante"
+         if (child.name.toLowerCase().startsWith('flutuante')) {
+           console.log(`🎯 Objeto que começa com "Flutuante": "${child.name}"`);
          }
          
-         // Log para objetos de Piso, Parede e Telhado
+         // Log para objetos de Piso, Parede e Cobertura
          if (child.name.toLowerCase().includes('piso') || 
              child.name.toLowerCase().includes('parede') || 
              child.name.toLowerCase().includes('telhado')) {
-           console.log(`🏠 Objeto 3D (Piso/Parede/Telhado): "${child.name}"`);
+           console.log(`🏠 Objeto 3D (Piso/Parede/Cobertura): "${child.name}"`);
          }
         
         // Verificar se este objeto está na lista de elementos selecionados
         const isSelected = elements.some(element => {
           const elementLower = element.toLowerCase();
           
-          // Log apenas para elementos que contêm "estrutura flutuante" para não sobrecarregar
-          if (elementLower.includes('estrutura flutuante')) {
+          // Log apenas para elementos que contêm "flutuante" para não sobrecarregar
+          if (elementLower.includes('flutuante')) {
             console.log(`🔍 Comparando: "${objectName}" com "${elementLower}"`);
           }
           
@@ -280,22 +280,22 @@ function Model3D({
           else if (elementLower.includes(objectName)) {
             match = true;
           }
-          // Match especial para "Estrutura Flutuante" - normalizar espaços e underscores
-          else if (elementLower === 'estrutura flutuante' && objectName.startsWith('estrutura_flutuante')) {
+          // Match especial para "Flutuante" - normalizar espaços e underscores
+          else if (elementLower === 'flutuante' && objectName.startsWith('flutuante')) {
             match = true;
           }
           // Match para elementos com pontos vs underscores
-          else if (elementLower.includes('estrutura flutuante') && objectName.includes('estrutura_flutuante')) {
-            // Extrair número do elemento (ex: "Estrutura Flutuante.001" -> "001")
-            const elementNumber = elementLower.replace('estrutura flutuante', '').replace('.', '');
-            const objectNumber = objectName.replace('estrutura_flutuante', '');
+          else if (elementLower.includes('flutuante') && objectName.includes('flutuante')) {
+            // Extrair número do elemento (ex: "Flutuante.001" -> "001")
+            const elementNumber = elementLower.replace('flutuante', '').replace('.', '');
+            const objectNumber = objectName.replace('flutuante', '');
             
             if (elementNumber === objectNumber) {
               match = true;
             }
           }
           
-          if (match && elementLower.includes('estrutura flutuante')) {
+          if (match && elementLower.includes('flutuante')) {
             console.log(`✅ Match encontrado: "${objectName}" <-> "${elementLower}"`);
           }
           
@@ -366,8 +366,8 @@ function Model3D({
          processedObjects++;
          const serviceMapping = getObjectCollection(child.name);
          
-         // Log específico para Piso, Parede e Telhado
-         if (serviceName === 'Piso' || serviceName === 'Parede' || serviceName === 'Telhado') {
+         // Log específico para Piso, Parede e Cobertura
+         if (serviceName === 'Piso' || serviceName === 'Parede' || serviceName === 'Cobertura') {
            console.log(`🔍 Verificando objeto: "${child.name}" -> mapping:`, serviceMapping);
          }
          
@@ -394,17 +394,15 @@ function Model3D({
           // Aplicar cores específicas para cada grupo de elementos
           let serviceMapping = null;
           
-          // Estrutura Flutuante - Azul
-          if (child.name.toLowerCase().includes('estrutura_flutuante') || 
-              child.name.toLowerCase().includes('estrutura flutuante')) {
-            serviceMapping = { serviceName: 'Estrutura Flutuante', color: '#0066CC' };
-            console.log(`✅ Estrutura Flutuante detectada: ${child.name}`);
+          // Flutuante - Azul
+          if (child.name.toLowerCase().includes('flutuante')) {
+            serviceMapping = { serviceName: 'Flutuante', color: '#0066CC' };
+            console.log(`✅ Flutuante detectada: ${child.name}`);
           }
           // Estrutura - Cinza metálico
           else if (child.name.toLowerCase() === 'estrutura' || 
                    (child.name.toLowerCase().includes('estrutura') && 
-                    !child.name.toLowerCase().includes('flutuante') && 
-                    !child.name.toLowerCase().includes('estrutura_flutuante'))) {
+                    !child.name.toLowerCase().includes('flutuante'))) {
             serviceMapping = { serviceName: 'Estrutura', color: '#C0C0C0' };
             console.log(`✅ Estrutura detectada: ${child.name}`);
           }
@@ -423,11 +421,11 @@ function Model3D({
             serviceMapping = { serviceName: 'Esquadrias', color: '#E6E6FA' };
             console.log(`✅ Esquadrias detectada: ${child.name}`);
           }
-          // Telhado - Cinza
+          // Cobertura - Cinza
           else if (child.name.toLowerCase().includes('telhado') || 
                    child.name.toLowerCase().includes('telha')) {
-            serviceMapping = { serviceName: 'Telhado', color: '#808080' };
-            console.log(`✅ Telhado detectado: ${child.name}`);
+            serviceMapping = { serviceName: 'Cobertura', color: '#808080' };
+            console.log(`✅ Cobertura detectada: ${child.name}`);
           }
           else {
             console.log(`⚪ Objeto sem cor personalizada: ${child.name} (mantém cor original)`);
@@ -478,12 +476,12 @@ function Model3D({
       });
       console.log('✅ Materiais originais salvos e cores aplicadas');
       console.log('🎨 Cores aplicadas conforme especificação:');
-      console.log('   🔵 Estrutura Flutuante: #0066CC (Azul)');
+      console.log('   🔵 Flutuante: #0066CC (Azul)');
       console.log('   🔘 Estrutura: #C0C0C0 (Cinza Metálico)');
       console.log('   ⚪ Piso: #FFFFFF (Branco - Porcelanato)');
       console.log('   🟤 Parede: #F5F5DC (Bege)');
       console.log('   🪞 Esquadrias: #E6E6FA (Prata Brilhante - Espelho)');
-      console.log('   ⚫ Telhado: #808080 (Cinza)');
+      console.log('   ⚫ Cobertura: #808080 (Cinza)');
       console.log('   🔄 Outros elementos mantêm cores originais do GLB');
     }
   }, [scene]);
@@ -545,7 +543,7 @@ function Model3D({
     });
     
     // Mostrar serviços que não estão na lista de ocultos
-    const allServices = ['Estrutura Flutuante', 'Estrutura', 'Piso', 'Parede', 'Esquadrias', 'Telhado'];
+    const allServices = ['Flutuante', 'Estrutura', 'Piso', 'Parede', 'Esquadrias', 'Cobertura'];
     const visibleServices = allServices.filter(service => !hiddenServices.includes(service));
     
     console.log('👁️ Mostrando serviços:', visibleServices);
@@ -566,7 +564,7 @@ function Model3D({
         
         // Configurações específicas para as disciplinas do projeto
         const serviceMapping = getObjectCollection(child.name);
-        if (serviceMapping && (serviceMapping.serviceName === 'Estrutura Flutuante' || serviceMapping.serviceName === 'Estrutura' || serviceMapping.serviceName === 'Piso' || serviceMapping.serviceName === 'Parede' || serviceMapping.serviceName === 'Esquadrias' || serviceMapping.serviceName === 'Telhado')) {
+        if (serviceMapping && (serviceMapping.serviceName === 'Flutuante' || serviceMapping.serviceName === 'Estrutura' || serviceMapping.serviceName === 'Piso' || serviceMapping.serviceName === 'Parede' || serviceMapping.serviceName === 'Esquadrias' || serviceMapping.serviceName === 'Cobertura')) {
           // Melhorar sombras para todas as disciplinas
           child.castShadow = true;
           child.receiveShadow = true;
@@ -576,8 +574,8 @@ function Model3D({
             child.geometry.computeBoundingSphere();
           }
           
-          // Configurações específicas para Estrutura Flutuante
-          if (serviceMapping.serviceName === 'Estrutura Flutuante') {
+          // Configurações específicas para Flutuante
+          if (serviceMapping.serviceName === 'Flutuante') {
             // Melhorar renderização de estrutura principal
             child.frustumCulled = true;
             // Otimizar para elementos estruturais

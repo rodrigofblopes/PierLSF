@@ -12,19 +12,21 @@ export interface ServiceMapping {
 
 export const serviceMappings: ServiceMapping[] = [
   {
-    serviceName: 'Estrutura Flutuante',
-    sceneCollectionId: 'GREstruturaFlutuante',
-    sceneCollectionName: 'Estrutura Flutuante',
+    serviceName: 'Flutuante',
+    sceneCollectionId: 'GRFlutuante',
+    sceneCollectionName: 'Fundação Flutuante',
     color: '#0066CC',
-    description: 'Estrutura flutuante - elementos estruturais principais',
+    description: 'Fundação Flutuante - elementos estruturais principais',
     keywords: [
+      'Flutuante',
+      'flutuante',
       'AÇO - PILAR STEEL FRAME',
       'AÇO - VIGA STEEL FRAME',
       'AÇO - PISO STEEL DECK',
       'Steel Frame',
       'STEEL FRAME'
     ],
-    blenderCollectionName: 'Estrutura Flutuante',
+    blenderCollectionName: 'Fundação Flutuante',
     textureType: 'Original'
   },
   {
@@ -91,19 +93,19 @@ export const serviceMappings: ServiceMapping[] = [
     textureType: 'Alumínio Rosa'
   },
   {
-    serviceName: 'Telhado',
-    sceneCollectionId: 'GRTelhado',
-    sceneCollectionName: 'Telhado',
+    serviceName: 'Cobertura',
+    sceneCollectionId: 'GRCobertura',
+    sceneCollectionName: 'Cobertura',
     color: '#808080',
-    description: 'Elementos de telhado - coberturas e telhas',
+    description: 'Elementos de cobertura - telhados e telhas',
     keywords: [
       'Telhado básico TELHA DE FIBROCIMENTO',
       'TELHA DE FIBROCIMENTO',
       'Telhado básico',
-      'Telhado',
-      'telhado'
+      'Cobertura',
+      'cobertura'
     ],
-    blenderCollectionName: 'Telhado',
+    blenderCollectionName: 'Cobertura',
     textureType: 'Telha Vermelha'
   }
 ];
@@ -150,8 +152,8 @@ export const getObjectCollection = (objectName: string): ServiceMapping | undefi
         return mapping;
       }
       
-      // Para "Estrutura Flutuante", verificar se contém "flutuante"
-      if (mapping.serviceName === 'Estrutura Flutuante' && objectLower.includes('flutuante')) {
+      // Para "Flutuante", verificar se contém "flutuante"
+      if (mapping.serviceName === 'Flutuante' && objectLower.includes('flutuante')) {
         return mapping;
       }
       
@@ -161,7 +163,7 @@ export const getObjectCollection = (objectName: string): ServiceMapping | undefi
       }
       
       // Para outras disciplinas, usar match simples
-      if (mapping.serviceName !== 'Estrutura Flutuante' && mapping.serviceName !== 'Estrutura') {
+      if (mapping.serviceName !== 'Flutuante' && mapping.serviceName !== 'Estrutura') {
         if (objectLower.includes(keywordLower)) {
           return mapping;
         }

@@ -180,6 +180,7 @@ function App() {
                 images={[
                   { src: '/Térreo.jpg', title: 'Planta Térreo', description: 'Vista do pavimento térreo' },
                   { src: '/Pav.Superior.jpg', title: 'Pavimento Superior', description: 'Vista do pavimento superior' },
+                  { src: '/Cobertura.jpg', title: 'Cobertura', description: 'Vista da cobertura do projeto' },
                   { src: '/Corte Logintudinal.jpg', title: 'Corte Longitudinal', description: 'Corte longitudinal do projeto' },
                   { src: '/Corte Transversal.jpg', title: 'Corte Transversal', description: 'Corte transversal do projeto' }
                 ]}
