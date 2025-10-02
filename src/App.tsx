@@ -191,8 +191,8 @@ function App() {
         </div>
       </div>
       
-      {/* Mobile Navigation - Bottom Bar */}
-      {isMobile && (
+      {/* Mobile Navigation - Bottom Bar - REMOVIDO para permitir acesso ao item Cobertura */}
+      {/* {isMobile && (
         <MobileNavigation 
           tabs={tabs}
           activeTab={activeTab}
@@ -201,7 +201,7 @@ function App() {
       )}
       
       {/* Safe area spacing for mobile */}
-      {isMobile && <div className="h-20 safe-area-inset-bottom"></div>}
+      {isMobile && <div className="h-20 safe-area-inset-bottom"></div>} */}
     </div>
   );
 }
