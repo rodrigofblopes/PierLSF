@@ -107,6 +107,42 @@ export const serviceMappings: ServiceMapping[] = [
     ],
     blenderCollectionName: 'Cobertura',
     textureType: 'Telha Vermelha'
+  },
+  {
+    serviceName: 'Forro',
+    sceneCollectionId: 'GRForro',
+    sceneCollectionName: 'Forro',
+    color: '#DDA0DD',
+    description: 'Elementos de forro - forros e tetos',
+    keywords: [
+      'Forro',
+      'forro',
+      'Teto',
+      'teto',
+      'Gesso',
+      'gesso'
+    ],
+    blenderCollectionName: 'Forro',
+    textureType: 'Original'
+  },
+  {
+    serviceName: 'Guarda-Corpo',
+    sceneCollectionId: 'GRGuardaCorpo',
+    sceneCollectionName: 'Guarda-Corpo',
+    color: '#87CEEB',
+    description: 'Elementos de guarda-corpo - proteções e corrimões em vidro',
+    keywords: [
+      'Guarda-Corpo',
+      'guarda-corpo',
+      'Guarda Corpo',
+      'guarda corpo',
+      'Corrimão',
+      'corrimão',
+      'Proteção',
+      'proteção'
+    ],
+    blenderCollectionName: 'Guarda-Corpo',
+    textureType: 'Vidro'
   }
 ];
 

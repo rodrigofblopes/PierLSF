@@ -127,6 +127,26 @@ function Model3D({
   const originalMaterials = useRef(new Map<Mesh, THREE.Material>());
   const highlightedMaterials = useRef(new Map<Mesh, THREE.Material>());
   
+  // Função para criar material de vidro realista
+  const createGlassMaterial = (baseMaterial: THREE.Material): THREE.Material => {
+    const glassMaterial = baseMaterial.clone();
+    
+    // Propriedades do vidro
+    glassMaterial.color.setHex(0xE6F3FF); // Azul muito claro
+    glassMaterial.transparent = true;
+    glassMaterial.opacity = 0.1; // Muito transparente
+    glassMaterial.metalness = 0.0; // Não metálico
+    glassMaterial.roughness = 0.0; // Superfície perfeitamente lisa
+    glassMaterial.envMapIntensity = 3.0; // Reflexão intensa
+    glassMaterial.refractionRatio = 0.98; // Índice de refração do vidro
+    glassMaterial.side = THREE.DoubleSide; // Renderizar ambos os lados
+    glassMaterial.depthWrite = false; // Não escrever no depth buffer
+    glassMaterial.depthTest = true; // Teste de profundidade
+    glassMaterial.blending = THREE.NormalBlending; // Blending normal
+    
+    return glassMaterial;
+  };
+  
   // Usar o caminho do modelo diretamente
   const actualModelPath = modelPath;
   console.log('🔍 Caminho do modelo:', actualModelPath);
@@ -441,7 +461,17 @@ function Model3D({
                 // Para arrays de materiais, aplicar cor a todos
                 const coloredMaterials = child.material.map(mat => {
                   const coloredMat = mat.clone();
-                  coloredMat.color.setHex(serviceMapping.color.replace('#', '0x'));
+                  
+                  // Aplicar textura de vidro para Guarda-Corpo
+                  if (serviceMapping.serviceName === 'Guarda-Corpo' && serviceMapping.textureType === 'Vidro') {
+                    // Usar função de vidro realista
+                    const glassMat = createGlassMaterial(coloredMat);
+                    return glassMat;
+                  } else {
+                    coloredMat.color.setHex(serviceMapping.color.replace('#', '0x'));
+                    return coloredMat;
+                  }
+                  
                   coloredMat.needsUpdate = true;
                   return coloredMat;
                 });
@@ -449,9 +479,18 @@ function Model3D({
               } else {
                 // Para material único
                 const coloredMaterial = child.material.clone();
-                coloredMaterial.color.setHex(serviceMapping.color.replace('#', '0x'));
-                coloredMaterial.needsUpdate = true;
-                child.material = coloredMaterial;
+                
+                // Aplicar textura de vidro para Guarda-Corpo
+                if (serviceMapping.serviceName === 'Guarda-Corpo' && serviceMapping.textureType === 'Vidro') {
+                  // Usar função de vidro realista
+                  const glassMat = createGlassMaterial(coloredMaterial);
+                  child.material = glassMat;
+                  console.log(`🔮 Aplicando textura de vidro realista ao ${child.name}`);
+                } else {
+                  coloredMaterial.color.setHex(serviceMapping.color.replace('#', '0x'));
+                  coloredMaterial.needsUpdate = true;
+                  child.material = coloredMaterial;
+                }
               }
               
               // Salvar o material colorido como original
@@ -543,7 +582,7 @@ function Model3D({
     });
     
     // Mostrar serviços que não estão na lista de ocultos
-    const allServices = ['Flutuante', 'Estrutura', 'Piso', 'Parede', 'Esquadrias', 'Cobertura'];
+    const allServices = ['Flutuante', 'Estrutura', 'Piso', 'Parede', 'Esquadrias', 'Cobertura', 'Forro', 'Guarda-Corpo'];
     const visibleServices = allServices.filter(service => !hiddenServices.includes(service));
     
     console.log('👁️ Mostrando serviços:', visibleServices);
